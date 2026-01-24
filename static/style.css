@@ -1,0 +1,245 @@
+@charset "utf-8";
+.indent{
+    padding-left: 16px;
+}
+#contents{
+    padding-left: 16px;
+}
+#footer{
+    padding-left: 16px;
+}
+
+.noindent{
+padding-left: 0px;
+}
+.compact{
+margin-top: 0px;
+margin-bottom: 0px;
+}
+.semi_compact{
+margin-top: 5px;
+margin-bottom: 5px;
+}
+.semi_space{
+margin-top: 5px;
+margin-bottom: 5px;
+}
+.space{
+margin-top: 10px;
+margin-bottom: 10px;
+}
+p, div{
+margin-top: 10px;
+margin-bottom: 10px;
+}
+dt{
+font-weight: bold;
+}
+#side_menu ul{
+margin-top: 5px;
+margin-bottom: 5px;
+}
+dd{
+padding-left: 16px;
+}
+ol{
+margin-left: 16px;
+padding-left: 16px;
+}
+ul{
+margin-left: 16px;
+padding-left: 16px;
+}
+.topic_list li{
+line-height: 160%
+}
+hr{
+border-style:solid;
+color:#BBDDBB;
+}
+.bordered{
+border-color:#BBDDBB;
+border-style: solid;
+}
+#content{
+border-color:#BBDDBB;
+border-style: solid;
+border-width: 0px 2px 0px 0px;
+}
+#page_head{
+border-color:#BBDDBB;
+border-style: solid;
+border-width: 0px 0px 2px 0px;
+}
+h2, h3{
+border-color:#BBDDBB;
+border-style: solid;
+border-width: 0px 0px 2px 16px;
+}
+h4{
+border-color:#BBDDBB;
+border-style: dotted;
+border-width: 0px 0px 2px 0px;
+margin-left: 16px;
+}
+label{
+color: black;
+}
+.comment{
+margin-top: 0px;
+margin-bottom: 0px;
+padding-left: 16px;
+}
+.display_none{
+display: none;
+}
+.italic{
+font-weight: italic;
+}
+.bold{
+font-weight: bold;
+}
+.red-color{
+color: red;
+}
+em{
+font-weight: italic;
+}
+strong{
+font-weight: bold;
+}
+.errorlist{
+color: red;
+font-weight: bold;
+}
+.verticalline{
+width: 1px;
+position: absolute;
+top: 0px;
+height: 100%;
+left: 50%;
+}
+
+#content, #side_menu {
+  display: inline;
+  position: relative;
+}
+
+#page_body {
+  width: 99%;
+}
+
+#content {
+  width: 78%;
+  float: left;
+}
+
+#side_menu {
+  width: 20%;
+  float: left;
+}
+
+#page_foot {
+  width: 99%;
+  position: relative;
+  float: left;
+}
+
+ul {
+  list-style-type: disc;
+}
+ol {
+  list-style-type: decimal;
+}
+
+pre {
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.rating span {
+    padding: 4px 7px 4px 7px;
+}
+.rating span.buttons {
+    padding: 0;
+}
+
+.rating span.selected {
+    border-style: solid;
+    border-width: 2px;
+}
+.rating .red {
+    background-color: #FF8888;
+}
+.rating .yellow {
+    background-color: #FFFF88;
+}
+.rating .green {
+    background-color: #88FF88;
+}
+.rating .hover {
+    background-color: #8888FF; !important
+}
+
+
+
+body {
+    background: #CCEECC;
+    padding: 0;
+    text-align: left;
+    font-size: 107.692%;
+}
+body * {
+    line-height: 130%;
+}
+
+h1 {
+    font-size: 192.308%;
+}
+
+h2 {
+    font-size: 161.538%;
+}
+
+h3 {
+    font-size: 146.154%;
+}
+
+h4 {
+    font-size: 123.077%;
+}
+
+a{
+  text-decoration: underline;
+  color: #5500BB;
+}
+a:visited{
+  text-decoration: none;
+}
+a:hover{
+  text-decoration: underline;
+  color: #7700EE;
+}
+
+.banner{
+    background-color: #BBDDBB;
+}
+.focusedcomment .banner{
+    background-color: #BBCCBB;
+}
+
+pre {
+    font-size: 107.692%;
+}
+
+//-- workaround for IE6.0 (行番号とコードのline-heightがずれる件)
+.linenos pre {
+    line-height: 130%;
+}
+.highlight pre {
+    line-height: 130%;
+}
+//--
+
+
