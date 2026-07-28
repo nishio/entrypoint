@@ -1,0 +1,137 @@
+==================
+ FORTH on browser
+==================
+
+DEMO
+====
+
+.. raw:: html
+
+  <script src="repos/FORTH-on-browser/jquery-1.7.2.min.js"></script>
+  <script src="repos/FORTH-on-browser/jquery.terminal-0.4.15.js"></script>
+  <script src="repos/FORTH-on-browser/forth.js"></script>
+  <script src="repos/FORTH-on-browser/forth-words.js"></script>
+  <script src="repos/FORTH-on-browser/forth-interface.js"></script>
+  <script src="repos/FORTH-on-browser/forth-test.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>-->
+  <script src="repos/FORTH-on-browser/jquery-ui.min.js"></script>
+  <script src="repos/FORTH-on-browser/load_sample.js"></script>
+  <link rel="stylesheet" type="text/css" href="repos/FORTH-on-browser/terminal.css" />
+  <link rel="stylesheet" type="text/css" href="repos/FORTH-on-browser/style.css" />
+  <link rel="stylesheet" type="text/css"
+        href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/base/jquery-ui.css">
+  <script>
+    $(function() {
+          $('#tabs').tabs();
+          forth.interface($('#term'), $('#stack'));
+          forth.sourceLoader($('#source'), $('#load'));
+          forth.test();
+          $('body').click(function() { forth.terminal.disable(); });
+          $('#clear').click(function () { forth.terminal.clear(); });
+          forth.dbg.init('#debug-');
+    });
+  </script>
+
+  <div id="term"></div>
+  <div id="stack-container">
+    <b>Stack</b><br/>
+    <div id="stack"></div>
+  </div>
+  <div id="tabs">
+    <ul>
+      <li><a href="#source-tab">Source</a></li>
+      <li><a href="#debugger-tab">Debugger</a></li>
+    </ul>
+    <div id="source-tab">
+      <textarea id="source">
+      </textarea>
+      <div id="source-buttons">
+        <input type="button" id="clear" value="Clear terminal" />
+        <input type="button" id="load" value="Load source" />
+      </div>
+    </div> <!-- source-tab -->
+    <div id="debugger-tab">
+      <input type="checkbox" id="debug-mode" value="debug-mode" />
+      <label for="debug-mode">Debug mode</label><br>
+      Source:
+      <div id="debug-source"></div>
+      <input type="button" id="debug-run" value="Run" disabled="disabled" />
+      <input type="button" id="debug-step-inside" value="Step Inside" disabled="disabled" />
+      <input type="button" id="debug-step-over" value="Step Over" disabled="disabled" />
+      <br>
+      Call stack:
+      <div id="debug-call-stack"></div>
+    </div> <!-- debugger-tab -->
+  </div> <!-- tabs -->
+
+  <p style="clear: both"></p>
+
+
+
+
+HISTORY
+=======
+
+- Milestome1: simple stack-based execution
+
+  - the user will be able to input the words in the interpreter to execute them
+  - the webpage will show the current state of the stack (as a list on the right side of the terminal)
+  - simple words: numbers, arithmetic (+,-,*,/), stack manipulation (dup, drop, swap etc.), printing the result (.)
+  - (no procedures yet)
+  - "1 2 +" returns "3"
+
+- Milestone2: procedures
+  - (: double 2 * ;)
+  - "compilation mode / run mode" distinction
+  - virtual machine: the target code will consist not of words, but of operations: call(word), push(number)
+  - compile and run mode: the words will get executed in run mode, and transformed to the target code in compile mode
+  - immediate words: some words will get executed in compile mode
+  - ':' word will enter compile mode, compile words until ';' (a definition), and create a new word
+  - comments ('(' word)
+
+    - '(' will read input until ')' and disregard it
+
+  - source textbox, as with other interpreters
+  - factorial demonstration
+
+    - boolean type and literals (true, false), logic operations (and, or, not)
+    - number comparison (=, < etc.),
+    - conditionals (if..then, if..else..then), loops (repeat..until)
+    - virtual machine will get branching instructions: goto(number), goto-if-false(number)
+    - 'if' will be an immediate word that reads words until 'else' and 'then', and adds appropriate branching instruction
+    - the same for 'repeat..until'
+
+::
+
+   : fact
+     dup 0 = if
+       drop 1
+     else
+       dup 1 - fact
+       *
+     then
+   ;
+
+- Milestone3: variable and debugger
+
+  - variables (variable x), storing and fetching them (x @, x !)
+  - other Forth loop constructs (including do..loop with a loop index)
+
+    - original Forth used raw pointers (running 'x' puts 123823 on the stack), we can do something nicer (running 'x' will put <x> on the stack).
+
+  - debugger:
+
+    - show execution state with call stack and all the words, [step into] and [step over] buttons
+    - being able to display and step over execution (this is probably a big one)
+
+
+License
+=======
+
+GPLv3 (c) NISHIO Hirokazu 2012
+
+
+Thanks
+======
+
+Paweł Marczewski contributed much to the project.

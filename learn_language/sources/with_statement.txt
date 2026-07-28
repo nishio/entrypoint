@@ -1,0 +1,260 @@
+==============
+With-statement
+==============
+
+Java7
+=====
+
+.. code-block:: java
+
+  public class TryWithResource {
+  
+      public static void main(String[] args) {
+          System.out.println("* sample of normal process");
+          process(false);
+          System.out.println("\n* sample of failed process");
+          process(true);
+      }
+  
+      static void process(boolean to_fail){
+          try (
+               AutoCloseable imp1 = new AutoCloseableImpl("first");
+               AutoCloseable imp2 = new AutoCloseableImpl("second")) {
+                  System.out.println("process");
+                  if(to_fail){
+                      System.out.println("failed");
+                      throw new RuntimeException();
+                  }
+          } catch (Exception e) {
+              System.out.println("catch:" + e);
+          } finally {
+              System.out.println("finally");
+          }
+      }
+  }
+  
+  class AutoCloseableImpl implements AutoCloseable {
+      String name;
+      public AutoCloseableImpl(String name_) {
+          this.name = name_;
+          System.out.println("open: " + name);
+      }
+  
+      @Override
+      public void close() throws Exception {
+          System.out.println("close: " + name);
+      }
+  }
+
+::
+
+  * sample of normal process
+  open: first
+  open: second
+  process
+  close: second
+  close: first
+  finally
+  
+  * sample of failed process
+  open: first
+  open: second
+  process
+  failed
+  close: second
+  close: first
+  catch:java.lang.RuntimeException
+  finally
+
+
+C#
+==
+
+.. code-block:: csharp
+
+  using System;
+  
+  
+  
+  class Program
+  {
+      static void Main()
+      {
+          try
+          {
+              Console.WriteLine("* sample of normal process");
+              process(false);
+              Console.WriteLine("\n* sample of failed process");
+              process(true);
+          }
+          catch (ApplicationException e)
+          {
+              Console.WriteLine("caught: " + e.Message);
+          }
+          finally
+          {
+              Console.WriteLine("finally");
+          }
+      }
+  
+      static void process(bool to_fail)
+      {
+          using (
+              MyClass c1 = new MyClass("first"),
+                      c2 = new MyClass("second"))
+          {
+              Console.WriteLine("process");
+  
+              if (to_fail)
+              {
+                  Console.WriteLine("failed");
+                  throw new ApplicationException();
+              }
+          }
+          Console.WriteLine("finished");
+      }
+  }
+  
+  class MyClass : IDisposable
+  {
+      string name;
+  
+      public MyClass(String _name)
+      {
+          this.name = _name;
+          Console.WriteLine("open: " + name);
+      }
+  
+      void Dispose()
+      {
+          Console.WriteLine("close: " + name);
+      }
+  }
+
+::
+
+  * sample of normal process
+  open: first
+  open: second
+  process
+  close: second
+  close: first
+  finished
+  
+  * sample of failed process
+  open: first
+  open: second
+  process
+  failed
+  close: second
+  close: first
+  caught: An application exception has occurred.
+  finally
+
+
+Python
+======
+
+.. code-block:: python
+
+  class MyClass(object):
+      def __init__(self, name):
+          self.name = name
+  
+      def __enter__(self):
+          print "open: " + self.name
+  
+      def __exit__(self, *args):
+          if args[0]:
+              print "close with error({}): {}".format(args[0], self.name)
+          else:
+              print "close: " + self.name
+          return STOP_EXCEPTION
+  
+  
+  def process(to_fail):
+      with MyClass("first") as x, MyClass("second") as y:
+          print "process"
+          if to_fail:
+              print "failed"
+              raise RuntimeError
+  
+  
+  STOP_EXCEPTION = True
+  print "* sample of normal process"
+  process(False)
+  
+  print "\n* sample of failed process() without re-raise"
+  process(True)
+  
+  print "\n* sample of failed process() with re-raise"
+  STOP_EXCEPTION = False
+  process(True)
+
+::
+
+  * sample of normal process
+  open: first
+  open: second
+  process
+  close: second
+  close: first
+  
+  * sample of failed process() without re-raise
+  open: first
+  open: second
+  process
+  failed
+  close with error(<type 'exceptions.RuntimeError'>): second
+  close: first
+  
+  * sample of failed process() with re-raise
+  open: first
+  open: second
+  process
+  failed
+  close with error(<type 'exceptions.RuntimeError'>): second
+  close with error(<type 'exceptions.RuntimeError'>): first
+  Traceback (most recent call last):
+    File "with_statement.py", line 64, in <module>
+      process(True)
+    File "with_statement.py", line 52, in process
+      raise RuntimeError
+  RuntimeError
+
+
+Python
+======
+
+.. code-block:: python
+
+  class Foo(object):
+      def __init__(self, to_fail):
+          print "init", to_fail
+          self.to_fail = to_fail
+          if to_fail:
+              raise RuntimeError
+  
+      def __enter__(self):
+          print "enter", self.to_fail
+  
+      def __exit__(self, *args):
+          print "exit", self.to_fail, args[0]
+  
+  with Foo(False) as x, Foo(True) as y:
+      print "Hello"
+
+::
+
+  init False
+  enter False
+  init True
+  exit False <type 'exceptions.RuntimeError'>
+  Traceback (most recent call last):
+    File "with_statement2.py", line 27, in <module>
+      with Foo(False) as x, Foo(True) as y:
+    File "with_statement2.py", line 19, in __init__
+      raise RuntimeError
+  RuntimeError
+
+

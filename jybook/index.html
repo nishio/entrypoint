@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"> 
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+    <title>Jythonプログラミング</title>
+
+    <link rel="stylesheet" type="text/css"
+	href="http://www.nishiohirokazu.org/files/reset-fonts-grids.css" />
+	</head>
+	
+<style type="text/css">
+<!--
+*{
+	font-style: normal;
+	font-size: 100%;
+}
+body {
+	background-color: #CCEECC;
+  text-align: center;
+  font-size: 100%;
+}
+h1 {
+  font-size: 500%;
+}
+h2 {
+  font-size: 200%;
+}
+h3 {
+  font-size: 200%;
+}
+.contents {
+  text-align: left;
+  margin: 1em 2em 1em 2em;
+}
+p {
+  margin-bottom: 1em;
+}
+blockquote {
+  margin:1em 0pt;
+  padding:1em;
+}
+-->
+</style>
+
+<body>
+
+<h1>Jythonプログラミング</h1>
+<h3>>>> from java.lang import *</h3>
+<img src="cover.png">
+<div>
+<blockquote>
+Jython(じゃいそん)はあなたのJavaプログラムに
+「やわらかさ」を与えるライブラリです。<br/>
+わずか数行書き足すだけで、このスペースではとても語り尽くせない<br/>
+様々な「Pythonのよさ」を取り込むことができます。
+そして何一つ機能を失いません。<br/>
+既存のJavaのコードをPythonで書き直す必要なんかありません。<br/>
+何も失わずに、二つの言語の「いいとこどり」ができるのです。
+</blockquote>
+</div>
+<hr>
+<div class="contents">
+
+<h2>正誤情報</h2>
+<div class="contents">
+「<a href="http://www.nishiohirokazu.org/jybook/errata.html">Jythonプログラミング 追加情報</a>」で公開しています。
+</div>
+
+
+<h2>著者紹介</h2>
+<div class="contents">
+西尾泰和(にしお ひろかず) <a href="http://www.nishiohirokazu.org/">http://www.nishiohirokazu.org/</a><br/>
+<a href="http://labs.cybozu.co.jp/">サイボウズ・ラボ株式会社</a>に勤務。
+プログラマのためのコロシアム「<a href="http://ja.doukaku.org">どう書く？org</a>」をβ公開中。<br/>
+2005年、<a href="http://ll.jus.or.jp/2005/">Lightweight Language Day and
+Night</a>にて出された
+「計算機を作れ」というお題に対して、Jythonで「関数を定義できる関数電卓」を作成。<br/>
+2006年、<a href="http://ll.jus.or.jp/2006/event">Lightweight Language
+Ring</a>にて「ネットワーク通信をしてじゃんけんを戦う
+エージェントプログラムを作れ」というお題に対して
+<a href="http://www.nishiohirokazu.org/blog/2006/08/python_12.html">Pythonのワンライナー</a>で参戦。(<a href="http://www.sbbit.jp/article/2658/">動画</a>)<br/>
+2007年、<a href="http://ll.jus.or.jp/2007/">Lightweight Language
+Spirit</a>にてJython担当としてパネルディスカッションに参加、
+Jythonでフィボナッチ数列を曲にするデモなどを行う。
+</div>
+
+
+<h2>はじめに</h2>
+<div class="contents">
+本書の「はじめに」を転載します。
+<blockquote>
+<p>
+みなさんはどういう気持ちでこの本を手に取ったのでしょうか？どういう知識を持っていて、どういう知識を得たいと思っているのでしょうか？
+<p>
+みなさんのニーズを聞いてから、それに応えることができればいいのに…。しかし、書籍でそれをやるのは難しいです。しかたがないのでこちらで決めました。この本の最大の目的は「なるべく多くの人に新しい視点を提供すること」です。
+<p>
+すべてのものには長所と短所があります。Javaはとてもかたい言語です。きっちりかっちりした言語です。もちろんこれは長所です。しかし、短所でもあります。一方、Pythonはとてもやわらかい言語です。のんびりらくちんな言語です。もちろんこれも長所です。しかしやはり短所でもあります。
+<p>
+一つの言語だけしか知らないのでは、なにが長所でなにが短所かわかりません。何が本質でなにが枝葉なのかわかりません。複数の言語を学んで比較することで初めて、なにがプログラミングの本質であり、なにが特定の言語の特徴なのかが見えてきます。ある問題をJavaで解決する方法を知っているとしましょう。それはJavaだからできることでしょうか？それとも、他の言語でもできることでしょうか？はたまた、Javaの短所のせいでしかたなくその方法を使うだけで、別の言語ではもっとエレガントに解決できるのでしょうか？言語はそれぞれ特徴が違います。Javaはソースコードをコンパイルしてから実行しますが、Pythonでは対話的な実行ができます。Javaは宣言で変数を作りますが、Pythonは代入で変数を作ります。Javaではクラスが必須ですが、Pythonでは必須ではありません。Javaは単一継承に制限されていますが、Pythonでは多重継承ができます。Pythonを学ぶことはあなたの視野を大きく広げることになるでしょう。
+<p>
+Jythonのいいところは「別の言語を勉強したけど、でも今作っているJavaプログラムをPythonに移植するのはコストが高いな」といういいわけが使えないところにあります。Pythonを学んで、たとえば「対話的実行を自分のソフトでも使いたいなぁ」と思ったのなら、6章を参考にして対話的コンソールを埋め込みましょう。既存のJavaプログラムは捨てないで、数行書き足すだけで対話的に実行ができます。この本は「Javaを捨ててPythonに乗り換えろ」という本ではありません。「JavaオンリーよりJava
++ Pythonがいいよ」という本なのです。
+<p>
+この本の目的は、なるべく多くのJavaプログラマにPythonを知ってもらい、視野を広げてもらうことにあります。「なるべく多くの人に」という目的を果たすために、Python使いでもJavaのギークでもなく、Javaを始めて1年未満くらいの人をターゲットとして想定しました。ギークには物足りないかもしれません。すみません。JavaよりPythonがメインの方にも物足りないかもしれません。もっとJythonのAPIとかの解説が欲しいかもしれません。すみません。他にもいろいろと至らない点があるかと思います。すみません。
+<p>
+この本がみなさんの役に立つことを祈っています。
+</blockquote>
+</div>
+
+<h2>著者へのコンタクト</h2>
+<div class="contents">
+jybook「あっとまーく」nishiohirokazu「どっと」org へお気軽にお送り下さい。
+すぐにお返事を差し上げられるとは限らないことをあらかじめおわびします。
+</div>
+
+</div>
+</body>
+</html>

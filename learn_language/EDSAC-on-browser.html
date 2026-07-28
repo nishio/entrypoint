@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-668701-12']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>EDSAC Simulator on browser &mdash; Learn Languages 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Learn Languages 1.0 documentation" href="index.html" />
+    <link rel="next" title="Brainf*ck on browser" href="brainfxck.html" />
+    <link rel="prev" title="FORTH on browser" href="FORTH-on-browser.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="brainfxck.html" title="Brainf*ck on browser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="FORTH-on-browser.html" title="FORTH on browser"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="edsac-simulator-on-browser">
+<h1>EDSAC Simulator on browser<a class="headerlink" href="#edsac-simulator-on-browser" title="Permalink to this headline">¶</a></h1>
+<p>I think EDSAC is good to learn machine language, because recent CPU is complex.
+The &#8216;initial order&#8217; of EDSAC reads human readable commands from punchtape and store machine readable instructions into its memory.
+It is very primitive programming language.</p>
+<div class="section" id="demo">
+<h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
+<p>Visit Here: <a class="reference external" href="repos/EDSAC-on-browser/index.html">EDSAC on browser</a></p>
+</div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>We now have plenty of memory than 1950s.
+For easy learning and inspectation,
+use memories in human-readable way.</p>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>GPLv3.
+Copyright (C) 2012 NISHIO Hirokazu</p>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first"><a class="reference external" href="http://www.cl.cam.ac.uk/~mr/edsacposter.pdf">http://www.cl.cam.ac.uk/~mr/edsacposter.pdf</a></p>
+<ul class="simple">
+<li>code of initial order and square are come from this poster.</li>
+<li>unfortunately, the poster contains some errors:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;11100 0 0000100010 0 62 S34S&#8221; seems typo of &#8220;01100 ...&#8221;</li>
+<li>It says HnS is &#8216;R += m[n]&#8217;, however the correct semantics is &#8216;R =
+m[n]&#8217;, as confirmed by the example programs.</li>
+<li>The &#8216;verify&#8217; order (actually, load last output to memory) is not
+explained.</li>
+<li>The wording of &#8216;load input into the 5 least significant bits&#8217; is unclear, the
+order wipes all other bits.</li>
+<li>The input/output/verify orders have a long mode variant, not
+mentioned in the poster.</li>
+<li>The &#8216;and&#8217; order is not &#8220;ABC += w &amp; RS&#8221;, but &#8216;AB += w &amp; RS&#8217;.</li>
+<li>It&#8217;s not explained that the &#8216;multiply&#8217; order shifts the result
+left by 2 bits.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.cl.cam.ac.uk/conference/EDSAC99/simulators/india/download.html">http://www.cl.cam.ac.uk/conference/EDSAC99/simulators/india/download.html</a></p>
+<ul class="simple">
+<li>Java emulator, with easy to read source code</li>
+</ul>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.cl.cam.ac.uk/users/mr/Edsac/edsac.tgz">http://www.cl.cam.ac.uk/users/mr/Edsac/edsac.tgz</a></p>
+<ul class="simple">
+<li>You can download simulator with source code (in BCPL)</li>
+</ul>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.cs.clemson.edu/~mark/edsac.html">http://www.cs.clemson.edu/~mark/edsac.html</a></p>
+</li>
+<li><p class="first"><a class="reference external" href="http://www.dcs.warwick.ac.uk/~edsac/">http://www.dcs.warwick.ac.uk/~edsac/</a></p>
+<ul class="simple">
+<li>You can download simulator</li>
+<li><a class="reference external" href="http://www.dcs.warwick.ac.uk/~edsac/Software/EdsacTG.pdf">Tutorial</a> helps our understanding.</li>
+<li>EdsacDoc.pdf in EdsacLx describe about subroutine specification. If you want to know what is M3 or P6, read it.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Special thanks to Paweł Marczewski, he made a massive contribution to the project.</p>
+<p>Thanks to Artem Smirnov, Mustafa Karimi, Yoni Tresina Purbasari and Dariane Joy Papa.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EDSAC Simulator on browser</a><ul>
+<li><a class="reference internal" href="#demo">Demo</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+<li><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="FORTH-on-browser.html"
+                        title="previous chapter">FORTH on browser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="brainfxck.html"
+                        title="next chapter">Brainf*ck on browser</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/EDSAC-on-browser.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="brainfxck.html" title="Brainf*ck on browser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="FORTH-on-browser.html" title="FORTH on browser"
+             >previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, NISHIO Hirokazu.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

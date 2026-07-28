@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-668701-12']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>FORTH on browser &mdash; Learn Languages 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Learn Languages 1.0 documentation" href="index.html" />
+    <link rel="next" title="EDSAC Simulator on browser" href="EDSAC-on-browser.html" />
+    <link rel="prev" title="AST Visualization on browser" href="AST-Visualization-on-browser.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="EDSAC-on-browser.html" title="EDSAC Simulator on browser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="AST-Visualization-on-browser.html" title="AST Visualization on browser"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="forth-on-browser">
+<h1>FORTH on browser<a class="headerlink" href="#forth-on-browser" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="demo">
+<h2>DEMO<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
+<script src="repos/FORTH-on-browser/jquery-1.7.2.min.js"></script>
+<script src="repos/FORTH-on-browser/jquery.terminal-0.4.15.js"></script>
+<script src="repos/FORTH-on-browser/forth.js"></script>
+<script src="repos/FORTH-on-browser/forth-words.js"></script>
+<script src="repos/FORTH-on-browser/forth-interface.js"></script>
+<script src="repos/FORTH-on-browser/forth-test.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>-->
+<script src="repos/FORTH-on-browser/jquery-ui.min.js"></script>
+<script src="repos/FORTH-on-browser/load_sample.js"></script>
+<link rel="stylesheet" type="text/css" href="repos/FORTH-on-browser/terminal.css" />
+<link rel="stylesheet" type="text/css" href="repos/FORTH-on-browser/style.css" />
+<link rel="stylesheet" type="text/css"
+      href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/base/jquery-ui.css">
+<script>
+  $(function() {
+        $('#tabs').tabs();
+        forth.interface($('#term'), $('#stack'));
+        forth.sourceLoader($('#source'), $('#load'));
+        forth.test();
+        $('body').click(function() { forth.terminal.disable(); });
+        $('#clear').click(function () { forth.terminal.clear(); });
+        forth.dbg.init('#debug-');
+  });
+</script>
+
+<div id="term"></div>
+<div id="stack-container">
+  <b>Stack</b><br/>
+  <div id="stack"></div>
+</div>
+<div id="tabs">
+  <ul>
+    <li><a href="#source-tab">Source</a></li>
+    <li><a href="#debugger-tab">Debugger</a></li>
+  </ul>
+  <div id="source-tab">
+    <textarea id="source">
+    </textarea>
+    <div id="source-buttons">
+      <input type="button" id="clear" value="Clear terminal" />
+      <input type="button" id="load" value="Load source" />
+    </div>
+  </div> <!-- source-tab -->
+  <div id="debugger-tab">
+    <input type="checkbox" id="debug-mode" value="debug-mode" />
+    <label for="debug-mode">Debug mode</label><br>
+    Source:
+    <div id="debug-source"></div>
+    <input type="button" id="debug-run" value="Run" disabled="disabled" />
+    <input type="button" id="debug-step-inside" value="Step Inside" disabled="disabled" />
+    <input type="button" id="debug-step-over" value="Step Over" disabled="disabled" />
+    <br>
+    Call stack:
+    <div id="debug-call-stack"></div>
+  </div> <!-- debugger-tab -->
+</div> <!-- tabs -->
+
+<p style="clear: both"></p></div>
+<div class="section" id="history">
+<h2>HISTORY<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Milestome1: simple stack-based execution</p>
+<ul class="simple">
+<li>the user will be able to input the words in the interpreter to execute them</li>
+<li>the webpage will show the current state of the stack (as a list on the right side of the terminal)</li>
+<li>simple words: numbers, arithmetic (+,-,*,/), stack manipulation (dup, drop, swap etc.), printing the result (.)</li>
+<li>(no procedures yet)</li>
+<li>&#8220;1 2 +&#8221; returns &#8220;3&#8221;</li>
+</ul>
+</li>
+<li><p class="first">Milestone2: procedures
+- (: double 2 * ;)
+- &#8220;compilation mode / run mode&#8221; distinction
+- virtual machine: the target code will consist not of words, but of operations: call(word), push(number)
+- compile and run mode: the words will get executed in run mode, and transformed to the target code in compile mode
+- immediate words: some words will get executed in compile mode
+- &#8216;:&#8217; word will enter compile mode, compile words until &#8216;;&#8217; (a definition), and create a new word
+- comments (&#8216;(&#8216; word)</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8216;(&#8216; will read input until &#8216;)&#8217; and disregard it</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>source textbox, as with other interpreters</li>
+<li>factorial demonstration<ul>
+<li>boolean type and literals (true, false), logic operations (and, or, not)</li>
+<li>number comparison (=, &lt; etc.),</li>
+<li>conditionals (if..then, if..else..then), loops (repeat..until)</li>
+<li>virtual machine will get branching instructions: goto(number), goto-if-false(number)</li>
+<li>&#8216;if&#8217; will be an immediate word that reads words until &#8216;else&#8217; and &#8216;then&#8217;, and adds appropriate branching instruction</li>
+<li>the same for &#8216;repeat..until&#8217;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight-python"><pre>: fact
+  dup 0 = if
+    drop 1
+  else
+    dup 1 - fact
+    *
+  then
+;</pre>
+</div>
+<ul class="simple">
+<li>Milestone3: variable and debugger<ul>
+<li>variables (variable x), storing and fetching them (x &#64;, x !)</li>
+<li>other Forth loop constructs (including do..loop with a loop index)<ul>
+<li>original Forth used raw pointers (running &#8216;x&#8217; puts 123823 on the stack), we can do something nicer (running &#8216;x&#8217; will put &lt;x&gt; on the stack).</li>
+</ul>
+</li>
+<li>debugger:<ul>
+<li>show execution state with call stack and all the words, [step into] and [step over] buttons</li>
+<li>being able to display and step over execution (this is probably a big one)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>GPLv3 (c) NISHIO Hirokazu 2012</p>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Paweł Marczewski contributed much to the project.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">FORTH on browser</a><ul>
+<li><a class="reference internal" href="#demo">DEMO</a></li>
+<li><a class="reference internal" href="#history">HISTORY</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="AST-Visualization-on-browser.html"
+                        title="previous chapter">AST Visualization on browser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="EDSAC-on-browser.html"
+                        title="next chapter">EDSAC Simulator on browser</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/FORTH-on-browser.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="EDSAC-on-browser.html" title="EDSAC Simulator on browser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="AST-Visualization-on-browser.html" title="AST Visualization on browser"
+             >previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, NISHIO Hirokazu.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-668701-12']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>LISP on browser &mdash; Learn Languages 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Learn Languages 1.0 documentation" href="index.html" />
+    <link rel="next" title="AST Visualization on browser" href="AST-Visualization-on-browser.html" />
+    <link rel="prev" title="Parser on browser" href="Parser-on-browser.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="AST-Visualization-on-browser.html" title="AST Visualization on browser"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="Parser-on-browser.html" title="Parser on browser"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lisp-on-browser">
+<h1>LISP on browser<a class="headerlink" href="#lisp-on-browser" title="Permalink to this headline">¶</a></h1>
+<p>This is small implementation of LISP,
+which written in JavaScript and run on browsers.</p>
+<p>I think it helps you to understand what going on in programming languages
+by using it and reading its source codes.</p>
+<div class="section" id="demo">
+<h2>Demo<a class="headerlink" href="#demo" title="Permalink to this headline">¶</a></h2>
+<script src="repos/LISP-on-browser/jquery-1.7.2.min.js"></script>
+<script src="repos/LISP-on-browser/jquery.terminal-0.4.15.js"></script>
+<script src="repos/LISP-on-browser/lisp.js"></script>
+<script src="repos/LISP-on-browser/lisp-parser.js"></script>
+<script src="repos/LISP-on-browser/lisp-eval.js"></script>
+<script src="repos/LISP-on-browser/lisp-macro.js"></script>
+<script src="repos/LISP-on-browser/lisp-builtins.js"></script>
+<script src="repos/LISP-on-browser/lisp-repl.js"></script>
+<script src="repos/LISP-on-browser/lisp-test.js"></script>
+<link rel="stylesheet" type="text/css" href="repos/LISP-on-browser/terminal.css" />
+<script>
+  $(function() {
+        lisp.replTerminal($('#term'));
+        lisp.replLoader($('#source'), $('#load'));
+        lisp.test();
+        $('body').click(function() { lisp.terminal.disable(); });
+        $('#clear').click(function () { lisp.terminal.clear(); });
+  });
+</script>
+
+<div id="term" style="width: 48%; height: 300px; float: left;"></div>
+<div style="width: 48%; float: right;">
+  <textarea id="source" style="width: 100%; height: 300px;">
+;; A few examples. Click 'Load source' to load them.
+
+; Closures
+(let (count 0)
+  (define (counter) (set! count (+ 1 count))))
+
+; You can also define variables
+(define x 2)
+(set! x 3)
+
+; Let
+(let (x 2 y 3) (+ x y))
+
+; Lambda
+(set! x (lambda () 'bla))
+(x)
+
+; Factorial example
+(define (fact n)
+  (if (= n 0)
+      1
+      (* n (fact (- n 1)))))
+(fact 5)
+
+; Length example
+(define (length list)
+  (if (empty? list)
+      0
+      (+ 1 (length (cdr list)))))
+(length '(1 2 3))
+
+; Map example
+(define (map func list)
+  (if (empty? list)
+      nil
+      (cons (func (car list))
+            (map func (cdr list)))))
+(map (lambda (x) (+ x 1)) '(1 2 3))
+
+; And macro example
+(defmacro (and x . xs)
+  (if (empty? xs)
+      x
+      `(when ,x (and . ,xs))))
+(expand-code '(and a b c d))
+; and to demonstrate the short-circuit mechanism:
+; ((unknown) should crash when run)
+(and (= 2 2) (= 2 3) (unknown))
+
+;; Hygiene in macros
+; Consider a simple macro:
+
+(defmacro (bad-swap a b)
+  `(let (tmp ,a)
+     (set! ,a ,b)
+     (set! ,b tmp)))
+
+; Usage example:
+(let (x 1 y 2)
+   (bad-swap x y)
+   (list x y))
+; (2 1)
+
+; Unfortunately, this fails if we have a variable called tmp!
+(let (x 1 tmp 2)
+   (bad-swap x tmp)
+   (list x tmp))
+; (1 2)
+
+; We solve that by using the gensym function to generate a new name
+; that will not conflict with anything else:
+(defmacro (swap a b)
+  (let (tmp (gensym 'tmp))
+    `(let (,tmp ,a)
+       (set! ,a ,b)
+       (set! ,b ,tmp))))
+
+; Now try:
+(expand-code '(swap x tmp))
+; (let (#tmp-0 x) (set! x tmp) (set! tmp #tmp-0))
+
+</textarea>
+  <input type="button" id="clear" value="Clear terminal" />
+  <input type="button" id="load" value="Load source" />
+</div>
+<p style="clear: both"></p></div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>Readability counts.</p>
+<p>My goal is not to make complete features of Lisp.
+It makes source codes huge and makes difficult to read.</p>
+</div>
+<div class="section" id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Refactor commit history so that readers can learn how to implement LISP step by step.
+&#8216;feature/M1-S-Expression-Parser&#8217; branch is nice but &#8216;feature/M2&#8217; has actually 4 milestone.</li>
+<li>Connect with <a class="reference external" href="https://github.com/nishio/AST-Visualization-on-browser">https://github.com/nishio/AST-Visualization-on-browser</a></li>
+<li>Make a site in English and Japanese (for my book&#8217;s readers)</li>
+</ul>
+</div>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>This list corresponds to current commit history. We need refactor it.</p>
+<ul class="simple">
+<li>Milestone1: S-expression Parser<ul>
+<li>given string such like &#8220;(* 1 (+ 2 3))&#8221; and return syntax trees</li>
+<li>in this point forget about reader macros such as &#8220;&#8217;(1 2 3)&#8221;</li>
+</ul>
+</li>
+<li>&#8216;feature/M2&#8217;<ul>
+<li>Milestone2: Some Built-in function<ul>
+<li>arithmetic functions: +, -, *, /</li>
+<li>other functions: eval, cons, list</li>
+</ul>
+</li>
+<li>(done) Milestone3: A REPL interpreter(when user input (* 1 (+ 2 3)), it prints 5)<ul>
+<li>Now we can (* 1 (+ 2 3))</li>
+</ul>
+</li>
+<li>(done) Milestone4: Special forms: quote and if</li>
+<li>(done) Milestone5: Reader syntax with apostrophe: &#8216;(+ 2 2) = (quote (+ 2 2))</li>
+</ul>
+</li>
+<li>&#8216;feature/factorial_and_counter&#8217;<ul>
+<li>Milestone6: equality and comparison: =, /=, &lt;, etc.</li>
+<li>Milestone7: comments in the code</li>
+<li>Milestone8: a textbox for loading examples into interpreter</li>
+<li>Milestone9: lexical scope (let and variables)</li>
+<li>Milestone10: defining your own functions (defun)<ul>
+<li>Now we can make factorial and counter</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>&#8216;feature/macro&#8217;<ul>
+<li>variable-length argument lists (func arg1 arg2 . rest)</li>
+<li>defmacro and macro-expansion stage</li>
+<li>macroexpand function</li>
+<li>quasiquote and unquote (` ,) for easier building of macros</li>
+<li>a &#8216;gensym&#8217; function and example illustrating the problem of hygiene in macros.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>GPLv3 (c) NISHIO Hirokazu 2012</p>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Paweł Marczewski contributed much to the project.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">LISP on browser</a><ul>
+<li><a class="reference internal" href="#demo">Demo</a></li>
+<li><a class="reference internal" href="#design">Design</a></li>
+<li><a class="reference internal" href="#todo">TODO</a></li>
+<li><a class="reference internal" href="#history">History</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="Parser-on-browser.html"
+                        title="previous chapter">Parser on browser</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="AST-Visualization-on-browser.html"
+                        title="next chapter">AST Visualization on browser</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/LISP-on-browser.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="AST-Visualization-on-browser.html" title="AST Visualization on browser"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="Parser-on-browser.html" title="Parser on browser"
+             >previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, NISHIO Hirokazu.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

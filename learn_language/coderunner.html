@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-668701-12']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>coderunner &mdash; Learn Languages 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Learn Languages 1.0 documentation" href="index.html" />
+    <link rel="next" title="learn_language/doc" href="doc.html" />
+    <link rel="prev" title="Learn Language" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="doc.html" title="learn_language/doc"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Learn Language"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="coderunner">
+<h1>coderunner<a class="headerlink" href="#coderunner" title="Permalink to this headline">¶</a></h1>
+<p>This is a tool to run codes and check outputs.</p>
+<p>When you learn/teach programming languages
+you will write small codes.</p>
+<p>Pairs of those codes and outputs are <em>tests</em>.
+To store and run them helps to know what is changed.</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>$ python coderunner.py              # run self tests
+$ python coderunner.py --exec-test  # run executable tests
+$ python test/hello.py              # run 'print hello' tests</pre>
+</div>
+<p>It may fail. Don&#8217;t get discouraged.
+It is better if it works in various environment without customization,
+however it is hard work and is not main scope of the project.
+Please read following instruction to modify settings to fit your environment.</p>
+</div>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>You need to run setup.py(you can also do <tt class="docutils literal"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">make</span> <span class="pre">install</span></tt> ):</p>
+<div class="highlight-python"><pre>$ sudo python setup.py develop</pre>
+</div>
+<p>It it fail by lack of setuptools, try this:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install python-setuptools</pre>
+</div>
+</div>
+<div class="section" id="expected-executables">
+<h2>Expected executables<a class="headerlink" href="#expected-executables" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="in-case-of-plain-ubuntu-12-04">
+<h3>in case of plain Ubuntu 12.04<a class="headerlink" href="#in-case-of-plain-ubuntu-12-04" title="Permalink to this headline">¶</a></h3>
+<p>&#8216;executable test&#8217; warns if expected executables aren&#8217;t found.
+When I tried it on Ubuntu 12.04 (2012-02-02), it said as follow</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd><p class="first">$ python coderunner.py &#8211;exec-test
+check whether expected executables exist:
+Python
+/usr/bin/python2.7
+Ruby
+Test &#8216;Ruby&#8217; expected executable named &#8216;ruby1.9&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>Perl
+Test &#8216;Perl&#8217; expected executable named &#8216;perl5&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>JavaScript
+Test &#8216;JS&#8217; expected executable named &#8216;node&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>Scheme
+Test &#8216;Scheme&#8217; expected executable named &#8216;gosh&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>Java
+Test &#8216;Java&#8217; expected executable named &#8216;javac&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>C
+/usr/bin/gcc
+C++
+Test &#8216;Cpp&#8217; expected executable named &#8216;g++&#8217; in $PATH.</p>
+<blockquote>
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+<p>C#
+Test &#8216;CSharp&#8217; expected executable named &#8216;gmcs&#8217; in $PATH.</p>
+<blockquote class="last">
+<div>install it or make symbolic link to it in coderunner/bin/</div></blockquote>
+</dd>
+</dl>
+<p>So I did as follows</p>
+<dl class="docutils">
+<dt>::</dt>
+<dd>$ sudo apt-get install ruby1.9.3 nodejs gauche openjdk-7-jdk g++ mono-gmcs
+$ cd bin
+$ ln -s /usr/bin/ruby1.9.3 ruby1.9
+$ ln -s /usr/bin/perl5.14.2 perl5</dd>
+</dl>
+</div>
+<div class="section" id="in-case-of-rackhub">
+<h3>in case of Rackhub<a class="headerlink" href="#in-case-of-rackhub" title="Permalink to this headline">¶</a></h3>
+<p>I tried the test on <a href="#id1"><span class="problematic" id="id2">`</span></a>Rackhub`&lt;<a class="reference external" href="http://rackhub.net/">http://rackhub.net/</a>&gt; (2012-06-10)
+It warned as follow:</p>
+<div class="highlight-python"><pre>coderunner$ python coderunner.py --exec-test
+check whether expected executables exist:
+/home/rackhuber/.pythonbrew/pythons/Python-2.7.3/bin/python2.7
+Test 'Ruby' expected executable named 'ruby1.9' in $PATH.
+  install it or make symbolic link to it in coderunner/bin/
+Test 'Perl' expected executable named 'perl5' in $PATH.
+  install it or make symbolic link to it in coderunner/bin/
+/usr/bin/rhino
+Test 'Scheme' expected executable named 'gosh' in $PATH.
+  install it or make symbolic link to it in coderunner/bin/
+/usr/bin/javac
+/usr/bin/gcc
+/usr/bin/g++</pre>
+</div>
+<p>It can fix as follow:</p>
+<div class="highlight-python"><pre>$ sudo apt-get install gauche
+$ cd bin
+bin$ ln -s /home/rackhuber/.rvm/rubies/ruby-1.9.2-p320/bin/ruby ruby1.9
+bin$ ln -s /usr/bin/perl5.14.2 perl5</pre>
+</div>
+<p>At that time I didn&#8217;t support C# yet. Not using setup.py yet.</p>
+</div>
+</div>
+<div class="section" id="about-java7">
+<h2>About Java7<a class="headerlink" href="#about-java7" title="Permalink to this headline">¶</a></h2>
+<p>When I install Java7 on Mac OS X, it was installed in
+/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin/java
+<a href="#id3"><span class="problematic" id="id4">`Oracle suggests to switch default jre using GUI&lt;http://www.oracle.com/technetwork/java/javase/downloads/jdk-for-mac-readme-1564562.html&gt;`_</span></a>
+, however I don&#8217;t like it. I add another test runner which refer to &#8216;java7&#8217; and &#8216;javac7&#8217;,
+then put symbolic links in coderunner/bin/ .</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Java7</span><span class="p">(</span><span class="n">Java</span><span class="p">):</span>
+    <span class="n">human_name</span> <span class="o">=</span> <span class="s">&quot;Java7&quot;</span>
+    <span class="n">pygments_name</span> <span class="o">=</span> <span class="s">&quot;java7&quot;</span>
+    <span class="nb">bin</span> <span class="o">=</span> <span class="s">&quot;javac7&quot;</span>
+</pre></div>
+</div>
+<p>In Linux you can install as follows</p>
+<div class="highlight-python"><pre># Add the "WEBUPD8" PPA.
+$sudo add-apt-repository ppa:webupd8team/java
+$sudo apt-get update
+$sudo apt-get install oracle-java7-installer</pre>
+</div>
+</div>
+<div class="section" id="about-smalltalk">
+<h2>About Smalltalk<a class="headerlink" href="#about-smalltalk" title="Permalink to this headline">¶</a></h2>
+<p>I installed squeak with Squeak-4.3-All-in-One.
+It doesn&#8217;t have ability to write stdout, so I installed OSProcess additionaly.
+I made image with OSProcess. Though it takes 16MB, I didn&#8217;t commit in the repository.
+I hardcoded path of Squeak executable and the image in bin/run_squeak.py.
+Please modify it as fit to your environment.</p>
+<p>It may be better way to use gnu-smalltalk. On Ubuntu, apt-get install gnu-smalltalk works well.
+On my Mac port install gst not works.</p>
+</div>
+<div class="section" id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>It is too high hurdle for users to install all language beforehand.
+Test should be ignored when its prerequisite not satisfied.<ul>
+<li>current impl.: when _subproc failed with OSError, print error message and continue.
+It should be brushed up.</li>
+<li>currently Smalltalk test call bin/run_squeak.py and fail in it.
+It is not trapped.</li>
+</ul>
+</li>
+<li>To make test case easily, helper script needed.<ul>
+<li>Input is a file which contains some codes separated with &#8220;n&#8212;-n&#8221;</li>
+<li>Output is a test script</li>
+</ul>
+</li>
+<li>support Common Lisp, OCaml, etc.</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">coderunner</a><ul>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#expected-executables">Expected executables</a><ul>
+<li><a class="reference internal" href="#in-case-of-plain-ubuntu-12-04">in case of plain Ubuntu 12.04</a></li>
+<li><a class="reference internal" href="#in-case-of-rackhub">in case of Rackhub</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#about-java7">About Java7</a></li>
+<li><a class="reference internal" href="#about-smalltalk">About Smalltalk</a></li>
+<li><a class="reference internal" href="#todo">TODO</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Learn Language</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="doc.html"
+                        title="next chapter">learn_language/doc</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/coderunner.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="doc.html" title="learn_language/doc"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Learn Language"
+             >previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, NISHIO Hirokazu.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

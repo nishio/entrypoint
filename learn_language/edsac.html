@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-668701-12']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    <title>EDSAC Simulator on browser &mdash; Learn Languages 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Learn Languages 1.0 documentation" href="index.html" />
+    <link rel="prev" title="Python 2 and 3" href="python_2and3.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="python_2and3.html" title="Python 2 and 3"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="edsac-simulator-on-browser">
+<h1>EDSAC Simulator on browser<a class="headerlink" href="#edsac-simulator-on-browser" title="Permalink to this headline">¶</a></h1>
+<p>I think EDSAC is good to learn machine language,
+because recent CPU is complex.</p>
+<p>My goal is to make a Python version to run on console,
+and a JavaScript version to run on browser.</p>
+<p><strong>NOTICE</strong></p>
+<p>This code is not complete yet.</p>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>We now have plenty of memory than 1950s.
+For easy learning and inspectation,
+use memories in human-readable way.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Now we have a Python version. No JS version yet.</p>
+<p>$ python edsac.py</p>
+<p>will show square numbers and its difference. See edsacposter.pdf</p>
+</div>
+<div class="section" id="todo">
+<h2>TODO<a class="headerlink" href="#todo" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Try other sample to run (next target is WadaSieve)<ul>
+<li>comment: [...] and ;..(EOL)</li>
+<li>ignore space and newline</li>
+<li>Need visualization of memory pattern. (use canvas?)<ul>
+<li>easy method: print on console</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>I made 3 classes Value, WordValue, DoubleWordValue,
+however I feel it is better to use only one class &#8216;Bits&#8217;</li>
+<li>JS version<ul>
+<li>select sample code from a listbox: like <a class="reference external" href="http://jsx.github.com/try-on-web/">http://jsx.github.com/try-on-web/</a></li>
+<li>step execution</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>GPLv3 by NISHIO Hirokazu (c)2012</p>
+</div>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cl.cam.ac.uk/~mr/edsacposter.pdf">http://www.cl.cam.ac.uk/~mr/edsacposter.pdf</a><ul>
+<li>code of initial order and square are come from this poster.</li>
+<li>&#8220;11100 0 0000100010 0 62 S34S&#8221; seems typo of &#8220;01100 ...&#8221;</li>
+<li>It said HnS is &#8216;R += m[n]&#8217;, however EdsacTG.pdf said it is &#8216;R = m[n]&#8217;.
+If &#8216;+=&#8217; is correct, on &#8216;97: H76S&#8217;, result is affected by value which stored on R during initial order.
+I choose &#8216;R = m[n]&#8217;.</li>
+</ul>
+</li>
+<li><a class="reference external" href="http://www.cl.cam.ac.uk/users/mr/Edsac/edsac.tgz">http://www.cl.cam.ac.uk/users/mr/Edsac/edsac.tgz</a></li>
+<li><a class="reference external" href="http://www.cs.clemson.edu/~mark/edsac.html">http://www.cs.clemson.edu/~mark/edsac.html</a></li>
+<li><a class="reference external" href="http://www.dcs.warwick.ac.uk/~edsac/">http://www.dcs.warwick.ac.uk/~edsac/</a><ul>
+<li>You can download simulator</li>
+<li><a href="#id1"><span class="problematic" id="id2">`</span></a>Tutorial`&lt;<a class="reference external" href="http://www.dcs.warwick.ac.uk/~edsac/Software/EdsacTG.pdf">http://www.dcs.warwick.ac.uk/~edsac/Software/EdsacTG.pdf</a>&gt; helps our understanding.</li>
+<li>EdsacDoc.pdf in EdsacLx describe about subroutine specification. If you want to know what is M3 or P6, read it.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="thanks">
+<h2>Thanks<a class="headerlink" href="#thanks" title="Permalink to this headline">¶</a></h2>
+<p>Artem Smirnov, Mustafa Karimi, Yoni Tresina Purbasari, Dariane Joy Papa</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">EDSAC Simulator on browser</a><ul>
+<li><a class="reference internal" href="#design">Design</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#todo">TODO</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#reference">Reference</a></li>
+<li><a class="reference internal" href="#thanks">Thanks</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="python_2and3.html"
+                        title="previous chapter">Python 2 and 3</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/edsac.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="python_2and3.html" title="Python 2 and 3"
+             >previous</a> |</li>
+        <li><a href="index.html">Learn Languages 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, NISHIO Hirokazu.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+  </body>
+</html>

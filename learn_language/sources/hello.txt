@@ -1,0 +1,100 @@
+=====
+hello
+=====
+
+
+say Hello in each language
+==========================
+
+
+
+This document was generated from hello.py.
+
+
+Python
+======
+
+.. code-block:: python
+
+  print "Hello"
+
+
+Ruby
+====
+
+.. code-block:: ruby
+
+  puts "Hello"
+
+
+JavaScript
+==========
+
+.. code-block:: javascript
+
+  console.log("Hello");
+
+
+Perl
+====
+
+.. code-block:: perl
+
+  print "Hello\n";
+
+
+Java
+====
+
+.. code-block:: java
+
+  public class Tmp {
+      public static void main(String[] args){
+          System.out.println("Hello");
+      }
+  }
+
+
+C++
+===
+
+.. code-block:: cpp
+
+  #include <stdio.h>
+  int main(){
+    printf("Hello\n");
+  }
+
+
+Clojure
+=======
+
+.. code-block:: clojure
+
+  (print "Hello")
+
+
+Scheme
+======
+
+.. code-block:: scheme
+
+  (display "Hello")
+
+
+C#
+==
+
+.. code-block:: csharp
+
+  using System;
+  
+  namespace HelloWorld{
+      class Hello{
+          static void Main(){
+              System.Console.WriteLine("Hello World!");
+          }
+      }
+  }
+
+

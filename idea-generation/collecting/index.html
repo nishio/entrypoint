@@ -1,0 +1,47 @@
+<html manifest="manifest.webapp">
+  <link type="text/css" rel="stylesheet" href="basic.css">
+  <script type="text/javascript" src="../common/closure-library/closure/goog/base.js"></script>
+  <script type="text/javascript" src="deps.js"></script>
+
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/online.js"></script>
+
+  <!-- Load the Realtime libraries. -->
+  <script type="text/javascript" src="//www.google.com/jsapi"></script>
+  <script type="text/javascript"
+          src="https://apis.google.com/js/api.js"></script>
+
+  <!-- Load the utility library. -->
+  <script type="text/javascript"
+          src="../common/realtime-client-utils.js"></script>
+
+  <title>collecting</title>
+<body>
+<textarea id='text' placeholder='text (required, enter to save)'></textarea>
+<p></p>
+<input type='text' id='pages' placeholder='pages' style='width: 25%'><input type='text' id='title' placeholder='title' style='width: 75%'>
+
+<input type='text' id='author' placeholder='author' style='width: 60%'><input type='text' id='published_year' placeholder='pub year' style='width: 40%'>
+
+<input type='text' id='isbn' placeholder='ISBN' style='width: 50%'><input type='text' id='source_url' placeholder='source URL' style='width: 50%'>
+
+<input type='text' id='original_text' placeholder='original text' style='width: 100%'>
+<input type='text' id='meta' placeholder='meta' style='width: 100%'>
+<input type='text' id='extra' placeholder='extra' style='width: 100%'>
+<hr>
+<h3 id='list_header'>List</h3>
+<ul id='list'>
+</ul>
+As JSON (<label style='margin-right: 0'><input id="json_multiline" type="checkbox"> Multiline?</label>):<br>
+<textarea id='json'></textarea>
+
+<h3>dev</h3>
+<button id='updateAppCache'>Update AppCache</button>
+
+<button id='connectGoogleDrive'>Connect Google Drive</button>
+<button id='authButton' style='display: none'>Need Auth</button>
+<a id='docid' href='#'>not connected</a>
+
+<span id='is_online'>online</span>
