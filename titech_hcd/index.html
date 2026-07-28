@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIとMOT — 西尾泰和</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:900px;margin:0 auto;padding:1.5rem 1rem;font-family:system-ui,sans-serif;line-height:1.7}
+a{color:#0969da}
+h1{margin:.2em 0 .1em;font-size:1.6rem}
+.sub{color:#666;margin:0 0 1.5rem}
+.slides{display:flex;flex-direction:column;gap:2rem}
+figure{margin:0}
+figure img{width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block}
+figcaption{margin-top:.4rem;font-size:.9rem;color:#555;white-space:pre-wrap;word-break:break-word}
+figcaption b{color:#0969da;margin-right:.4em}
+@media (prefers-color-scheme:dark){figcaption{color:#aaa}.sub{color:#999}figure img{border-color:#444}}
+</style></head><body>
+<p><a href="../">← nhiro.org トップ</a></p>
+<h1>AIとMOT</h1>
+<p class="sub">東工大MOTホームカミングデー 2018-05-26 / 西尾泰和（全80ページ）</p>
+<div class="slides">
+<figure><img src="page-01.png" loading="lazy" alt="page 1"><figcaption><b>p1</b>東工大MOTホームカミングデー「AIとMOT」2018-05-26サイボウズラボ主幹研究員一般社団法人未踏理事東工大MOT 2011入学-2014修了2018から特定准教授西尾泰和</figcaption></figure>
+<figure><img src="page-02.png" loading="lazy" alt="page 2"><figcaption><b>p2</b>Facebookグループ2講演資料の共有質疑・コメントその他なんでも</figcaption></figure>
+<figure><img src="page-03.png" loading="lazy" alt="page 3"><figcaption><b>p3</b>今回の目的3この講演を聞いた人が経済的価値を生み出す確率を上昇させる</figcaption></figure>
+<figure><img src="page-04.png" loading="lazy" alt="page 4"><figcaption><b>p4</b>AlphaGo 4初めてプロを破った囲碁プログラム</figcaption></figure>
+<figure><img src="page-05.png" loading="lazy" alt="page 5"><figcaption><b>p5</b>コンピュータが人間を超える?! 5人間コンピュータ</figcaption></figure>
+<figure><img src="page-06.png" loading="lazy" alt="page 6"><figcaption><b>p6</b>Deep Learningが期待を集めた6縦軸:期待</figcaption></figure>
+<figure><img src="page-07.png" loading="lazy" alt="page 7"><figcaption><b>p7</b>出典表示7 https://www.gartner.com/smarterwithgartner/top-trends-in-the-gartner-hype-cycle-for- emerging-technologies-2017/</figcaption></figure>
+<figure><img src="page-08.png" loading="lazy" alt="page 8"><figcaption><b>p8</b>8 Deep Learningという魔法の杖のような技術で色々な問題が解決するっぽい!</figcaption></figure>
+<figure><img src="page-09.png" loading="lazy" alt="page 9"><figcaption><b>p9</b>事例紹介:駐車難易度予測9 https://ai.googleblog.com/2017/02/using-machine-learning-to-predict.html</figcaption></figure>
+<figure><img src="page-10.png" loading="lazy" alt="page 10"><figcaption><b>p10</b>駐車難易度予測10 •Google Mapの機能•「この時間にこのエリアで駐車するのは難しい?簡単?」に答える•Deep Learningすごい!</figcaption></figure>
+<figure><img src="page-11.png" loading="lazy" alt="page 11"><figcaption><b>p11</b>Deep Learningは使いません11「ロジスティック回帰で実現しました」その理由(抜粋) •振る舞いが理解しやすい•ノイズに対して耐性が高い•モデルが適切に動いているか検証しやすい</figcaption></figure>
+<figure><img src="page-12.png" loading="lazy" alt="page 12"><figcaption><b>p12</b>ロジスティック回帰12 •1958年に作られた手法•数学的にはDeep Learningではなく薄いニューラルネットに相当する•枯れた手法なので学習の高速化が進んでいる</figcaption></figure>
+<figure><img src="page-13.png" loading="lazy" alt="page 13"><figcaption><b>p13</b>Kaggleによる調査13機械学習コンペティション最大手のKaggleによって大規模な調査が行われた7301人のデータサイエンティストに仕事で使っている機械学習手法を聞いたら…The State of ML and Data Science 2017 | Kaggle https://www.kaggle.com/surveys/2017</figcaption></figure>
+<figure><img src="page-14.png" loading="lazy" alt="page 14"><figcaption><b>p14</b>ロジスティック回帰63.5% 14</figcaption></figure>
+<figure><img src="page-15.png" loading="lazy" alt="page 15"><figcaption><b>p15</b>手段の目的化15 •Deep Learningはある種のタスクに対して確かに過去の手法より良い精度を出した•しかし万能の道具ではないし魔法の杖でもない•「Deep Learningで経営を改善しよう」は目的を決める前に道具を決めてて、おかしい</figcaption></figure>
+<figure><img src="page-16.png" loading="lazy" alt="page 16"><figcaption><b>p16</b>AlphaGo 16 •ざっくり規模感を掴んでほしい•もう少し詳しく説明します•細かいバージョン間の違いは説明しません</figcaption></figure>
+<figure><img src="page-17.png" loading="lazy" alt="page 17"><figcaption><b>p17</b>データ量17囲碁のオンライン対戦サーバから得られた16万件の対局から2840万件のデータを作成「盤面の状況」と「次の1手」(その状況で人間がどういう意思決定をしたか)のデータを学習する!</figcaption></figure>
+<figure><img src="page-18.png" loading="lazy" alt="page 18"><figcaption><b>p18</b>学習結果18人間の「次の1手」を正解率57.0%で当てることができた</figcaption></figure>
+<figure><img src="page-19.png" loading="lazy" alt="page 19"><figcaption><b>p19</b>自己対戦でデータを生成19人間同士の対戦で作られた16万件の対局データでは足りないので機械同士で対戦して3000万対局(人間や物理世界の介在なしにデータを集められる、という囲碁の特性を利用)</figcaption></figure>
+<figure><img src="page-20.png" loading="lazy" alt="page 20"><figcaption><b>p20</b>3000万対局とは20人間は1局1時間ぐらいなので、3500年分(不眠不休)</figcaption></figure>
+<figure><img src="page-21.png" loading="lazy" alt="page 21"><figcaption><b>p21</b>学習に使った費用21正確な金額はもちろんわからないが公開されている情報からの推定で約30億円だいぶ雑な推定なので「10億100億だ」ぐらいの捉え方が良いと思うhttp://www.itmedia.co.jp/news/articles/1603/24/news058.html</figcaption></figure>
+<figure><img src="page-22.png" loading="lazy" alt="page 22"><figcaption><b>p22</b>まとめ22 •まず「人間が行った判断」のデータを3000万件程度集める•シミュレーションで200倍のデータを集める•この過程に30億円を投資する</figcaption></figure>
+<figure><img src="page-23.png" loading="lazy" alt="page 23"><figcaption><b>p23</b>23なぜやったのか? (経営者目線で考えてみよう)</figcaption></figure>
+<figure><img src="page-24.png" loading="lazy" alt="page 24"><figcaption><b>p24</b>AlphaGoをやる理由は? 24 •ブランディング? •新入社員の教育を兼ねてる? •世界初のことをやると社員のテンションが上がるから? •夢を見せることによって投資を引き出す?</figcaption></figure>
+<figure><img src="page-25.png" loading="lazy" alt="page 25"><figcaption><b>p25</b>期待が高まると投資が増える25縦軸:期待</figcaption></figure>
+<figure><img src="page-26.png" loading="lazy" alt="page 26"><figcaption><b>p26</b>技術のS字発展26ベルカーブS字カーブ積分ハイプカーブS字発展+持続的成長積分</figcaption></figure>
+<figure><img src="page-27.png" loading="lazy" alt="page 27"><figcaption><b>p27</b>予言の自己成就27 •技術のすごさをアピール•未来への期待が高まる•投資が引き出される•それが技術の進歩速度を高める</figcaption></figure>
+<figure><img src="page-28.png" loading="lazy" alt="page 28"><figcaption><b>p28</b>28しかし逆効果も…</figcaption></figure>
+<figure><img src="page-29.png" loading="lazy" alt="page 29"><figcaption><b>p29</b>29 AIに仕事を奪われる恐怖</figcaption></figure>
+<figure><img src="page-30.png" loading="lazy" alt="page 30"><figcaption><b>p30</b>30知識は恐怖の解毒剤Ralph Waldo Emerson “Society and Solitude&quot;</figcaption></figure>
+<figure><img src="page-31.png" loading="lazy" alt="page 31"><figcaption><b>p31</b>31漠然とした概念ではなく具体的な事例に基づいて考えよう</figcaption></figure>
+<figure><img src="page-32.png" loading="lazy" alt="page 32"><figcaption><b>p32</b>事例紹介:三浦市農協の配車予定作成システム32 ref: ICTで社会が変わる事例紹介</figcaption></figure>
+<figure><img src="page-33.png" loading="lazy" alt="page 33"><figcaption><b>p33</b>33「出荷作業8時間を1秒に」三浦市農協で起きた驚異の進化http://wedge.ismedia.jp/articles/-/12062</figcaption></figure>
+<figure><img src="page-34.png" loading="lazy" alt="page 34"><figcaption><b>p34</b>アルゴリズムで8Hの仕事を消す34 •••“農協の業務の中でもやっかいな出荷物の配送予定の作成&quot; “1日8時間かかっていた作業がわずか1秒で済む&quot; “独自のアルゴリズム&quot;このアルゴリズムを作ったのが僕。「出荷作業8時間を1秒に」三浦市農協で起きた驚異の進化http://wedge.ismedia.jp/articles/-/12062</figcaption></figure>
+<figure><img src="page-35.png" loading="lazy" alt="page 35"><figcaption><b>p35</b>“配送予定の作成&quot;とは35 •“翌日に農家から出荷される出荷物の量を把握し、市場などの配送先ごとの出荷数量と、荷物をどの運送会社のトラックにどう積み分けるかを決める。&quot; •配車予定の作成には、中堅職員で8時間、ベテランでも56時間掛かっている。•若い職員「こんなのはさすがにやれない」「出荷作業8時間を1秒に」三浦市農協で起きた驚異の進化http://wedge.ismedia.jp/articles/-/12062</figcaption></figure>
+<figure><img src="page-36.png" loading="lazy" alt="page 36"><figcaption><b>p36</b>“AIが仕事を奪う&quot;って悪いの? 36 •今回は、1日あたり8時間、人間およそ1人分の仕事を奪ったが…•“同農協共販部長補佐の飯島昌祥さんは「労働時間の短縮が一番大きい。職員の負担が減るし、空いた時間を営業などに効率的に使えるので期待している」&quot;とポジティブな意見</figcaption></figure>
+<figure><img src="page-37.png" loading="lazy" alt="page 37"><figcaption><b>p37</b>人口ピラミッド37出典:国立社会保障・人口問題研究所http://www.ipss.go.jp/site-ad/TopPageData/pyra.html</figcaption></figure>
+<figure><img src="page-38.png" loading="lazy" alt="page 38"><figcaption><b>p38</b>人口の変化38 1973生西尾(&#x27;81生)僕や僕より若い世代は毎年人数が減る環境で育ってきた</figcaption></figure>
+<figure><img src="page-39.png" loading="lazy" alt="page 39"><figcaption><b>p39</b>7人に1人いなくなる39今後15年で、20代人口は、67人に1人の割合で減る。</figcaption></figure>
+<figure><img src="page-40.png" loading="lazy" alt="page 40"><figcaption><b>p40</b>7人に1人いなくなると…40今7人チームでやっている仕事は、チームの年齢構成が変わらないなら15年後には6人でやらなければならない仕事量が変わらなければ1人当たりの仕事量は17%アップ月20日×8時間働いている仕事は仕事が17%アップで月に+27時間。毎日残業+1時間か、毎月休日-3日</figcaption></figure>
+<figure><img src="page-41.png" loading="lazy" alt="page 41"><figcaption><b>p41</b>現状維持とは41「今までと同じ仕事の仕方をする」は現状維持ではない。人間の負担が増えて仕事が回らなくなる。現状を維持するには1/7の仕事を&quot;AIに奪われる&quot;か人間の能力を7/6倍にする必要がある。</figcaption></figure>
+<figure><img src="page-42.png" loading="lazy" alt="page 42"><figcaption><b>p42</b>42 ×AIに1/7の仕事が奪われる○AIに1/7肩代わりして頂く○AIを使って人間を16%増強</figcaption></figure>
+<figure><img src="page-43.png" loading="lazy" alt="page 43"><figcaption><b>p43</b>余剰時間の再投資43 •若い人が減っていくトレンド•新しい人の採用がじわじわと難しくなる•「AIで仕事を減らして余剰人員を解雇」という発想は筋悪•AIで仕事を減らして、できた空き時間をより生産的な仕事に再投資•拡大再生産</figcaption></figure>
+<figure><img src="page-44.png" loading="lazy" alt="page 44"><figcaption><b>p44</b>人間コンピュータ</figcaption></figure>
+<figure><img src="page-45.png" loading="lazy" alt="page 45"><figcaption><b>p45</b>人間+コンピュータ=増強された人間人間</figcaption></figure>
+<figure><img src="page-46.png" loading="lazy" alt="page 46"><figcaption><b>p46</b>人間+コンピュータ=増強された人間人間</figcaption></figure>
+<figure><img src="page-47.png" loading="lazy" alt="page 47"><figcaption><b>p47</b>増強の具体例47 •コンピュータによる計算能力の強化•インターネットによる伝達能力の強化•検索エンジンによる情報発見能力の強化もっと具体例が知りたいというリクエストがあったのでさらにいくつか紹介しよう</figcaption></figure>
+<figure><img src="page-48.png" loading="lazy" alt="page 48"><figcaption><b>p48</b>自動プログラミング48プログラミングが大変なので自動化しようという発想</figcaption></figure>
+<figure><img src="page-49.png" loading="lazy" alt="page 49"><figcaption><b>p49</b>自動プログラミング以前49「AとBを足したものをCに入れる」をやりたいLOAD 1 ADD 2 STORE 3メモリの1番地にある値を計算用の一時領域にロードメモリの2番地にある値をそれに加算一時領域にある値をメモリの3番地に保存これは話を簡単にするための疑似コードで、実際はもっと複雑です</figcaption></figure>
+<figure><img src="page-50.png" loading="lazy" alt="page 50"><figcaption><b>p50</b>自動プログラミング50「AとBを足したものをCに入れる」をC = A + B;という記法で書くことにする。コンピュータがこの記法を読み取ってLOAD 1; ADD 2; STORE 3;を自動生成する「数式変換システム」</figcaption></figure>
+<figure><img src="page-51.png" loading="lazy" alt="page 51"><figcaption><b>p51</b>19541957年FORTRAN 51 •FORmula TRANslation system •現代のほぼすべてのプログラマが使う「プログラミング言語」のはしり•抽象レベルの高い数式で書いた指示を抽象レベルの低い機械語で書いた指示に変換するシステム(自動プログラミング*) *“The Fortran Automatic Coding System for the IBM 704&quot; (1956)システムができたのが54年、このマニュアルができたのが56年、一般に入手可能になったのが57年。</figcaption></figure>
+<figure><img src="page-52.png" loading="lazy" alt="page 52"><figcaption><b>p52</b>スクリプト言語の誕生52 30年ほど前にメジャーなC言語などより低速なPerl, Python, PHP, Rubyなどの言語が誕生実行速度C言語Python時間</figcaption></figure>
+<figure><img src="page-53.png" loading="lazy" alt="page 53"><figcaption><b>p53</b>破壊的イノベーション53「イノベーションのジレンマ」p.10</figcaption></figure>
+<figure><img src="page-54.png" loading="lazy" alt="page 54"><figcaption><b>p54</b>スクリプト言語54 •コンピュータが高速化した•遅いプログラミング言語でも顧客の需要を満たしうるようになった•「実行速度は遅いが、実装に掛かる時間が少ない」筆記体(script)の走り書きのような言語</figcaption></figure>
+<figure><img src="page-55.png" loading="lazy" alt="page 55"><figcaption><b>p55</b>機械学習が与える影響55 •プログラムの大部分は条件判断•人間が「どういう条件か」を明確にしそれをコンピュータに伝える•しかし課題によっては「条件を明確化すること」が難しい(囲碁、画像認識、…) •機械学習は…</figcaption></figure>
+<figure><img src="page-56.png" loading="lazy" alt="page 56"><figcaption><b>p56</b>機械学習が与える影響56機械学習は、状況を表すデータと「その状況の時に人間はどう判断するのか」のデータを与えて学習させることで、コンピュータが条件判断できるようになる手法人間は条件を明確化しないでよい。注:教師あり学習に限定して説明しています。</figcaption></figure>
+<figure><img src="page-57.png" loading="lazy" alt="page 57"><figcaption><b>p57</b>確実性を犠牲にコストを削減57 •人間が条件を明確化しないので「条件通りに動いているか?」という問いが無意味•「検証データの9割は正しく判断できますね」みたいなことしか言えない•確実性を犠牲にして仕様記述コストを下げる</figcaption></figure>
+<figure><img src="page-58.png" loading="lazy" alt="page 58"><figcaption><b>p58</b>まとめ58 •自動プログラミング•スクリプト言語•機械学習共通しているのは人のコストの削減</figcaption></figure>
+<figure><img src="page-59.png" loading="lazy" alt="page 59"><figcaption><b>p59</b>アカデミア視点とビジネス視点59ビジネス視点から言えば•コストの減少によって•新たな財貨やその生産方法が•「商業的に実現可能な範囲」に入る現象アカデミアの評価軸とビジネスの評価軸は違う</figcaption></figure>
+<figure><img src="page-60.png" loading="lazy" alt="page 60"><figcaption><b>p60</b>アカデミアとビジネスの違い60アカデミア•データが公開されている•枯れた技術はとっくの昔に調査済み•新しい手法を考案して精度を競い合うビジネス•データが公開されてない枯れた技術を使う</figcaption></figure>
+<figure><img src="page-61.png" loading="lazy" alt="page 61"><figcaption><b>p61</b>ビジネスの評価軸61顧客価値新規性ではない</figcaption></figure>
+<figure><img src="page-62.png" loading="lazy" alt="page 62"><figcaption><b>p62</b>顧客価値を体感するための小問62ある宝石の原石は、割ると1/2の確率で宝石が入っていて2万円で売れる。原石は1つ9500円で買える。原石は硬いので1日に20個しか割れないQ1: 1日に稼げる収益の期待値はいくらか仕入れ原価原石1/2宝石9500円×1/2売上2万円0円</figcaption></figure>
+<figure><img src="page-63.png" loading="lazy" alt="page 63"><figcaption><b>p63</b>A1収益の期待値63 A1: 1/2の確率で20000円手に入るので、1個あたりの収入の期待値は10000円。1個あたりの仕入れ価格は9500なので、1個あたりの収益は500円。1日に20個処理できるので、1日あたりの収益は10000円。原価9500円売上1万円1つあたり500円の利益</figcaption></figure>
+<figure><img src="page-64.png" loading="lazy" alt="page 64"><figcaption><b>p64</b>Q2加工速度二倍の装置64 Q2:原石を人間の2倍の速度で割る機械を手に入れたとする。つまり、1日に割ることができる原石の数が20個から40個に増えたとする。収益の期待値はいくら増えるか?</figcaption></figure>
+<figure><img src="page-65.png" loading="lazy" alt="page 65"><figcaption><b>p65</b>A2加工速度二倍の装置65 A2:原石1個あたり500円の利益なのは変わらない。1日に処理できる量が20個から40個に増える。20個増えるので、利益は1万円増える。原価9500円売上1万円1つあたり500円の利益</figcaption></figure>
+<figure><img src="page-66.png" loading="lazy" alt="page 66"><figcaption><b>p66</b>Q3 60%の識別器66 Q3: 60%の確率で宝石の入った原石を当てる識別器*が買えるとする。収益の期待値はいくら増えるか?仕入れ原価原石60%宝石9500円×40%売上2万円0円*原石を買う前に使うことで「60%の確率で宝石が入っている原石」を9500円で手に入れられるようになるとします。お店の人が嫌がりそう、という点は今回は気にません。またQ2の機械は手に入っておらず、1日に割れる数は20個のままとします。</figcaption></figure>
+<figure><img src="page-67.png" loading="lazy" alt="page 67"><figcaption><b>p67</b>A3: 60%の識別器67 60%の確率で20000円手に入るので、1個あたりの収入の期待値は12000円。1個あたりの仕入れ価格は9500円なので、1個あたりの収益は2500円。1日に20個処理できるので1日あたりの収益は5万円。4万円増える。原価9500円売上12000円1つあたり2500円の利益</figcaption></figure>
+<figure><img src="page-68.png" loading="lazy" alt="page 68"><figcaption><b>p68</b>つまり68この問題設定では、「加工速度を2倍にする装置」は顧客の利益を1万円増やし、「精度60%の識別器」は顧客の利益を4万円増やす。「精度60%の識別器」が「加工速度を2倍にする装置」の4倍の顧客価値を持っている。</figcaption></figure>
+<figure><img src="page-69.png" loading="lazy" alt="page 69"><figcaption><b>p69</b>まとめ69 •ビジネス視点では顧客価値が大事•顧客価値は「手法の新規性」ではない•顧客価値と精度はイコールではない</figcaption></figure>
+<figure><img src="page-70.png" loading="lazy" alt="page 70"><figcaption><b>p70</b>強制オープンイノベーション70 •2017年、Appleが初の機械学習論文を発表•Appleですら社員の「発表したい」という要望にNOと言えなくなった•機械学習技術をクローズドに独占できない•「オープンイノベーションは、選択肢ではない。事実だ」**元ネタは2009年ライス国務長官の&quot;Globalization is not a choice but a fact&quot;</figcaption></figure>
+<figure><img src="page-71.png" loading="lazy" alt="page 71"><figcaption><b>p71</b>専門技術の市場調達71専門技術を市場調達しようと考える企業も多いしかし専門家の能力は観測が困難評価能力がないと…(ここでオフレコの酷い話をする)</figcaption></figure>
+<figure><img src="page-72.png" loading="lazy" alt="page 72"><figcaption><b>p72</b>契約理論72契約当事者間で情報の非対称性がある場合にどういう解決策があるか•シグナリング•スクリーニング</figcaption></figure>
+<figure><img src="page-73.png" loading="lazy" alt="page 73"><figcaption><b>p73</b>シグナリング73情報を持っている側がやる行為。たとえば「能力」は観測が困難そこで「能力」を示すことができるような「シグナル」を獲得しようとする</figcaption></figure>
+<figure><img src="page-74.png" loading="lazy" alt="page 74"><figcaption><b>p74</b>シグナリング74なぜAppleの社員は論文発表をしたいのか?それは論文発表実績が「シグナル」となり、Apple以外に転職する場合に有利だから。専門家を市場調達する場合、その専門家はシグナルを出せることを要求してくる可能性が高い。</figcaption></figure>
+<figure><img src="page-75.png" loading="lazy" alt="page 75"><figcaption><b>p75</b>スクリーニング75情報を持っていない側がやる行為。たとえば営業マンに対して「低い固定給+歩合報酬」を提示する。能力の低い営業マンは勝手に避けてくれる。しかし…</figcaption></figure>
+<figure><img src="page-76.png" loading="lazy" alt="page 76"><figcaption><b>p76</b>機械学習と成果報酬76機械学習は「実際のデータで試してみないと成果が出るかどうかわからない」という成果報酬と相性の悪い特徴がある。機械学習の専門家側としては成果報酬のプロジェクトは引き受けたくない。(ビジネス側の出してくるデータが汚いと自分の能力と無関係に成果が出なくなる)成果を確約する請負契約ですら結びたくない。</figcaption></figure>
+<figure><img src="page-77.png" loading="lazy" alt="page 77"><figcaption><b>p77</b>スモールスタート77能力の高い専門家ほど得をするような契約形態を模索しなければならない。まだ完全な解決策は考案できていないが1つの案は最初の一歩の契約を小さくし「うまくいきそうと双方が合意したら延長」とする戦略。専門家の側としては筋悪なプロジェクトに長期間拘束されることもないし、能力が高い方が延長に到る確率が高い。</figcaption></figure>
+<figure><img src="page-78.png" loading="lazy" alt="page 78"><figcaption><b>p78</b>レベニューシェア78もう一つの戦略がレベニューシェア、プロジェクトによって得られる利益を専門家と定率でシェアする方法。利益を出すことに対して両者が協力する。だが、専門家側としては、自分の技能以外に運用側の能力によって成果が変動するのでレベニューシェア単独の契約は引き受けづらいもうひとひねりが必要そう。</figcaption></figure>
+<figure><img src="page-79.png" loading="lazy" alt="page 79"><figcaption><b>p79</b>まとめ79 •強制的にオープンイノベーション•専門技能を市場調達する際には情報の非対称性の問題が発生する•契約理論はより良い契約のために有益な示唆を与えてくれる</figcaption></figure>
+<figure><img src="page-80.png" loading="lazy" alt="page 80"><figcaption><b>p80</b>全体まとめ80 •手段を目的化しない。•AIは仕事を奪うのではなく人間を増強する=人間の支払う時間コストの削減•アカデミアとビジネスの評価軸の違い。顧客価値≠新規性・精度</figcaption></figure>
+</div>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>if文から機械学習への道 — 西尾泰和</title>
+<style>
+:root{color-scheme:light dark}
+body{max-width:900px;margin:0 auto;padding:1.5rem 1rem;font-family:system-ui,sans-serif;line-height:1.7}
+a{color:#0969da}
+h1{margin:.2em 0 .1em;font-size:1.6rem}
+.sub{color:#666;margin:0 0 1.5rem}
+.slides{display:flex;flex-direction:column;gap:2rem}
+figure{margin:0}
+figure img{width:100%;height:auto;border:1px solid #ccc;border-radius:4px;display:block}
+figcaption{margin-top:.4rem;font-size:.9rem;color:#555;white-space:pre-wrap;word-break:break-word}
+figcaption b{color:#0969da;margin-right:.4em}
+@media (prefers-color-scheme:dark){figcaption{color:#aaa}.sub{color:#999}figure img{border-color:#444}}
+</style></head><body>
+<p><a href="../">← nhiro.org トップ</a></p>
+<h1>if文から機械学習への道</h1>
+<p class="sub">2017-09-26 BPStudy#121 / 西尾泰和（全79ページ）</p>
+<div class="slides">
+<figure><img src="page-01.png" loading="lazy" alt="page 1"><figcaption><b>p1</b>if文から機械学習への道2017-09-26 BPStudy#121サイボウズラボ/ BeProud技術顧問理学博士/技術経営学修士西尾泰和ver.2 2017-09-29公開ver.3 2018-06-22図の清書</figcaption></figure>
+<figure><img src="page-02.png" loading="lazy" alt="page 2"><figcaption><b>p2</b>2機械学習って今書いてるプログラムから遠い世界だと思ってませんか?</figcaption></figure>
+<figure><img src="page-03.png" loading="lazy" alt="page 3"><figcaption><b>p3</b>このスライドの目的3みんなのよく知っているif文と機械学習の橋渡しをすることで地続きにし、実務で機械学習を使えるようにする。また、機械学習のビジネス導入の進め方を4ステップに分けて一歩一歩解説する。If文機械学習</figcaption></figure>
+<figure><img src="page-04.png" loading="lazy" alt="page 4"><figcaption><b>p4</b>if文4 if(`条件`){ …}</figcaption></figure>
+<figure><img src="page-05.png" loading="lazy" alt="page 5"><figcaption><b>p5</b>if文の仕組み5条件がTrueの時に、中身を実行</figcaption></figure>
+<figure><img src="page-06.png" loading="lazy" alt="page 6"><figcaption><b>p6</b>条件が複数ある時6条件x1と条件x2のどちらかがTrueの時に実行したいなら、どうする?</figcaption></figure>
+<figure><img src="page-07.png" loading="lazy" alt="page 7"><figcaption><b>p7</b>or 7 if(x1 or x2){ …}</figcaption></figure>
+<figure><img src="page-08.png" loading="lazy" alt="page 8"><figcaption><b>p8</b>条件が複数ある時8条件x1と条件x2の両方がTrueの時に実行したいなら、どうする?</figcaption></figure>
+<figure><img src="page-09.png" loading="lazy" alt="page 9"><figcaption><b>p9</b>and 9 if(x1 and x2){ …}</figcaption></figure>
+<figure><img src="page-10.png" loading="lazy" alt="page 10"><figcaption><b>p10</b>条件が複数ある時10条件x1, x2, x3の内、2つ以上がTrueの時に実行したいなら、どうする?</figcaption></figure>
+<figure><img src="page-11.png" loading="lazy" alt="page 11"><figcaption><b>p11</b>複雑! 11 if((x1 and x2) or (x1 and x3) or (x2 and x3)){ …}</figcaption></figure>
+<figure><img src="page-12.png" loading="lazy" alt="page 12"><figcaption><b>p12</b>条件が複数ある時12条件x1, x2, …, x5の内、3つ以上がTrueの時に実行したいなら、どうする?</figcaption></figure>
+<figure><img src="page-13.png" loading="lazy" alt="page 13"><figcaption><b>p13</b>複雑! 13 if((x1 and x2 and x3) or (x1 and x2 and x4) or (x1 and x2 and x5) or…){ …}</figcaption></figure>
+<figure><img src="page-14.png" loading="lazy" alt="page 14"><figcaption><b>p14</b>14もっと良い方法がある!</figcaption></figure>
+<figure><img src="page-15.png" loading="lazy" alt="page 15"><figcaption><b>p15</b>真偽値を数値にする15 Trueを1、Falseを0に変換すると「3つ以上がTrue」は「足したら3以上」に変わる。if((x1 + x2 + x3 + x4 + x5) &gt;= 3){ …}</figcaption></figure>
+<figure><img src="page-16.png" loading="lazy" alt="page 16"><figcaption><b>p16</b>andもorも同じ形にできる16 x1 and x2 and x3 and x4 and x5 =条件x1, x2, …, x5の、すべてがTrue =足したら5以上x1 or x2 or x3 or x4 or x5 =条件x1, x2, …, x5の、どれかがTrue =足したら1以上</figcaption></figure>
+<figure><img src="page-17.png" loading="lazy" alt="page 17"><figcaption><b>p17</b>andもorも同じ形にできる17条件x1, x2, …, x5の、すべてがTrue (x1 + x2 + x3 + x4 + x5) &gt;= 5条件x1, x2, …, x5のうち3つ以上True (x1 + x2 + x3 + x4 + x5) &gt;= 3条件x1, x2, …, x5の、どれかがTrue (x1 + x2 + x3 + x4 + x5) &gt;= 1</figcaption></figure>
+<figure><img src="page-18.png" loading="lazy" alt="page 18"><figcaption><b>p18</b>右辺をそろえてみる18条件x1, x2, …, x5の、すべてがTrue(弱い) *x1 + …) &gt;= 1 𝟏𝟓(条件x1, x2, …, x5の、どれかがTrue(強い) (1 *x1 + …) &gt;= 1条件x1, x2, …, x5のうち3つ以上True *x1 + …) &gt;= 1 𝟏𝟑(</figcaption></figure>
+<figure><img src="page-19.png" loading="lazy" alt="page 19"><figcaption><b>p19</b>強さ=重み19条件の「強さ」のようなものが係数(重み)の大きさで表現される。</figcaption></figure>
+<figure><img src="page-20.png" loading="lazy" alt="page 20"><figcaption><b>p20</b>問20条件x1, x2, …, x5の、すべてがTrueまたは条件x6, x7, …, x10のうち3つ以上Trueまたは条件x11, x12, …, x15の、どれかがTrueを表現するにはどうすればよい?</figcaption></figure>
+<figure><img src="page-21.png" loading="lazy" alt="page 21"><figcaption><b>p21</b>重みは条件ごとに異なってもよい21 1 *x11 + …&gt;= 1 *x1 + …+ *x6 + …+ 𝟏𝟓𝟏𝟑</figcaption></figure>
+<figure><img src="page-22.png" loading="lazy" alt="page 22"><figcaption><b>p22</b>重み付き和の方法22真偽値のTrueを1、Falseを0にし、条件の強さを重みにして掛け合わせ、足し合わせることによってandやorの組み合わせでは苦労するような複雑な条件を記述することができる。否定が負の重みで実現できることと、xorが表現できないことは割愛</figcaption></figure>
+<figure><img src="page-23.png" loading="lazy" alt="page 23"><figcaption><b>p23</b>重みはどうやって調整する? 23 1:今やったみたいに人間が決める2:大量のデータを元に機械が決める=機械学習</figcaption></figure>
+<figure><img src="page-24.png" loading="lazy" alt="page 24"><figcaption><b>p24</b>具体的なコード24今回の内容はロジスティック回帰を使って学習できる。from sklearn.linear_model import LogisticRegressionってやってfit(X, y)を呼べば重みが自動調整されてpredict(X)を呼べば重み付き和を計算して判断してくれる。楽ちん。ロジスティック回帰についてくわしく知りたい人は、サイボウズラボの中谷秀洋さんが技術評論社のサイトで連載しているのがおススメhttp://gihyo.jp/dev/serial/01/machine-learning/0018</figcaption></figure>
+<figure><img src="page-25.png" loading="lazy" alt="page 25"><figcaption><b>p25</b>まとめ25複雑な条件はand/orで書くのが大変。重み付き和で置きかえると楽になる。重みはデータが十分あれば機械学習で決められる。今回説明した程度のことはscikit-learnを使えば数行でできる。</figcaption></figure>
+<figure><img src="page-26.png" loading="lazy" alt="page 26"><figcaption><b>p26</b>26ここまで機械学習の技術ここから機械学習のビジネス4つのステップ</figcaption></figure>
+<figure><img src="page-27.png" loading="lazy" alt="page 27"><figcaption><b>p27</b>アカデミアとビジネスの違い27アカデミア•データが公開されている•枯れた技術はとっくの昔に調査済み•新しい手法を考案して精度を競い合うビジネス•データが公開されてない枯れた技術を使う</figcaption></figure>
+<figure><img src="page-28.png" loading="lazy" alt="page 28"><figcaption><b>p28</b>ビジネスの目的28顧客価値新規性ではない</figcaption></figure>
+<figure><img src="page-29.png" loading="lazy" alt="page 29"><figcaption><b>p29</b>顧客価値を体感するための小問29ある宝石の原石は、割ると1/2の確率で宝石が入っていて2万円で売れる。原石は1つ9500円で買える。原石は硬いので1日に20個しか割れないQ1: 1日に稼げる収益の期待値はいくらか仕入れ原価原石1/2宝石9500円×1/2売上2万円0円</figcaption></figure>
+<figure><img src="page-30.png" loading="lazy" alt="page 30"><figcaption><b>p30</b>A1収益の期待値30 A1: 1/2の確率で20000円手に入るので、1個あたりの収入の期待値は10000円。1個あたりの仕入れ価格は9500なので、1個あたりの収益は500円。1日に20個処理できるので、1日あたりの収益は10000円。原価9500円売上1万円1つあたり500円の利益</figcaption></figure>
+<figure><img src="page-31.png" loading="lazy" alt="page 31"><figcaption><b>p31</b>Q2加工速度二倍の装置31 Q2:原石を人間の2倍の速度で割る機械を手に入れたとする。つまり、1日に割ることができる原石の数が20個から40個に増えたとする。収益の期待値はいくら増えるか?</figcaption></figure>
+<figure><img src="page-32.png" loading="lazy" alt="page 32"><figcaption><b>p32</b>A2加工速度二倍の装置32 A2:原石1個あたり500円の利益なのは変わらない。1日に処理できる量が20個から40個に増える。20個増えるので、利益は1万円増える。原価9500円売上1万円1つあたり500円の利益</figcaption></figure>
+<figure><img src="page-33.png" loading="lazy" alt="page 33"><figcaption><b>p33</b>Q3 60%の識別器33 Q3: 60%の確率で宝石の入った原石を当てる識別器*が買えるとする。収益の期待値はいくら増えるか?仕入れ原価原石60%宝石9500円×40%売上2万円0円*原石を買う前に使うことで「60%の確率で宝石が入っている原石」を9500円で手に入れられるようになるとします。お店の人が嫌がりそう、という点は今回は気にません。またQ2の機械は手に入っておらず、1日に割れる数は20個のままとします。</figcaption></figure>
+<figure><img src="page-34.png" loading="lazy" alt="page 34"><figcaption><b>p34</b>A3: 60%の識別器34 60%の確率で20000円手に入るので、1個あたりの収入の期待値は12000円。1個あたりの仕入れ価格は9500円なので、1個あたりの収益は2500円。1日に20個処理できるので1日あたりの収益は5万円。4万円増える。原価9500円売上12000円1つあたり2500円の利益</figcaption></figure>
+<figure><img src="page-35.png" loading="lazy" alt="page 35"><figcaption><b>p35</b>つまり35この問題設定では、「加工速度を2倍にする装置」は顧客の利益を1万円増やし、「精度60%の識別器」は顧客の利益を4万円増やす。</figcaption></figure>
+<figure><img src="page-36.png" loading="lazy" alt="page 36"><figcaption><b>p36</b>教訓36この問題設定では、「精度60%の識別器」が「加工速度を2倍にする装置」の4倍の顧客価値を持っている。どの程度の精度でどの程度の顧客価値を生み出すことができるかはビジネス要件によって決まる。精度は必ずしも重要ではない</figcaption></figure>
+<figure><img src="page-37.png" loading="lazy" alt="page 37"><figcaption><b>p37</b>ビジネス要件37精度を高めようと考える前に、まず顧客が何を求めているか、どういう制約条件があるのかを明確化する必要がある。最新の論文に書かれた手法を実装しても、その手法が要求する量のデータを顧客が用意できないのであれば、その実装は顧客価値を持たない。</figcaption></figure>
+<figure><img src="page-38.png" loading="lazy" alt="page 38"><figcaption><b>p38</b>顧客は専門家ではない38多くの場合顧客は機械学習の専門家ではないので必要な精度も、満たすべき制約条件も、明確に言語化することができない。なので、これを高速に学び取ることが必要。</figcaption></figure>
+<figure><img src="page-39.png" loading="lazy" alt="page 39"><figcaption><b>p39</b>Minimum Viable Product 39 ITベンチャー経営の方法論「リーン・スタートアップ」で提唱された考え方。ベンチャーは資金に限りがあるので素早く顧客ニーズを理解しなければならない。そこで、最小限のコストで雑な製品を作り、それを実際に顧客に見せてみることで、顧客のニーズがどこにあるのかを探る。</figcaption></figure>
+<figure><img src="page-40.png" loading="lazy" alt="page 40"><figcaption><b>p40</b>最小限の実装=実装しない40「コンシェルジュ型MVP」と呼ばれる</figcaption></figure>
+<figure><img src="page-41.png" loading="lazy" alt="page 41"><figcaption><b>p41</b>ステップ1 41人間がやると想定して次の質問に答えよう(1)顧客は何がどうなると嬉しいのか(2)それを人間がやるならどうやってやるか(既にやっている人間がいるのか?いないのか?) ①顧客価値②人がやる方法</figcaption></figure>
+<figure><img src="page-42.png" loading="lazy" alt="page 42"><figcaption><b>p42</b>(2)人間がどうやってやるか42既にやっている人がいる、または、やり方はわかる。しかし時間や労力が掛かりすぎる。→チャンス!機械化で時間や労力を減らすことが顧客価値になる!</figcaption></figure>
+<figure><img src="page-43.png" loading="lazy" alt="page 43"><figcaption><b>p43</b>(2)人間がどうやってやるか43顧客側などでやっている人がいる、しかし、自分はやり方がわからない。→何か重要な情報の伝達漏れが発生している。</figcaption></figure>
+<figure><img src="page-44.png" loading="lazy" alt="page 44"><figcaption><b>p44</b>(2)人間がどうやってやるか44人間がやる方法を、顧客も自分もわからない→そもそも無茶なことを妄想している可能性。</figcaption></figure>
+<figure><img src="page-45.png" loading="lazy" alt="page 45"><figcaption><b>p45</b>例:スパムフィルタ45 Q1顧客は何がどうなると嬉しいのかA1顧客はメールボックスにスパムメールがたくさんあって困っている、スパムがなくなるとうれしいQ2それを人間がやるならどうやってやるかA2メールの本文を見て、スパムかどうか判定して、スパムは別のフォルダに移動する</figcaption></figure>
+<figure><img src="page-46.png" loading="lazy" alt="page 46"><figcaption><b>p46</b>ステップ2 46人間を箱に入れる。この箱には電子データしか出し入れできない。(リモートワークと考えてもよい) ①顧客価値⑤得る方法⑥与える方法③入力データ②箱の中の人④出力データ</figcaption></figure>
+<figure><img src="page-47.png" loading="lazy" alt="page 47"><figcaption><b>p47</b>ステップ2 47 (3)人間が(2)をするために、箱にどんなデータを入れるのか? (4)人間が(2)をすることで、箱からどんな出力データが出てくるのか? ①顧客価値⑤得る方法⑥与える方法③入力データ②箱の中の人④出力データ</figcaption></figure>
+<figure><img src="page-48.png" loading="lazy" alt="page 48"><figcaption><b>p48</b>ステップ2 48 (5)入力データ(3)はどうやって入手するのか? (最初の一歩と継続的にやる方法) (6)出力データ(4)をどうやって顧客価値(1)につなげるのか? ①顧客価値⑤得る方法⑥与える方法③入力データ②箱の中の人④出力データ</figcaption></figure>
+<figure><img src="page-49.png" loading="lazy" alt="page 49"><figcaption><b>p49</b>答える順番は問わない49この4つの質問の答える順番は問わない。例1:顧客にをするために(6)、を出力する(4)、そのため入力を入れる(3)、これをどうやって入手しようか?(5)例2:今データが入手できている(5, 3)ここから顧客価値を生むにはどうするか?(6)そのためにはどういう出力が必要か?(4)</figcaption></figure>
+<figure><img src="page-50.png" loading="lazy" alt="page 50"><figcaption><b>p50</b>例:スパムフィルタ50 &gt;Q2それを人間がやるならどうやってやるか&gt;A2人間がやるなら、メールの本文を見て、スパムかどうか判定して、スパムは別のフォルダに移動するQ3人間が(2)するために、どんなデータを入れる必要があるか? A3メールの本文の情報が必要。タイトルや送信者も貰えるなら貰いたい</figcaption></figure>
+<figure><img src="page-51.png" loading="lazy" alt="page 51"><figcaption><b>p51</b>例:スパムフィルタ51 Q4人間が(2)をすることで、箱からどんな出力データが出てくるのか? A4各メールに対して「スパムである、スパムでない」のラベルを出力</figcaption></figure>
+<figure><img src="page-52.png" loading="lazy" alt="page 52"><figcaption><b>p52</b>例:スパムフィルタ52 Q5入力データ(3)はどうやって入手するのか? A5最初の一歩としてはとりあえずメールをエクスポートしてもらえれば。継続的にやるにはメーラからデータを取る方法を作るか、メールサーバの側に手を加えるかが必要そう。</figcaption></figure>
+<figure><img src="page-53.png" loading="lazy" alt="page 53"><figcaption><b>p53</b>例:スパムフィルタ53 Q6出力データ(4)をどうやって顧客価値(1)につなげるのか? A6スパムである/ないのラベルを見て、メールを振り分けする</figcaption></figure>
+<figure><img src="page-54.png" loading="lazy" alt="page 54"><figcaption><b>p54</b>アルバイト54 (7)箱の中の人が、まったく知識のないアルバイトだとしたら、どんなマニュアルを用意する必要があるか?これを考えておくと次のステップが楽になる。①顧客価値⑤得る方法⑥与える方法マニュアルアルバイト③入力データ②マニュアル④出力データ</figcaption></figure>
+<figure><img src="page-55.png" loading="lazy" alt="page 55"><figcaption><b>p55</b>ステップ3 55ステップ1:人間がやるステップ2:箱の中の人間がやるステップ3:箱の中の機械がやる箱の中の人をコンピュータに置き換える。①顧客価値⑤得る方法⑥与える方法③入力データ⑧プログラム④出力データ</figcaption></figure>
+<figure><img src="page-56.png" loading="lazy" alt="page 56"><figcaption><b>p56</b>最初のプログラム56 (8)箱の中のコンピュータが(2)をするためのプログラムを書く完璧である必要はない高度なアルゴリズムである必要はない精度は低くてよい「とりあえず動く」ぐらいでよい</figcaption></figure>
+<figure><img src="page-57.png" loading="lazy" alt="page 57"><figcaption><b>p57</b>実行してみて顧客に見せる57 (9)プログラム(8)に実際にデータを入れて振る舞いを観察する。(精度はどう?速度は?) (10)顧客はこれで満足する? ①顧客価値⑤得る方法⑩与えてみる⑥与える方法③入力データ⑧プログラム④出力データ⑨実行してみる</figcaption></figure>
+<figure><img src="page-58.png" loading="lazy" alt="page 58"><figcaption><b>p58</b>顧客に見せるのが怖い? 58精度が出ていないのに顧客に見せるのは怖い?しかし顧客が何を重視するかは顧客にしかわからない。低品質だと顧客に言われたとしても、それは顧客が何を重視するかを知るチャンスになる。see「リーン・スタートアップ」</figcaption></figure>
+<figure><img src="page-59.png" loading="lazy" alt="page 59"><figcaption><b>p59</b>顧客が満足しないなら59 (11)どう満足しないのか具体的不満を収集する(どういう入力の時にはどういう出力が出てほしいのか?これを教師データという)具体的不満①顧客価値⑤得る方法⑥⑩③入力データ⑧プログラム④出力データ⑪教師データ⑨実行してみる</figcaption></figure>
+<figure><img src="page-60.png" loading="lazy" alt="page 60"><figcaption><b>p60</b>60具体的不満ステップ4ようやく機械学習! (12)教師データ(11)を使って学習をする①顧客価値⑤得る方法⑥⑩③入力データ⑧機械学習④出力データ⑪教師データ⑨</figcaption></figure>
+<figure><img src="page-61.png" loading="lazy" alt="page 61"><figcaption><b>p61</b>科学的方法論61教師データが充実すると、アルゴリズムの良し悪しが定量的に測れるようになる。(教師データの一部を検証用のデータに使う)機械学習にしたからと言ってよくなるとは限らないのでプログラム(8)とキチンと比較する。仮説・実験・検証・修正のサイクルを回す。(PDCAサイクル/科学的方法論)サイクルを回して改善していく。</figcaption></figure>
+<figure><img src="page-62.png" loading="lazy" alt="page 62"><figcaption><b>p62</b>改善の具体的方法62「現時点のアルゴリズムが正しく分類できてないデータ」を抽出して眺め、それらを正しく分類するためにはどうすれば良いかを考える。(特徴量の追加など)ロジスティック回帰などの「判断の自信」を返してくれるアルゴリズムなら、「自信のない結果」を見て教師データの追加を行う。(能動学習)</figcaption></figure>
+<figure><img src="page-63.png" loading="lazy" alt="page 63"><figcaption><b>p63</b>間違えないように何度も言う63ビジネス上重要なのは顧客価値。精度ではない。例え精度が99%でも、間違う1%が顧客にとって致命的なら、精度60%でその間違いをしないプログラムの方が顧客価値が高い。具体的不満①顧客価値⑤得る方法⑥⑩③入力データ⑧機械学習④出力データ⑪教師データ⑨</figcaption></figure>
+<figure><img src="page-64.png" loading="lazy" alt="page 64"><figcaption><b>p64</b>まとめ64 •ビジネスでは顧客価値が重要•顧客もあなたも何が顧客価値か正確に理解していない•素早く理解するために最小限の工数で実験を繰り返す(Minimum Viable Prodict) •実験によって不満点や顧客価値が徐々に具体化されていく•改善を繰り返して顧客価値を増やしていく</figcaption></figure>
+<figure><img src="page-65.png" loading="lazy" alt="page 65"><figcaption><b>p65</b>65以下補足と質問・回答</figcaption></figure>
+<figure><img src="page-66.png" loading="lazy" alt="page 66"><figcaption><b>p66</b>補足66これは「顧客の要求が明瞭でない、仕様書がない状態でのソフトウェア開発」に似ている。違う点は、顧客が不満な場合に「ソフトウェアを作り直す」ではなく「学習データにその情報を追加」で解決できる可能性があるところ。とはいえ常にデータで解決できるわけではないので、やはり最小限の実装で実験するのは大事。</figcaption></figure>
+<figure><img src="page-67.png" loading="lazy" alt="page 67"><figcaption><b>p67</b>67 ⑦ゆきばのない不満補足:バッドパターン⑥ミスマッチ顧客コレじゃない①手軽な方法⑤雑にぶつける②テキトーなデータ③スゴイ機械学習④精度高い出力データココで時間を使いきるこれを避けるためにも実験を繰り返せる形にすることが大事</figcaption></figure>
+<figure><img src="page-68.png" loading="lazy" alt="page 68"><figcaption><b>p68</b>Q&amp;Aマニュアル書き68 (7)と(8)についての質問: “アルバイトのためのマニュアルが書けるならプログラムも書けるはずでは&quot;はい。「アルバイトのためのマニュアルが書けないぐらい仕様が曖昧だったらプログラムを書くのは無理だよね」が言いたいことでした。「マニュアルをどう書くか?」を考えることでまだ言語化されていないものに気付き、言語化が促されるのです。(次ページに具体例)</figcaption></figure>
+<figure><img src="page-69.png" loading="lazy" alt="page 69"><figcaption><b>p69</b>例:スパムフィルタ69実現したいこと: &gt;(2)“メールの本文を見て、スパムかどうか判定し、スパムは別のフォルダに移動する&quot;あなた「本文を見てスパムかどうか判断して」バイト「どうやって判断するんですか?」あなた「例えば○○って単語が入ってたらスパム」気付き:最初の一歩のプログラム(8)を「NGキーワードが含まれてるか判定」にしたらよい補足の補足:アルバイト向けマニュアルの作成は「最初のプアなプログラム」を書く上での助けになることが目的なので、さらさらプログラムを書けるなら飛ばしてもよい。</figcaption></figure>
+<figure><img src="page-70.png" loading="lazy" alt="page 70"><figcaption><b>p70</b>工数70 Q:どれくらいの工数がかかると思えばいいか? A:ケースバイケース。例えば枯れた技術、ロジスティック回帰にデータを入れてみて、サクッと精度が出て顧客から一発OKもらえることもあるし、逆にぜんぜんダメということもある。「実験」するしかない。工数を見積もることは困難なので、決まった時間で成果を確約するような契約を結ぶのは危険。</figcaption></figure>
+<figure><img src="page-71.png" loading="lazy" alt="page 71"><figcaption><b>p71</b>精度71 Q:顧客に精度保証を求められたらA:「どのくらいの精度になるかは実験してみないとわからない」ということを顧客との共通認識にしていく必要がある。精度を確約するのではなく「良いものができるかもしれない試行錯誤」に対してお支払いを頂く形の契約が良い。なるべく小さい単位で実験をして顧客とのコミュニケーションを密にしていく必要がある。</figcaption></figure>
+<figure><img src="page-72.png" loading="lazy" alt="page 72"><figcaption><b>p72</b>判断のコストと精度72知識のある「専門家」が判断知識のない「アルバイト」が判断機械が判断判断の精度判断のコスト高中低高中低機械は24時間働かせても疲れないし労基署に怒られることもない。精度は必ずしも高くない*が、コストの低下でビジネス上の価値が生まれる。(*頑張り次第)</figcaption></figure>
+<figure><img src="page-73.png" loading="lazy" alt="page 73"><figcaption><b>p73</b>Deep Learning 73 Q: “人間が条件を明確化できてなくてもDeep Learningなら自動でできるのでは?&quot; A:半分正しい。画像処理の分野では、例えば100x100のモノクロ画像でも「入力の値が10000個ある」という辛い状態になる。こういう入力をうまく扱おうと専門家が何十年もの間、色々な条件を考案してきた。畳みこみを繰り返す特殊な形のニューラルネットを作って、大量のデータで学習してみたら、意外なことに専門家が工夫して実装したものより良い精度が出た。これが正しい半分。正しくない半分は次のページ。</figcaption></figure>
+<figure><img src="page-74.png" loading="lazy" alt="page 74"><figcaption><b>p74</b>Deep Learning 74この成功によりDeep Leaningに注目が集まり文脈を抜かして「Deep Learningを使うと人間より精度の高い判断をするプログラムが作れる」と伝言ゲームがゆがむ。その結果、全然違う条件の問題に対して「これもDeep Learningでなんとかなるのでは」と考える人が増えた。問題条件が変われば手法の有効性も変わるので、基本は「枯れた手法から順に小さい実験を繰り返す」しかない。</figcaption></figure>
+<figure><img src="page-75.png" loading="lazy" alt="page 75"><figcaption><b>p75</b>能動学習75 Q:ナイーブベイズよりもロジスティック回帰で能動学習した方がいいか? A:ナイーブベイズもロジスティック回帰同様に信頼度を出せる手法なので、ナイーブベイズで能動学習したらいい。補足:今回は割愛したけども、ロジスティック回帰もナイーブベイズも「確率モデル」であって、「この入力がクラス1になる確率は0.8だな」みたいな出力を出すモデルです。これをこの発表では「判断の自信」って表現していました。</figcaption></figure>
+<figure><img src="page-76.png" loading="lazy" alt="page 76"><figcaption><b>p76</b>微分76 Twitterの感想「行列も微分も出てこない」機械が重みを調整する時に「正解とのずれが小さくなる方向に重みをちょっと変更しよう」ってやるのだけども、これを数学語で言うと「『正解とのずれ』を重みで微分して勾配を求め、勾配方向に重みをちょっと変更しよう」になるわけです。</figcaption></figure>
+<figure><img src="page-77.png" loading="lazy" alt="page 77"><figcaption><b>p77</b>行列77ロジスティック回帰では、例えば条件が15個あったら「重み」という値が15個できる。これを数学語で言うと「ベクトル」になる。ニューラルネットはロジスティック回帰的なものが複数個集まってるので、仮に10個集まってるとしたら15x10個の値ができる。これを数学語で言えば「行列」になる。</figcaption></figure>
+<figure><img src="page-78.png" loading="lazy" alt="page 78"><figcaption><b>p78</b>あいまいな判断78「P21は、例えばx1,x2,x3,x4,x6がTrueだと17/15になり、Trueになる。数学的には正しくない」そう、そこが重要なところ(強調し忘れました)元の式と、重み付き和の式は等価ではない。しかし機械学習を使おうという時、どういう条件式なら顧客価値が生み出されるかがそもそもわかっていない。なので「元式と等価であること」には顧客価値がない。論理的にきちんと記述することを手放して、雑であいまいな条件式で表現し、それがちゃんと機能するかどうかは、論理ではなく実データでのテストで担保する。これが機械学習の基本的スタンス。</figcaption></figure>
+<figure><img src="page-79.png" loading="lazy" alt="page 79"><figcaption><b>p79</b>補足(宣伝) 79「データを観察することが大事」と明記・強調することを忘れていました。僕が監修したPyQの「はじめての機械学習」ではデータを観察してif文を作るところからロジスティック回帰までを小さいステップで一歩一歩解説しています機械学習の基本をif文から学ぼうしきい値を見つけよう可視化してしきい値を見つけるしきい値が決められないデータの扱い方2次元のデータから分類2次元データをプロット1次方程式を用いた分類はじめての機械学習:ロジスティック回帰</figcaption></figure>
+</div>
+</body></html>
