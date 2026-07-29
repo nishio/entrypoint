@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Visualizing High-Dimensional Vectors — NISHIO Hirokazu</title>
+  <meta name="description" content="A technical through-line across NISHIO Hirokazu's career: visualizing high-dimensional vectors. From spherical SOM for gene-expression data in his doctoral work, through the word2vec book, to Talk to the City and Kouchou-AI for broad listening." />
+  <link rel="stylesheet" href="../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/vectors/" />
+  <link rel="alternate" hreflang="ja" href="https://nhiro.org/vectors/ja.html" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../index.html">home</a>] [<a href="ja.html">日本語版</a>]
+
+<h2>Visualizing High-Dimensional Vectors</h2>
+
+<p>
+In graduate school I studied the visualization of high-dimensional vectors:
+projecting data with thousands of dimensions onto a two- or three-dimensional map a human can look at.
+That single technical thread has run through the center of my work for over twenty years,
+changing only its subject — from gene-expression data (my doctoral research),
+to words (<a href="https://www.oreilly.co.jp/books/9784873116839/">word2vec</a>),
+to people's opinions (<a href="../broadlistening/">broad listening</a>).
+</p>
+
+<p>
+The interesting part is that this is the most "researcher-like" thread in a career that did <em>not</em> follow the academic path.
+After my Ph.D. I did not stay in academia; I became a software engineer.
+But <strong>the idea I picked up in graduate school — turning high-dimensional data into a map — kept coming back,
+each time with a different subject</strong>.
+</p>
+
+<h3>One and the same line</h3>
+
+<p>
+Visualizing high-dimensional vectors has a property that holds no matter what the subject is:
+in the resulting 2-D scatter plot, <strong>the axes themselves mean nothing</strong>.
+A point's position encodes only the <em>relative closeness</em> of the vectors;
+reading "upper-right, therefore good" is simply wrong.
+This is something I always caution about in broad listening —
+and it is exactly what I was saying twenty years ago when I projected gene-expression data
+onto a spherical SOM (self-organizing map).
+Build a map where similar things cluster, and let a human read the clusters.
+The subject changed from molecules to words to voices, but the skeleton of the work did not.
+</p>
+
+<h3>Record of practice</h3>
+
+<ul>
+  <li><strong>2002–2006 (doctoral research)</strong>: Visualizing high-dimensional gene-expression data by projecting it into low dimensions with a <strong>spherical SOM (self-organizing map)</strong>. "Whole-genome visualization" (visualizing a genome with a 4-D graph) also became an <a href="https://www.ipa.go.jp/jinzai/esp/mitoipedia/spc/year/2002ysc.html">IPA Mitou Youth</a> project and led to my Super Creator certification. Related presentations: WSOM2003 / RECOMB2004 / SCI2004 / WSOM2005, and "Spherical SOM and arrangement of neurons using helix on sphere" in the IPSJ Transactions on Mathematical Modeling and Its Applications</li>
+  <li><strong>2014</strong>: Published <a href="https://www.oreilly.co.jp/books/9784873116839/"><em>Natural Language Processing with word2vec</em></a> (O'Reilly Japan, in Japanese) — explaining how words can be represented as high-dimensional vectors and their meanings treated as distances. The subject of visualization moved from molecules to words</li>
+  <li><strong>2023–</strong>: <a href="https://scrapbox.io/nishio/Talk to the City">Talk to the City</a> — a broad listening tool that turns opinion text into embedding vectors, compresses them into two dimensions (with UMAP and the like), and visualizes them as clusters. Applied at the UN IGF Kyoto (October 2023) and in a visualization experiment on the Agency for Cultural Affairs' public comments about AI and copyright (May 2024), among others</li>
+  <li><strong>2024–present</strong>: Developing <a href="https://github.com/digitaldemocracy2030/kouchou-ai">Kouchou-AI</a> — converting large volumes of opinions into thousand-dimensional vectors and, through dimensionality reduction and clustering, visualizing them as a "map of opinions." The subject moved from words to people's voices, and became a core technology of <a href="../broadlistening/">broad listening</a></li>
+</ul>
+
+<p>
+In other words, the high-dimensional vector visualization I studied in graduate school
+came back to the center of my work twenty years later, in the completely different application domain of broad listening.
+</p>
+
+<h3>Read more</h3>
+
+<ul>
+  <li><a href="https://www.oreilly.co.jp/books/9784873116839/"><em>Natural Language Processing with word2vec</em></a> (O'Reilly Japan, 2014, Japanese)</li>
+  <li><a href="https://scrapbox.io/nishio/Talk to the City">Talk to the City</a> — Scrapbox notes on the technique (Japanese)</li>
+  <li><a href="https://github.com/digitaldemocracy2030/kouchou-ai">Kouchou-AI</a> — open-source implementation</li>
+</ul>
+
+<p>
+Related stories: <a href="../broadlistening/">Broad Listening in Practice</a> / <a href="../intellectual-production/">Intellectual Production</a> / <a href="../plurality/">Plurality</a> / <a href="../mentoring/">Nurturing the Next Generation</a>
+</p>
+
+<p class="meta">
+This page is a record as of 2026-07-29. The subject of visualization may keep widening,
+so this page may continue to grow.
+</p>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
