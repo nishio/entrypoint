@@ -11,7 +11,7 @@
 
 ## 構成と、壊さないための注意
 
-- ルート直下がサイト。`index.html` / `ja.html` がプロフィール、`static/` が共有アセット、著書ページ（`langbook` `intellitech` `jybook`）、デモ（`learn_language` `idea-generation`）、講義（`kuds2013` `kuds2014` `from_if_to_ml` `titech_hcd` `tech_and_inov`）、小物（`newmuroto` `pulsestamp` `yaruki` `t`）。
+- **サイト本体は `docs/` 配下**（Pages のソースは `main` ブランチの `/docs`）。`index.html` / `ja.html` がプロフィール、`static/` が共有アセット、著書ページ（`langbook` `intellitech` `jybook`）、デモ（`learn_language` `idea-generation`）、講義（`kuds2013` `kuds2014` `from_if_to_ml` `titech_hcd` `tech_and_inov`）、小物（`newmuroto` `pulsestamp` `yaruki` `pdf`）。`t/` は `pdf/` の旧名で、直リンク互換のためのコピーとリダイレクトのみ。
 - **`index.html` の無いディレクトリはトップ URL が 404 になる**（これは仕様。中の個別ファイルは 200 で配信される）。一覧を見せたいディレクトリには `index.html` を置く。
 - **シンボリックリンクを置かない。** GitHub Pages はサイト外を指す symlink でビルドが失敗する（過去に `mitou_timeline` で発生）。
 - 100MB 超のファイルは GitHub に置けない。大きなアセットに注意。
