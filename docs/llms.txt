@@ -1,10 +1,16 @@
-# nishio Connecting Dots System — machine-readable data (Dots & Stories)
+# NISHIO Hirokazu — nhiro.org
 
-AI/agents: 一次データは以下。取得してローカルで読む/検索する（サイト側に検索機能は無い）。
+西尾泰和 / NISHIO Hirokazu。サイボウズ・ラボ主幹研究員。AIエージェントの実務投入・知的生産性・ブロードリスニング・デジタル民主主義に取り組む。著書『コーディングを支える技術』『エンジニアの知的生産術』ほか。
 
-- システムの入口: https://nhiro.org/connecting_dots/
-- 全 Dot データ（受理済み・全件フラット・孤児含む）: https://nhiro.org/connecting_dots/dots.json
-- 全 Dot の人間向け View: https://nhiro.org/connecting_dots/all-dots.html
+## 人間向け（ホームページ）
+- 日本語トップ: https://nhiro.org/ja.html
+- English top: https://nhiro.org/
+- テーマ別 Story（自己紹介）: broadlistening / plurality / intellectual-production / mentoring / highdim（各 https://nhiro.org/<theme>/ja.html, 英語版は /<theme>/）
+
+## 機械可読データ（Connecting Dots System）
+西尾のプロフィールを、出典付きの検証可能な事実の粒「Dot」と、それを編んだ「Story」として公開したもの。取得してローカルで読む（サイト側に検索機能は無い）。
+- 入口: https://nhiro.org/connecting_dots/
+- 全 Dot データ (JSON): https://nhiro.org/connecting_dots/dots.json
+- 全 Dot の人間向け一覧: https://nhiro.org/connecting_dots/all-dots.html
 - sitemap: https://nhiro.org/connecting_dots/sitemap.xml
-
-補足: 候補（未受理）Dot は別ファイル candidates/*.jsonl に置かれる（pilot には未収録）。検証状態は各 Dot の verifiability(external|internal-only) と refs に随伴。
+- 各 Dot に出典 URL が付く。本文は日本語。
