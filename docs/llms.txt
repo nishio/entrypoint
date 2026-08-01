@@ -1,10 +1,10 @@
-# nishio ConnectingDots — machine-readable data (Dots & Stories)
+# nishio Connecting Dots System — machine-readable data (Dots & Stories)
 
 AI/agents: 一次データは以下。取得してローカルで読む/検索する（サイト側に検索機能は無い）。
 
-- 全 Dot データ（受理済み・全件フラット・孤児含む）: https://nhiro.org/dots.json
-- 全 Dot の人間向け View: https://nhiro.org/all-dots.html
-- Story 一覧: https://nhiro.org/dots.html
-- sitemap: https://nhiro.org/sitemap.xml
+- システムの入口: https://nhiro.org/connecting_dots/
+- 全 Dot データ（受理済み・全件フラット・孤児含む）: https://nhiro.org/connecting_dots/dots.json
+- 全 Dot の人間向け View: https://nhiro.org/connecting_dots/all-dots.html
+- sitemap: https://nhiro.org/connecting_dots/sitemap.xml
 
 補足: 候補（未受理）Dot は別ファイル candidates/*.jsonl に置かれる（pilot には未収録）。検証状態は各 Dot の verifiability(external|internal-only) と refs に随伴。
