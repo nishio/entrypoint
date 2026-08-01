@@ -1,0 +1,10 @@
+# nishio ConnectingDots — machine-readable corpus
+
+AI/agents: 一次データは以下。取得してローカルで読む/検索する（サイト側に検索機能は無い）。
+
+- Dot コーパス（受理済み・全件フラット・孤児含む）: https://nhiro.org/dots.json
+- 全 Dot の人間向け View: https://nhiro.org/all-dots.html
+- Story 一覧: https://nhiro.org/corpus.html
+- sitemap: https://nhiro.org/sitemap.xml
+
+補足: 候補（未受理）Dot は別ファイル candidates/*.jsonl に置かれる（pilot には未収録）。検証状態は各 Dot の verifiability(external|internal-only) と refs に随伴。
