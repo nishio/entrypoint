@@ -2,7 +2,7 @@
   "$comment": "AI crawl surface. 単一フラットプールの全受理Dot。in_stories は逆引き(派生・非ゲート)。status フィールドなし(dots.jsonにいる=accepted)。",
   "generated_from": "pilot",
   "canonical": "https://nhiro.org/connecting_dots/dots.json",
-  "count": 83,
+  "count": 97,
   "dots": [
     {
       "id": "1981-07-23-nishio-born",
@@ -24,6 +24,29 @@
       "notes": "Set A 由来の素経歴。どの facet Story にも属さない孤児 Dot（orphan-dot-discovery）。",
       "url": "https://nhiro.org/connecting_dots/dots/1981-07-23-nishio-born.html",
       "in_stories": []
+    },
+    {
+      "id": "2000-04-kyoto-univ-entry",
+      "date": "2000-04",
+      "event": "京都大学工学部情報学科に入学",
+      "kind": "education",
+      "entities": [
+        "京都大学"
+      ],
+      "tags": [
+        "profile",
+        "cv"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html"
+      ],
+      "cosense_refs": [],
+      "verifiability": "external",
+      "notes": "一次ソース history-ja.html。",
+      "url": "https://nhiro.org/connecting_dots/dots/2000-04-kyoto-univ-entry.html",
+      "in_stories": [
+        "cv"
+      ]
     },
     {
       "id": "2001-mitou-software-participation",
@@ -84,6 +107,54 @@
       ]
     },
     {
+      "id": "2003-01-yamauchi-award-44",
+      "date": "2003-01",
+      "event": "情報処理学会 第44回プログラミング・シンポジウムで山内奨励賞を受賞",
+      "kind": "award",
+      "entities": [
+        "情報処理学会"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "http://www.ipsj.or.jp/prosym/"
+      ],
+      "cosense_refs": [],
+      "verifiability": "external",
+      "notes": "対象発表は未確認。2011 年の受賞は前年の発表に対する表彰だった（2011-01-yamauchi-award-virtual-star）ので、開催回＝発表回とは限らない。",
+      "url": "https://nhiro.org/connecting_dots/dots/2003-01-yamauchi-award-44.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
+      "id": "2003-04-naist-masters",
+      "date": "2003-04/2004-03",
+      "event": "奈良先端科学技術大学院大学（NAIST）情報科学研究科 博士前期課程に入学し、1年で短期修了",
+      "kind": "education",
+      "entities": [
+        "奈良先端科学技術大学院大学"
+      ],
+      "tags": [
+        "profile",
+        "cv"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html"
+      ],
+      "cosense_refs": [],
+      "verifiability": "external",
+      "notes": "一次ソース history-ja.html（「入学 → 短期修了」）。学位名は記載なし。",
+      "url": "https://nhiro.org/connecting_dots/dots/2003-04-naist-masters.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
       "id": "2003-2006-spherical-som-gene-expression",
       "date": "2003-04/2006-03",
       "event": "大学院で球面SOM（自己組織化マップ）により高次元の遺伝子発現データを低次元へ射影して可視化する研究（博士論文テーマ）",
@@ -141,7 +212,7 @@
       "id": "2003-super-creator-certification",
       "date": "2003-07",
       "event": "IPA未踏ユース事業でスーパークリエータに認定",
-      "kind": "decision",
+      "kind": "credential",
       "entities": [
         "IPA未踏ユース"
       ],
@@ -161,7 +232,33 @@
       "notes": "ゲノム可視化研究(2002-2003, 未踏ユース)に対する認定＝credential。研究そのものとは別の事実。",
       "url": "https://nhiro.org/connecting_dots/dots/2003-super-creator-certification.html",
       "in_stories": [
+        "cv",
         "mentoring"
+      ]
+    },
+    {
+      "id": "2004-01-yamauchi-award-45",
+      "date": "2004-01",
+      "event": "情報処理学会 第45回プログラミング・シンポジウムで山内奨励賞を受賞",
+      "kind": "award",
+      "entities": [
+        "情報処理学会"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "http://www.ipsj.or.jp/prosym/"
+      ],
+      "cosense_refs": [],
+      "verifiability": "external",
+      "notes": "対象発表は未確認（2003-01 の「ゲノム丸ごと可視化」発表の可能性があるが一次ソースで未確認）。",
+      "url": "https://nhiro.org/connecting_dots/dots/2004-01-yamauchi-award-45.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -189,10 +286,37 @@
       ]
     },
     {
+      "id": "2005-04-jsps-research-fellow",
+      "date": "2005-04/2007-03",
+      "event": "日本学術振興会 特別研究員（2005-04 DC2、博士取得後 2006-04 から PD。PD 期は 2006-05 から東京大学大学院 新領域創成科学研究科で受け入れ）",
+      "kind": "education",
+      "entities": [
+        "日本学術振興会",
+        "東京大学"
+      ],
+      "tags": [
+        "profile",
+        "cv"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html"
+      ],
+      "cosense_refs": [
+        "灘校土曜講座2021",
+        "情報科学若手の会2019"
+      ],
+      "verifiability": "external",
+      "notes": "DC2 と PD は同一採用の継続（Cosense 灘校土曜講座2021「学振特別研究員(2年間)」「博士課程修了、学振特別研究員が1年余ったので1年間ポスドク」）。",
+      "url": "https://nhiro.org/connecting_dots/dots/2005-04-jsps-research-fellow.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
       "id": "2006-03-phd-science",
       "date": "2006-03",
       "event": "奈良先端科学技術大学院大学（NAIST）で博士（理学）を取得（24歳）",
-      "kind": "education",
+      "kind": "credential",
       "entities": [
         "NAIST"
       ],
@@ -210,7 +334,35 @@
       "notes": "学位＝credential。球面SOM研究(2003-2006)の成果に基づくが、学位取得そのものは研究とは別の事実。",
       "url": "https://nhiro.org/connecting_dots/dots/2006-03-phd-science.html",
       "in_stories": [
+        "cv",
         "highdim"
+      ]
+    },
+    {
+      "id": "2007-03-funai-young-researcher-award",
+      "date": "2007-03-28",
+      "event": "船井情報科学振興財団 IPSJ Digital Courier 船井若手奨励賞を受賞",
+      "kind": "award",
+      "entities": [
+        "船井情報科学振興財団",
+        "情報処理学会"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html"
+      ],
+      "cosense_refs": [
+        "Hatena2008-02-13"
+      ],
+      "verifiability": "external",
+      "notes": "日付は Hatena2008-02-13「受賞が平成19年3月28日付け」。対象論文は未確認。",
+      "url": "https://nhiro.org/connecting_dots/dots/2007-03-funai-young-researcher-award.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -236,7 +388,36 @@
       "notes": "『知的生産性の向上（手段）と文明の進歩（目的）』という関心軸の制度的な拠点。2007入社と2018主幹研究員昇格を1 Dot に畳む。",
       "url": "https://nhiro.org/connecting_dots/dots/2007-cybozu-labs-researcher.html",
       "in_stories": [
+        "cv",
         "intellectual-production"
+      ]
+    },
+    {
+      "id": "2009-06-tagboat-summer-award",
+      "date": "2009-06",
+      "event": "TAGBOAT SUMMER AWARD 2009 で作品「Virtual Star」（Python で SVG を出力して描いた数理的アート）が審査員特別賞《池内務賞》を受賞",
+      "kind": "award",
+      "entities": [
+        "TAGBOAT"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award",
+        "art"
+      ],
+      "refs": [
+        "https://web.archive.org/web/20100823054152/https://www.tagboat.com/ngs/award/summer/2009/result.html"
+      ],
+      "cosense_refs": [
+        "Virtual Star",
+        "Hatena2009-06-26"
+      ],
+      "verifiability": "external",
+      "notes": "",
+      "url": "https://nhiro.org/connecting_dots/dots/2009-06-tagboat-summer-award.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -265,6 +446,35 @@
       "url": "https://nhiro.org/connecting_dots/dots/2009-2011-security-programming-camp-lecturer.html",
       "in_stories": [
         "mentoring"
+      ]
+    },
+    {
+      "id": "2009-10-asiagraph-excellent-works",
+      "date": "2009-10",
+      "event": "ASIAGRAPH 2009 CGアートギャラリー公募展示部門で「Virtual Star」改良版が優秀作品（Excellent works）に選出",
+      "kind": "award",
+      "entities": [
+        "ASIAGRAPH"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award",
+        "art"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html"
+      ],
+      "cosense_refs": [
+        "Virtual Star",
+        "Hatena2009-10-09",
+        "ASIAGRAPH"
+      ],
+      "verifiability": "external",
+      "notes": "TAGBOAT 出展版のモチーフをリングが分かりやすいよう改良したもの（Hatena2009-10-09）。",
+      "url": "https://nhiro.org/connecting_dots/dots/2009-10-asiagraph-excellent-works.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -320,6 +530,36 @@
       "url": "https://nhiro.org/connecting_dots/dots/2010-12-wdpress-vol60-language-design.html",
       "in_stories": [
         "intellectual-production"
+      ]
+    },
+    {
+      "id": "2011-01-yamauchi-award-virtual-star",
+      "date": "2011-01",
+      "event": "情報処理学会 第26回山内奨励賞を受賞（2010-01 第51回プログラミング・シンポジウムでの発表「Virtual Star — 数学と論理による美の追及」に対して、第52回で表彰）",
+      "kind": "award",
+      "entities": [
+        "情報処理学会",
+        "サイボウズ・ラボ"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award",
+        "art"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "https://ipsj.ixsq.nii.ac.jp/records/91455",
+        "https://cir.nii.ac.jp/crid/1050855522090941184"
+      ],
+      "cosense_refs": [
+        "Virtual Star - 数学と論理による美の追及"
+      ],
+      "verifiability": "external",
+      "notes": "",
+      "url": "https://nhiro.org/connecting_dots/dots/2011-01-yamauchi-award-virtual-star.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -426,6 +666,34 @@
       ]
     },
     {
+      "id": "2014-01-ip-management-skills-3rd",
+      "date": "2014-01",
+      "event": "国家資格 3級知的財産管理技能士に合格",
+      "kind": "credential",
+      "entities": [
+        "知的財産教育協会"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "credential",
+        "law"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "https://nhiro.org/static/chizai.png"
+      ],
+      "cosense_refs": [
+        "Hatena2014-01-23"
+      ],
+      "verifiability": "external",
+      "notes": "",
+      "url": "https://nhiro.org/connecting_dots/dots/2014-01-ip-management-skills-3rd.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
       "id": "2014-05-word2vec-book",
       "date": "2014-05",
       "event": "『word2vecによる自然言語処理』を刊行（オライリー・ジャパン）",
@@ -483,7 +751,7 @@
       "id": "2014-09-mot-degree",
       "date": "2014-09",
       "event": "東京工業大学で技術経営修士（専門職, MOT）を取得",
-      "kind": "education",
+      "kind": "credential",
       "entities": [
         "東京工業大学"
       ],
@@ -499,7 +767,9 @@
       "verifiability": "external",
       "notes": "Set A 由来の素経歴。2011-04/2014-09 に技術経営専攻 専門職学位課程 在籍。孤児 Dot。",
       "url": "https://nhiro.org/connecting_dots/dots/2014-09-mot-degree.html",
-      "in_stories": []
+      "in_stories": [
+        "cv"
+      ]
     },
     {
       "id": "2014-09-pyconjp-keynote",
@@ -572,6 +842,7 @@
       "notes": "未踏理事(統治)は未踏ジュニア設立(2016)・未踏ジュニアメンター(2016-)とは別の事実として3分割。",
       "url": "https://nhiro.org/connecting_dots/dots/2015-2025-mitou-board-director.html",
       "in_stories": [
+        "cv",
         "mentoring"
       ]
     },
@@ -595,6 +866,7 @@
       "verifiability": "internal-only",
       "url": "https://nhiro.org/connecting_dots/dots/2015-2017-tokyo-metropolitan-univ-lecturer.html",
       "in_stories": [
+        "cv",
         "mentoring"
       ]
     },
@@ -620,6 +892,35 @@
       "url": "https://nhiro.org/connecting_dots/dots/2016-mitou-junior-cofounder.html",
       "in_stories": [
         "mentoring"
+      ]
+    },
+    {
+      "id": "2016-08-ip-management-skills-2nd",
+      "date": "2016-08",
+      "event": "国家資格 2級知的財産管理技能士を取得",
+      "kind": "credential",
+      "entities": [
+        "知的財産教育協会"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "credential",
+        "law"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "https://nhiro.org/static/chizai2.jpg"
+      ],
+      "cosense_refs": [
+        "学び履歴",
+        "Hatena2016-11-27"
+      ],
+      "verifiability": "external",
+      "notes": "日付は history-ja.html の 2016-08。ブログ報告は 2016-11-27（「二級知的財産管理技能士になりました」）。",
+      "url": "https://nhiro.org/connecting_dots/dots/2016-08-ip-management-skills-2nd.html",
+      "in_stories": [
+        "cv"
       ]
     },
     {
@@ -699,6 +1000,34 @@
       ]
     },
     {
+      "id": "2017-11-gpw-geister-ai-runner-up",
+      "date": "2017-11",
+      "event": "第22回ゲームプログラミングワークショップ（GPW-17）のガイスターAI大会で、POMCP ベースの AI により準優勝",
+      "kind": "award",
+      "entities": [
+        "ゲームプログラミングワークショップ"
+      ],
+      "tags": [
+        "profile",
+        "cv",
+        "award",
+        "game-ai"
+      ],
+      "refs": [
+        "https://nhiro.org/history-ja.html",
+        "https://nhiro.org/static/gpw_geister_ai.pdf"
+      ],
+      "cosense_refs": [
+        "ガイスターアルゴリズム解説"
+      ],
+      "verifiability": "external",
+      "notes": "大会の参加申込を逃しており、プログラムだけを送って対戦した（ガイスターアルゴリズム解説）。",
+      "url": "https://nhiro.org/connecting_dots/dots/2017-11-gpw-geister-ai-runner-up.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
       "id": "2018-programming-picture-book",
       "date": "2018",
       "event": "小学生向け書籍『世界一わかりやすい！プログラミングのしくみ』を川合秀実と共著で執筆（サイボウズ名義で刊行）",
@@ -724,6 +1053,33 @@
       ]
     },
     {
+      "id": "2018-04-seikei-civil-law-auditing",
+      "date": "2018-04",
+      "event": "成蹊大学法学部で聴講生として塩澤一洋教授の民法IIを半期受講",
+      "kind": "education",
+      "entities": [
+        "成蹊大学",
+        "塩澤一洋"
+      ],
+      "tags": [
+        "profile",
+        "learning",
+        "law"
+      ],
+      "refs": [],
+      "cosense_refs": [
+        "聴講生・科目等履修生申し込み体験記",
+        "塩澤先生の授業の体験記",
+        "エンジニアの知的生産術と体育型授業"
+      ],
+      "verifiability": "internal-only",
+      "notes": "身分は聴講生（2026-10 西尾確認。申込時は科目等履修生も検討）。2018-02 MITOU Demo Day で塩澤教授に相談し民法IIに決定。授業スタイル（1分間シンキングタイム等）を自分の講演に取り入れたきっかけ（BPStudy 2018-11 で本人談）。孤児 Dot。",
+      "url": "https://nhiro.org/connecting_dots/dots/2018-04-seikei-civil-law-auditing.html",
+      "in_stories": [
+        "cv"
+      ]
+    },
+    {
       "id": "2018-2024-titech-specially-appointed-assoc-prof",
       "date": "2018-04/2024-03",
       "event": "東京工業大学 環境・社会理工学院 イノベーション科学系 技術経営専門職学位課程 特定准教授",
@@ -743,6 +1099,7 @@
       "verifiability": "internal-only",
       "url": "https://nhiro.org/connecting_dots/dots/2018-2024-titech-specially-appointed-assoc-prof.html",
       "in_stories": [
+        "cv",
         "mentoring"
       ]
     },
@@ -801,6 +1158,32 @@
       "in_stories": [
         "intellectual-production"
       ]
+    },
+    {
+      "id": "2019-11-14-seikei-it-and-rules-lecture",
+      "date": "2019-11-14",
+      "event": "成蹊大学 武蔵野市寄付講座「ITとルールの今・未来」（コーディネーター 塩澤一洋）で「ITの進歩が引き起こす働き方のルールの変化」を講義",
+      "kind": "act",
+      "entities": [
+        "成蹊大学",
+        "塩澤一洋",
+        "武蔵野市"
+      ],
+      "tags": [
+        "profile",
+        "talk",
+        "teamwork"
+      ],
+      "refs": [],
+      "cosense_refs": [
+        "2019年度武蔵野市寄付講座「ITとルールの今・未来」",
+        "ITの進歩が引き起こす働き方のルールの変化",
+        "ドラフト:ITの変化が引き起こす働き方のルールの変化"
+      ],
+      "verifiability": "internal-only",
+      "notes": "登壇は西尾確認（2026-10）。対象は法学部中心の全学部学生＋武蔵野市民。講演で1分間シンキングタイム＋Scrapbox での質問収集を採用。2018-04 の聴講からの縁。孤児 Dot。",
+      "url": "https://nhiro.org/connecting_dots/dots/2019-11-14-seikei-it-and-rules-lecture.html",
+      "in_stories": []
     },
     {
       "id": "2020-11-pastalogic-release",
@@ -2256,6 +2639,38 @@
         "2025-11-29-cfj-summit-2025"
       ],
       "url": "https://nhiro.org/connecting_dots/stories/story-c-community-formation.html"
+    },
+    {
+      "id": "cv",
+      "title": "経歴・学位・資格・受賞",
+      "audience": [
+        "依頼主",
+        "採用・審査担当",
+        "一般"
+      ],
+      "dots": [
+        "2000-04-kyoto-univ-entry",
+        "2003-04-naist-masters",
+        "2006-03-phd-science",
+        "2014-09-mot-degree",
+        "2018-04-seikei-civil-law-auditing",
+        "2005-04-jsps-research-fellow",
+        "2007-cybozu-labs-researcher",
+        "2015-2025-mitou-board-director",
+        "2015-2017-tokyo-metropolitan-univ-lecturer",
+        "2018-2024-titech-specially-appointed-assoc-prof",
+        "2003-super-creator-certification",
+        "2014-01-ip-management-skills-3rd",
+        "2016-08-ip-management-skills-2nd",
+        "2003-01-yamauchi-award-44",
+        "2004-01-yamauchi-award-45",
+        "2007-03-funai-young-researcher-award",
+        "2009-06-tagboat-summer-award",
+        "2009-10-asiagraph-excellent-works",
+        "2011-01-yamauchi-award-virtual-star",
+        "2017-11-gpw-geister-ai-runner-up"
+      ],
+      "url": "https://nhiro.org/connecting_dots/stories/cv.html"
     },
     {
       "id": "highdim",
