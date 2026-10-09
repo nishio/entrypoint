@@ -148,7 +148,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L26d 題を原文の H1 から**（`graph-visualization-proposal-2026-05-25`、`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`）
 - [x] **L26e 題を原文の H1 から**（`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`）
 - [x] **L26f 題を原文の H1 から**（`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
-- [ ] **L27 英語の一覧**: `index.html` の各 `<li>` の題を L26 の題に揃える（要約と、それ以外の行は変えない）
+- [x] **L27 英語の一覧**: `index.html` の各 `<li>` の題を L26 の題に揃える（要約と、それ以外の行は変えない）
 - [ ] **L28 日本語の一覧**: `ja.html` の各 `<li>` の題を、commit `ab10e50` の H1 の日本語のまま（訳さない）にする。要約とそれ以外は変えない
 
 ## 回答（人間から）
