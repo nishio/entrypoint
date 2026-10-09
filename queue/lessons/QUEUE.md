@@ -106,12 +106,28 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 
 ### 直し（2026-10-09 西尾「もう一度直して」）
 
-- [ ] **L23 英訳ページの題**: 19 ページすべての `<title>` と `<h2>`（ページの題）を、**原文の H1（`# ` で始まる最初の行）の英訳**にする。
-  今は slug を整えただけ（例 "Extraction Faithfulness Public Models 2026-10-08"）で、日付まで題に入っている。原文の H1 に日付が無ければ題に日付を入れない。
-  原文の H1 は `git show <固定 commit>:wiki/<path>` の最初の `# ` 行。英訳は意味を足さず、読者が内容を予想できる自然な英語の見出しにする。本文は変えない
+**L23 英訳ページの題**: 19 ページすべての `<title>` と `<h2>`（ページの題）を、**原文の H1（`# ` で始まる最初の行）の英訳**にする。
+今は slug を整えただけ（例 "Extraction Faithfulness Public Models 2026-10-08"）で、日付まで題に入っている。原文の H1 に日付が無ければ題に日付を入れない。
+原文の H1 は `git show <固定 commit>:wiki/<path>` の最初の `# ` 行。英訳は意味を足さず、読者が内容を予想できる自然な英語の見出しにする。本文は変えない
+（`<title>` と `<h2>` の 2 か所以外は 1 文字も変えずにファイルの全文を返す）。
+
+- **原文に H1 が無いページ**（galleria の Claude Code が確かめた、2026-10-09）: H1 があるのは `extraction-faithfulness-public-models-2026-10-08` と
+  `local-llm-extraction-faithfulness-2026-10-05` の 2 ページだけで、残り 17 ページは frontmatter の直後に本文が始まり、`title:` も無い。
+  この 17 ページの題は、**原文の frontmatter の `summary` の主旨を短い英語の見出しにしたもの**にする。summary に無い意味を足さない・強めない、日付を入れない
+  （summary の冒頭が「ブロードリスニング — …」のように題の形をしていれば、その部分を英訳する）。西尾が別の題の付け方を選んだら、この規則を直して回し直す
+- 19 ページを 1 回の応答で返すと全文で約 31 万字になり、1 回の応答の上限に収まらない。**3 ページずつの項目に分けた**（2026-10-09、galleria の Claude Code）:
+
+- [ ] **L23a 題（L01〜L03）**: `analysis-stance`、`broadlistening`、`pipeline`
+- [ ] **L23b 題（L04〜L06）**: `extraction-faithfulness-public-models-2026-10-08`、`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`
+- [ ] **L23c 題（L07〜L09）**: `label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`、`labelling-prompt-few-shot-template-confound-2026-06-03`
+- [ ] **L23d 題（L10〜L12）**: `llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`
+- [ ] **L23e 題（L13〜L15）**: `public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`
+- [ ] **L23f 題（L16〜L18）**: `pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`
+- [ ] **L23g 題（L19）**: `broad-listening-book-extractions`
 - [ ] **L24 英語の一覧**: `index.html` の各行の題を L23 の題に揃え、要約を原文の frontmatter の `summary` の忠実な英訳にする（圧縮で留保を落とさない。
   例: L04 は「出力が原文の写しに寄る」を残す）
-- [ ] **L25 日本語の一覧**: `ja.html` の各行の題を**原文の H1 の日本語のまま**、要約を原文の `summary` の日本語のまま（訳さない）にする。リンクは原文と英訳の両方
+- [ ] **L25 日本語の一覧**: `ja.html` の各行の題を**原文の H1 の日本語のまま**、要約を原文の `summary` の日本語のまま（訳さない）にする。リンクは原文と英訳の両方。
+  原文に H1 が無い 17 ページは、L23 で付けた英語の題と同じ内容の短い日本語の見出しにし、語は原文の `summary` の語を使う（意味を足さない）
 
 ## 回答（人間から）
 

@@ -5,7 +5,7 @@
 ```
 state: waiting        # running / waiting / stopped / done
 current_item: L22
-done_items: 22 / 25
+done_items: 22 / 31
 gemini_weekly_remaining: 90.7%
 last_update: 2026-10-09 19:35 JST
 runner_note: QUEUE の項目が尽きた
@@ -13,7 +13,7 @@ runner_note: QUEUE の項目が尽きた
 
 ## 判断待ち
 
-- （なし）
+- （galleria の Claude Code、2026-10-09）原文 19 ページのうち 17 ページには H1 が無い。L23・L25 はこの 17 ページの題を原文の summary の主旨から作る規則で回す（QUEUE の L23 の注）。別の題の付け方がよければ回答欄へ
 
 ## 直近
 
