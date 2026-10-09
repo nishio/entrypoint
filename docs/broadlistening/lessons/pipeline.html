@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pipeline — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/pipeline.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/pipeline.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/pipeline.md">Japanese original</a>]
+
+<h2>Pipeline</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/pipeline.md">wiki/concepts/pipeline.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> Analysis pipeline — extraction → embedding → hierarchical clustering → labeling → visualization</p>
+
+<h2>Placement (Important: canonical location has been moved)</h2>
+
+<p><strong>The canonical implementation as of 2026 is <code>packages/analysis-core/src/analysis_core/steps/</code></strong>. All 8 steps are here.</p>
+
+<p>After the legacy cleanup merge on 2026-05-23, the old Python implementation no longer remains in <code>apps/api/broadlistening/pipeline/</code>. What remains in the current tree are only sample <code>configs/</code> / <code>inputs/</code>, and the canonical path for the execution code has been unified into <code>analysis-core</code>. For details, see <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/refactoring-status.md">refactoring-status</a>.</p>
+
+<ul>
+<li>Entry point (recommended): <code>python -m analysis_core</code> or <code>kouchou-analyze</code> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/cli.md">cli</a>)</li>
+</ul>
+
+<h2>Step Sequence</h2>
+
+<ol>
+<li><code>extraction</code> — Extract "opinions" from raw comments using LLMs (highest cost)</li>
+<li><code>embedding</code> — Convert each opinion into an embedding vector</li>
+<li><code>hierarchical_clustering</code> — Hierarchical clustering (first layer / second layer)</li>
+<li><code>hierarchical_initial_labelling</code> — Initial labels for each cluster</li>
+<li><code>hierarchical_merge_labelling</code> — Upper-level label integration</li>
+<li><code>hierarchical_overview</code> — Overall summary</li>
+<li><code>hierarchical_aggregation</code> — Generate aggregated report</li>
+<li><code>hierarchical_visualization</code> — Output scatter plot, treemap, dense-scatter</li>
+</ol>
+
+<h2>Execution Modes</h2>
+
+<p>There are **2 lineages** in <code>analysis_core.PipelineOrchestrator</code>:</p>
+
+<ul>
+<li><code>run_default()</code> / <code>run_workflow()</code> — The current canonical path. The CLI and API server use this.</li>
+<li><code>run()</code> — A direct-step fallback. It remains for compatibility but is deprecated, and is not the canonical path (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/refactoring-status.md">refactoring-status</a>).</li>
+</ul>
+
+<p>From a user's perspective, this corresponds to the core of the **CLI mode** in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/usage-modes.md">usage-modes</a>. Even in the Web UI mode, the calculation itself shares this pipeline, but the display routing diverges on the <code>public-viewer</code> side.</p>
+
+<h2>How the LLM grouping-based LLM classification was expected to be inserted</h2>
+
+<p>In the week of 2026-02-11 in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-dev-kouchouai-2026-q1.md">slack-dev-kouchouai-2026-q1</a>, a **branch that diverges to LLM-based clustering after <code>extraction, embedding</code>** is mentioned as an idea for the near future. This is not the theoretically optimal form, but a compatibility-first proposal to **verify the analysis switching part while maintaining compatibility with the existing pipeline and visualization** first.</p>
+
+<p>In the week of 2026-02-25 of the same source, it is also organized that branching after embedding is for "ease of implementation" and "later visualization," and that embedding is not logically essential.<br>
+In short, **the near-term branch uses <code>embedding</code> as a stepping stone, but in the long term, there is room to move the classification criteria itself from the metric space to a classification tree**.</p>
+
+<h2>Location and Schema of Outputs</h2>
+
+<p>Under <code>{output_base_dir}/{report_id}/</code> (specified by <code>--output-dir</code> in the CLI. For the API server, <code>settings.REPORT_DIR</code>):</p>
+
+<ul>
+<li><code>args.csv</code> — List of extracted opinions (kebab-case columns: <code>arg-id</code>, <code>comment-id</code>, etc.)</li>
+<li><code>embeddings.pkl</code> — **The original embedding vectors** (not 2D after UMAP)</li>
+<li><code>hierarchical_clusters.csv</code> — Cluster hierarchy</li>
+<li><code>hierarchical_result.json</code> — The integrated result read by the viewer</li>
+<li><code>final_result_with_comments.csv</code> — Output when <code>config.is_pubcom=true</code>. **Only this CSV is snake_case** (<code>arg_id</code>, <code>category_id</code>) — others are kebab-case (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/gotchas.md">gotchas</a>)</li>
+</ul>
+
+<p>Detailed schema is in <code>docs/development/plugin-output-data-structures.md</code>.</p>
+
+<h2>Major Hidden Assumptions and Pitfalls</h2>
+
+<ul>
+<li>**There are traces on Slack that <code>embeddings.pkl</code> was mistakenly recognized as 2D after UMAP** (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-dev-kouchouai-2025-q4.md">slack-dev-kouchouai-2025-q4</a>), but in the code of <code>main@3809a7a</code>, the <code>embedding</code> step saves the original embedding vectors into <code>embeddings.pkl</code>, and the <code>hierarchical_clustering</code> step reads it before reducing it to 2D with UMAP (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a>)</li>
+<li>**The automatic numbering of <code>comment-id</code> is path-dependent**: Web CSV uploads and spreadsheet imports automatically generate it, but for CLI/plugins/direct CSV, the plugin side is responsible for issuing the <code>comment-id</code></li>
+<li>**<code>propertyMap</code>** (<code>hierarchical_result.json</code>): <code>hierarchical_aggregation</code> crashes if there is no corresponding column in <code>args.csv</code></li>
+<li>**Case inconsistency of CSV column names**: Only the <code>is_pubcom=true</code> path is snake_case</li>
+<li>**E2E pipeline tests are billed**: About $0.01/run with gpt-4o-mini. Excluded from the default <code>pytest</code> by <code>norecursedirs = ["tests/e2e"]</code> in <code>pyproject.toml</code>, and not executed in CI either</li>
+</ul>
+
+<h2>The Default Issue with Cluster Numbers</h2>
+
+<p>Resurfaced under the <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-minutes.md">meeting-minutes</a> 2026-05-18 heading: The example in <code>docs/user-guide/cli-quickstart.md</code> is <code>[3, 6]</code>. Claude Code uses this exactly as is, resulting in a coarse grouping like <code>3 → 6 → 12 → 24</code> even for datasets of around 300 items.<br>
+In <code>Issue #830</code> / <code>PR #832</code> on 2026-05-18, the direction to make <code>cluster_nums</code> optional and automatically calculate it from the number of <code>argument</code>s after extraction using the cube-root rule when unspecified materialized, and was subsequently merged. For <code>argument_count=1000</code>, it returns <code>[10, 100]</code>, and the small dataset side is also patched to <code>2 -&gt; [2]</code>, <code>3 -&gt; [2, 3]</code>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a>.</p>
+
+<p>In the past, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/other-contributors.md">kitaro</a> also implemented an automatic selection based on silhouette-score in PR #567, but it was reverted in #579 due to triggering embedding errors. The current change is not a retry of that, but rather is more accurately understood as a **modification to align CLI / <code>analysis-core</code> with the simple recommended value rules already present on the Admin side**. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a>.</p>
+
+<h2>Why UMAP → Clustering? (Known Theoretical Weaknesses)</h2>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-minutes.md">meeting-minutes</a> 2025-10-08: Research-wise, it is known that directly applying HDBSCAN in high dimensions yields higher accuracy, but since humans cannot see high dimensions, the current configuration is maintained as a trade-off with the readability of scatter plots. If one wants to try an alternative, the policy is to implement it as an <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">analysis plugin</a>.</p>
+
+<p>Additionally, in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-kouchouai-algorithm-dev.md">slack-kouchouai-algorithm-dev</a>, from 2025-05 to 2026-03, there have been ongoing criticisms:</p>
+
+<ul>
+<li>It is easy to read meaning into UMAP axes</li>
+<li>Accuracy drops when performing <code>k-means</code> after reducing to 2D</li>
+<li>Pros and cons within the same topic are easily placed close together</li>
+</ul>
+
+<p>Therefore, the current configuration should be read not as something "believed to be theoretically sound," but rather as a **provisional form prioritizing visualization convenience**.</p>
+
+<p>Book section 13.2.4 (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/broad-listening-book-source.md">broad-listening-book-source</a>) similarly clarifies that the UMAP → clustering order is "a choice different from the standard practice in machine learning, and involves design compromises." This serves as a source for quotation when explaining it externally as a finalized design decision in a publishable form. Section 13.5 organizes a two-architecture comparison between the **scatter plot type vs. Long Context type** prompted by the expansion of LLM context windows, which aligns with the <code>analysis_mode</code> strategy of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/pr-827-llm-grouping-capabilities-plan-2026-05-18.md">pr-827-llm-grouping-capabilities-plan-2026-05-18</a>. For details, see <a href="broad-listening-book-extractions.html">broad-listening-book-extractions</a>.</p>
+
+<h2>Lightweighting and CLI Static Output (2026-05)</h2>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-minutes.md">meeting-minutes</a> 2026-05-18 heading / PR #825:</p>
+
+<ul>
+<li>Previously, it was necessary to "set up a server and <code>npm run build</code>," but AI coding agents want to "output HTML without a server and statically host it"</li>
+<li>Added implementation to output static HTML directly from Python. The policy is to make this the default</li>
+<li>The appearance is not 100% identical to the old server path — there is a byproduct of being "easy to try experimental views"</li>
+<li>However, the main path of the current product is still to render <code>hierarchical_result.json</code> with the <code>public-viewer</code>, and it is more accurate to understand <code>report.html</code> as an observation HTML for the CLI</li>
+</ul>
+
+<h2>What PR #827 materialized</h2>
+
+<p>In <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/pr-827-llm-grouping-capabilities-plan-2026-05-18.md">pr-827-llm-grouping-capabilities-plan-2026-05-18</a>, the **"compatible branch to insert LLM classification after <code>embedding</code>"** envisioned on Slack is verbalized as a more concrete transition plan.</p>
+
+<ul>
+<li>In the short term, add <code>analysis_mode=llm_grouping</code> while leaving <code>embedding</code>, and maintain viewer compatibility by outputting <code>x/y</code> and <code>cluster-level-*</code> in the conventional format</li>
+<li>In the long term, automatically derive <code>analysis_capabilities</code> from actual data, and judge the availability of visualization modes with <code>requirements</code></li>
+</ul>
+
+<p>This is consistent with the intention of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-dev-kouchouai-2026-q1.md">slack-dev-kouchouai-2026-q1</a> to "first try analysis switching in a way that is compatible with the existing pipeline and visualization." On the other hand, when considering this second mode specifically as one for **LLM direct grouping**, it also becomes apparent that the short-term compatibility plan itself is nothing more than a "provisional measure of projecting temporarily into a scatter-compatible form." The original output of the LLM grouping lineage is tree / taxonomy / stance grouping, and it is highly likely that a scatter plot is not a natural primary artifact. Therefore, the core objective in the long term is not to increase the number of modes, but to **create a capability contract where the product is viable even in an analysis mode that does not assume a scatter plot**. It is reasonable to view that the production implementation for that was uninitiated in <code>main</code> as of 2026-05-18.</p>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>Implementation of the <code>extraction.skip: true</code> option (requested multiple times but unlanded, as of the 2026-05-18 meeting minutes heading)</li>
+<li>Report reuse (Issue #19) had an "implementation finished" report in 2026-02, current status check is needed</li>
+<li>Maintenance / removal of the scatter plot: "It is not the era to be satisfied just by looking at a scatter plot" (ken-san, 2025-10-01) vs <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/nishio.md">nishio</a> "Keep it at least until the book version release in 2026-09, and if a better visualization is found, concurrent use -&gt; default switch is also possible." Undecided (for details, see <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/open-decisions.md">open-decisions</a> A1)</li>
+<li>Whether to insert the LLM grouping-based LLM classification as a compatible branch after <code>embedding</code>, or to make it an independent workflow that omits <code>embedding</code> itself</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-05-17: Initial creation</li>
+<li>2026-05-17: Added the intention to introduce LLM grouping-based LLM classification derived from the <code>#2_開発_広聴ai</code> log</li>
+<li>2026-05-17: Retracted the description of <code>embeddings.pkl</code> as 2D after UMAP, and separated the Slack statement from the code implementation of <code>main@3809a7a</code></li>
+<li>2026-05-18: Referenced PR <code>#827</code>, and added that the compatible branch for LLM grouping-based LLM classification materialized as a plan PR</li>
+<li>2026-05-18: Added <code>#2_開発_広聴ai_アルゴリズム開発</code> to source, and supplemented the continuous criticism of UMAP → clustering</li>
+<li>2026-05-21: Ingested chapter 13 of the book as <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/broad-listening-book-source.md">broad-listening-book-source</a> / <a href="broad-listening-book-extractions.html">broad-listening-book-extractions</a>, and cross-linked the publishable form of the design decisions</li>
+<li>2026-05-24: Confirmed <code>work/kouchou-ai/main@e5ed743</code>, and updated the explanations of placement and execution modes to match the current path after the deletion of the old <code>apps/api/broadlistening/pipeline/</code> implementation</li>
+<li>2026-05-25: Corrected the stance of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/nishio.md">nishio</a> on maintaining the scatter plot from "there are customers" to a timeline-based expression: "Keep it until the book version in 2026-09, and if a better visualization is found, concurrent use -&gt; switch is also possible"</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
