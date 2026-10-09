@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Human Pairwise Label Preference Experiment 2026-06-02 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/human-pairwise-label-preference-experiment-2026-06-02.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/human-pairwise-label-preference-experiment-2026-06-02.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/human-pairwise-label-preference-experiment-2026-06-02.md">Japanese original</a>]
+
+<h2>Human Pairwise Label Preference Experiment 2026-06-02</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/human-pairwise-label-preference-experiment-2026-06-02.md">wiki/analyses/human-pairwise-label-preference-experiment-2026-06-02.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> In label quality experiments, rather than having humans critique single labels, multiple label candidates generated from the same tree/evidence are compared in a blind A/B test that hides algorithm origins. The difficult full UI evaluation is decomposed into single labels, adjacent label sets, and labels with representative examples, and their pairwise preferences are used as judge calibration data.</p>
+
+<h3>Conclusions</h3>
+<p>Human evaluation for label quality experiments should not start with critiquing a single label. First, create multiple label candidates from the same tree/evidence/presentation context, and ask humans <strong>which is better, A or B</strong>. The role of humans is not to be a detailed rubric judge, but to return preferences from comparable candidates. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-human-pairwise-label-preference-before-judge-2026-06-02.md">nishio-human-pairwise-label-preference-before-judge-2026-06-02</a></p>
+
+<p>At this time, humans are not shown which algorithm/process A/B originated from. If names like <code>current main</code>, <code>setwise</code>, <code>LLM grouping</code>, or <code>hierarchical</code> are visible, humans are likely to choose based on preconceptions rather than actual label quality. The display order of A/B is also randomized/counterbalanced, and position bias is recorded. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-blind-human-label-presentation-context-2026-06-02.md">nishio-blind-human-label-presentation-context-2026-06-02</a></p>
+
+<p>This also changes the goal of judge improvement. The first judge v1 does not look at "can it verbalize the shortcomings of a single label," but rather "can it reproduce human pairwise preferences."</p>
+
+<h3>Why A/B First</h3>
+<p>When looking at a single label, humans cannot always immediately verbalize that "coverage is weak," "sibling distinction is weak," or "there is an unsupported axis." However, if two labels for the same cluster are placed side-by-side, it becomes easier to judge things like "this one is closer to the contents," "this one is confusing with its neighbors," or "it is short but missing information."</p>
+
+<p>Therefore, human observation is not initially recorded as free-text critiques, but saved as preference records like the following.</p>
+
+<pre><code class="language-json">{
+  "preference_id": "pref-001",
+  "comparison_id": "cmp-hierarchical-8-40-label-process-001",
+  "tree_run_id": "hierarchical_8_40",
+  "cluster_id": "level1:3",
+  "candidate_a_labelling_run_id": "baseline_merge",
+  "candidate_b_labelling_run_id": "sibling_aware_setwise",
+  "algorithm_origin_visible": false,
+  "candidate_a_display_position": "left",
+  "candidate_b_display_position": "right",
+  "presentation_context": "label_with_representatives",
+  "ui_surface": "cluster_detail_panel",
+  "factor_under_test": "labelling_process",
+  "fixed_inputs": ["dataset", "extracted_arguments", "embeddings", "tree_run", "evidence_policy"],
+  "winner": "b",
+  "confidence": 2,
+  "reason_tags": ["covers_more", "distinguishes_siblings"],
+  "free_text": null
+}
+</code></pre>
+
+<p>Free text is made optional. What is mandatorily required of humans is <code>A / B / tie / unsure</code>, a light confidence rating, and reason tags if needed.</p>
+
+<h3>Presentation Context</h3>
+<p>What is shown to the human together is also recorded as part of the preference. Since labels do not always exist alone in the actual UI, without separating the presentation context, it is unclear in which situation a label is good. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-blind-human-label-presentation-context-2026-06-02.md">nishio-blind-human-label-presentation-context-2026-06-02</a></p>
+
+<table>
+<thead>
+<tr>
+<th>presentation_context</th>
+<th>What is shown</th>
+<th>What is mainly understood</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label_only</code></td>
+<td>Only label text</td>
+<td>Whether it stands alone as a heading, whether it reads shortly</td>
+</tr>
+<tr>
+<td><code>sibling_label_set</code></td>
+<td>A complete set of adjacent/sibling labels of the same parent</td>
+<td>Whether it can be distinguished from neighbors, whether it is readable as a label set</td>
+</tr>
+<tr>
+<td><code>label_with_representatives</code></td>
+<td>Label + representative arguments</td>
+<td>Whether the label is supported by actual examples, whether it is missing important axes</td>
+</tr>
+</tbody>
+</table>
+
+<p>Experiments that change <code>presentation_context</code> and experiments that change <code>labelling_process</code> are separated. When comparing algorithms/labelling processes, the presentation context is fixed. Conversely, when comparing presentation contexts, candidate labels are fixed and only the display context is changed.</p>
+
+<p><code>full_ui_context</code> is not used as the presentation context for the first clean A/B experiments. In the actual UI, cluster size, descriptions, representative examples, adjacent labels, hierarchy, layout, interaction, etc., all have an effect simultaneously, making it difficult to interpret what drove the preference. That is exactly why it is decomposed into three: <code>label_only</code>, <code>sibling_label_set</code>, and <code>label_with_representatives</code>. Full UI is treated as an integration check after narrowing down candidates with decomposition tests. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-blind-human-label-presentation-context-2026-06-02.md">nishio-blind-human-label-presentation-context-2026-06-02</a></p>
+
+<h3>Relationship with the One-Factor Principle</h3>
+<p>"Creating multiple labels with different parameters" and "changing one factor at a time" do not contradict. In a single comparison block, the axis to be changed is narrowed down to one.</p>
+
+<ul>
+<li>Labelling process comparison: Fix tree, evidence, and model, and make multiple candidates only for prompt/process.</li>
+<li>Evidence policy comparison: Fix tree, prompt, and model, and make multiple candidates only for the materials shown.</li>
+<li>Tree comparison: Fix labelling process, evidence, and model, and make multiple candidates only for tree generation.</li>
+<li>Presentation context comparison: Fix candidate labels and tree, and change only <code>label_only</code> / <code>sibling_label_set</code> / <code>label_with_representatives</code>.</li>
+</ul>
+
+<p>If multiple axes are mixed in the same A/B test, even if a human chooses B, it is unknown whether the prompt had an effect or the evidence had an effect. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/one-factor-experiment-principle-2026-06-02.md">one-factor-experiment-principle-2026-06-02</a></p>
+
+<h3>First Experiments to Run</h3>
+<p>The first experiment will not be a judge rubric but an <strong>A/B preference collection of label variants</strong>.</p>
+
+<p>Things to fix:</p>
+
+<ul>
+<li>Dataset: LLM grouping 400 items corpus</li>
+<li>Tree: <code>hierarchical_8_40</code></li>
+<li>Evidence policy: Existing evidence or same representative artifact for now</li>
+<li>Model: Same model</li>
+<li>Display context: How to show cluster size, sibling labels, and representative arguments</li>
+<li>Blind conditions: Algorithm/process names are hidden from humans. The display position of A/B is randomized/counterbalanced.</li>
+</ul>
+
+<p>Things to change:</p>
+
+<ul>
+<li>Labelling process/prompt only</li>
+</ul>
+
+<p>What to ask humans:</p>
+
+<ul>
+<li>Which is better, A or B</li>
+<li>Whether tie/unsure</li>
+<li>Whether confidence is low/medium/high</li>
+<li>If choosing reason tags, around <code>covers_more</code>, <code>distinguishes_siblings</code>, <code>more_concise</code>, <code>less_unsupported</code>, <code>better_heading</code></li>
+</ul>
+
+<p>It is realistic to start with <code>sibling_label_set</code> or <code>label_with_representatives</code> at first. <code>label_only</code> is good for diagnostics looking at readability as a heading. Confirmation in full UI is not done as a clean A/B experiment, but after narrowing down candidates with these decomposition tests.</p>
+
+<p>After this preference dataset is created, the same A/B is shown to the judge. The judge's evaluation is seen by how much it can reproduce human winner/tie/reason_tags.</p>
+
+<h3>Correcting Experiment Order</h3>
+<p>The corrected order is as follows.</p>
+
+<ol>
+<li>Create a comparison corpus that accumulates tree/labelling runs.</li>
+<li>Create label variants with different parameters under the same tree/evidence.</li>
+<li>Hide algorithm/process origins, fix presentation context, and ask humans for blind A/B preferences.</li>
+<li>Calibrate the judge to reproduce those preferences.</li>
+<li>Once the judge matches to a certain degree, use it to assist in evaluating broader parameter sweeps or view prototypes.</li>
+</ol>
+
+<p>With this, excessive verbalization is not demanded of humans, and the judge can be nurtured in connection with human judgment.</p>
+
+<h3>Open Questions</h3>
+<ul>
+<li>Whether to start A/B on a per-cluster label basis or across an entire same top-level label set.</li>
+<li>Whether <code>sibling_label_set</code> or <code>label_with_representatives</code> is better for the first presentation context.</li>
+<li>After which decomposition test the full UI integration check should be performed.</li>
+<li>Whether to make reason tags mandatory from the start, or start with only winner/tie.</li>
+<li>How many pairwise preferences are needed to call it a judge v1 calibration.</li>
+<li>When there are multiple human evaluators, whether to treat disagreements as label ambiguity or as rubric insufficiency.</li>
+</ul>
+
+<h3>Updates</h3>
+<ul>
+<li>2026-06-02: Based on a supplemental note from nishio that "full_ui_context is difficult, so it was decomposed into the prior three," the policy was corrected to remove <code>full_ui_context</code> from the peer presentation contexts and treat it as an integration check after decomposition tests.</li>
+<li>2026-06-02: Added <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-blind-human-label-presentation-context-2026-06-02.md">nishio-blind-human-label-presentation-context-2026-06-02</a>. Added the policy of presenting A/B to humans while hiding algorithm/process origins, and recording <code>presentation_context</code> separated into single labels, adjacent label sets, and labels + representative arguments.</li>
+<li>2026-06-02: Initial draft created. nishio's point that "humans find it hard to critique a single label in isolation, so we should first make labels with different parameters and ask which is better" was organized as a pairwise preference experiment.</li>
+</ul>
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>
