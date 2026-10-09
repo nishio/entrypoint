@@ -4,9 +4,12 @@
 
 1. 開発者 wiki のディレクトリ（`C:/Users/nishi/claude-win/kouchou-ai-developer-wiki` 等）に移動します。
 2. 以下のコマンドで、固定 commit `3459fc653917039e8906a2bf09b9164855ee84e3` 以降に変更された Markdown ファイルの一覧を取得します。
+   galleria の作業ツリーは固定 commit を checkout したままにしてある（runner が原文の版をそれで確かめる）ので、`HEAD` ではなく
+   fetch した `origin/main` と比べます。作業ツリーの checkout は動かしません。
 
    ```bash
-   git diff --name-only 3459fc653917039e8906a2bf09b9164855ee84e3 HEAD -- wiki/
+   git fetch origin
+   git diff --name-only 3459fc653917039e8906a2bf09b9164855ee84e3 origin/main -- wiki/
    ```
 
 3. 出力されたファイルの一覧と、現在の翻訳対象ページ（L01〜L19 の原本パス）を照らし合わせます。
