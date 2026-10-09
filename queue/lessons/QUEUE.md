@@ -117,7 +117,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
   （summary の冒頭が「ブロードリスニング — …」のように題の形をしていれば、その部分を英訳する）。西尾が別の題の付け方を選んだら、この規則を直して回し直す
 - 19 ページを 1 回の応答で返すと全文で約 31 万字になり、1 回の応答の上限に収まらない。**3 ページずつの項目に分けた**（2026-10-09、galleria の Claude Code）:
 
-- [ ] **L23a 題（L01〜L03）**: `analysis-stance`、`broadlistening`、`pipeline`
+- [x] **L23a 題（L01〜L03）**: `analysis-stance`、`broadlistening`、`pipeline`
 - [ ] **L23b 題（L04〜L06）**: `extraction-faithfulness-public-models-2026-10-08`、`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`
 - [ ] **L23c 題（L07〜L09）**: `label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`、`labelling-prompt-few-shot-template-confound-2026-06-03`
 - [ ] **L23d 題（L10〜L12）**: `llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`

@@ -3,12 +3,11 @@
 毎項目の終わりに上書きする。
 
 ```
-state: waiting        # running / waiting / stopped / done
-current_item: L22
-done_items: 22 / 31
-gemini_weekly_remaining: 90.7%
-last_update: 2026-10-09 19:35 JST
-runner_note: QUEUE の項目が尽きた
+state: running        # running / waiting / stopped / done
+current_item: L23a
+done_items: 23 / 31
+gemini_weekly_remaining: 90.9%
+last_update: 2026-10-09 20:17 JST
 ```
 
 ## 判断待ち
@@ -17,6 +16,7 @@ runner_note: QUEUE の項目が尽きた
 
 ## 直近
 
+- L23a 題（L01〜L03）を処理完了
 - L22 同期の手順 (`README.md` の作成) を処理完了
 - L21 入口からのリンク (`docs/broadlistening/index.html` と `ja.html`) を処理完了
 - L20 一覧 (`index.html` と `ja.html`) を処理完了
