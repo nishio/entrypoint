@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L23g
-done_items: 29 / 31
-gemini_weekly_remaining: 87.6%
-last_update: 2026-10-09 20:41 JST
+current_item: L24
+done_items: 30 / 31
+gemini_weekly_remaining: 85.0%
+last_update: 2026-10-09 22:46 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 20:41 JST
 
 ## 直近
 
+- L24 英語の一覧 (`index.html`) を処理完了
 - L23g 題（L19）を処理完了
 - L23f 題（L16〜L18）を処理完了
 - L23e 題（L13〜L15）を処理完了
