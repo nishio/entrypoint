@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L26c
-done_items: 36 / 39
-gemini_weekly_remaining: 83.1%
-last_update: 2026-10-09 23:35 JST
+current_item: L26d
+done_items: 37 / 39
+gemini_weekly_remaining: 82.7%
+last_update: 2026-10-09 23:38 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 23:35 JST
 
 ## 直近
 
+- L26d 題を原文の H1 から（graph-visualization-proposal-2026-05-25、public-ui-requirements-for-broadlistening、kj-method-broadlistening-framing-2026-05-25）を処理完了
 - L26c 題を原文の H1 から（labelling-prompt-few-shot-template-confound-2026-06-03、llm-grouping-experiment、umap-seed-history）を処理完了
 - L26b 題を原文の H1 から（label-coverage-policy-2026-05-29、label-quality-rubric-evaluation-2026-05-29、human-pairwise-label-preference-experiment-2026-06-02）を処理完了
 - L26a 題を原文の H1 から（analysis-stance、broadlistening、pipeline）を処理完了

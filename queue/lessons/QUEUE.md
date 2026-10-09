@@ -145,7 +145,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L26a 題を原文の H1 から**（`analysis-stance`、`broadlistening`、`pipeline`）
 - [x] **L26b 題を原文の H1 から**（`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
 - [x] **L26c 題を原文の H1 から**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`）
-- [ ] **L26d 題を原文の H1 から**（`graph-visualization-proposal-2026-05-25`、`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`）
+- [x] **L26d 題を原文の H1 から**（`graph-visualization-proposal-2026-05-25`、`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`）
 - [ ] **L26e 題を原文の H1 から**（`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`）
 - [ ] **L26f 題を原文の H1 から**（`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
 - [ ] **L27 英語の一覧**: `index.html` の各 `<li>` の題を L26 の題に揃える（要約と、それ以外の行は変えない）
