@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pipeline Step Addition Framing 2026-05-27 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/pipeline-step-addition-framing-2026-05-27.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-addition-framing-2026-05-27.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-addition-framing-2026-05-27.md">Japanese original</a>]
+
+<h2>Pipeline Step Addition Framing 2026-05-27</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-addition-framing-2026-05-27.md">wiki/analyses/pipeline-step-addition-framing-2026-05-27.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> The proposal to add pipeline steps, which repeatedly appeared in recent research, should be judged not by the number of steps but by whether 'new artifact responsibilities should be made first-class'. Boundary cases, counterexamples, and bridges should be independent artifacts, while mere label copy improvements should be kept as experimental optional steps.</p>
+
+<p>In recent research memos, proposals for 'adding a step to the pipeline' have appeared multiple times. On the surface, it seems like a discussion about increasing the number of steps, but in reality, we should consider the following two lineages separately.</p>
+
+<ol>
+<li><strong>Post-processing of the top-level label set</strong>, such as <code>hierarchical_label_refinement</code>. This is an experiment to adjust the brevity, granularity, and differences of headings after <code>merge_labelling</code> without changing the existing cluster structure. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>.</li>
+<li><strong>Artifacts with interpretation and explanation responsibilities</strong>, such as <code>representative_docs</code>, <code>boundary_cases</code>, <code>counterexamples</code>, <code>unresolved_cards</code>, and <code>bridge edge reason</code>. This has repeatedly appeared in multiple places in UMAP / BERTopic related research, LLM pairwise graph, MST + bridge visualization, and KJ method (KJ法) brainstorming. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-umap-clustering-bertopic-deep-research-2026-05-25.md">gpt-umap-clustering-bertopic-deep-research-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-llm-pairwise-spectral-small-n-brainstorm-2026-05-25.md">gpt-llm-pairwise-spectral-small-n-brainstorm-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a>.</li>
+</ol>
+
+<h3>Conclusion</h3>
+
+<p>The judgment criterion should be placed on <strong>whether 'responsibilities are increasing but hidden in existing steps', rather than 'whether the number of steps increases'</strong>.</p>
+
+<ul>
+<li>For mere prompt variants, copy tuning, and shortening for UI headings, the concepts of the default pipeline should not be increased. Treat them as experimental optional steps or modes of existing labeling-related steps.</li>
+<li>On the other hand, for artifacts used independently by subsequent reports / UI / audit / human reviews, such as boundary cases, counterexamples, bridges, unresolved cards, and rationale edges, cramming them into existing <code>aggregation</code> or <code>visualization</code> would make things more complex. These should be separated into steps / capabilities as first-class artifacts.</li>
+</ul>
+
+<p>In other words, <strong>step additions should generally be avoided, but steps necessary for separating responsibilities should be added</strong>. Without this boundary, short-term 'simplicity' will turn into long-term incomprehensibility.</p>
+
+<h3>Looking from the High-Level Purpose</h3>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/kouchou-ai.md">kouchou-ai</a> (広聴AI) is an OSS implementation of broad listening that includes operations by municipalities, political parties, and non-engineers, centered on creating an 'opinion map' from free-text comments. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/kouchou-ai.md">kouchou-ai</a> and <a href="broadlistening.html">broadlistening</a>.</p>
+<p>However, recent KJ method brainstorming reinterprets the purpose of Kouchou-AI at an even higher level as <strong>'a device to raise public hypotheses from chaos'</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a>.</p>
+
+<p>In light of this purpose, simply 'putting all opinions into some cluster and attaching clean headings' is not enough. Rather, what is important is:</p>
+
+<ul>
+<li>Being able to return to the original text</li>
+<li>Not erasing minority opinions or opinions that are difficult to classify</li>
+<li>Being able to show cluster boundaries, counterexamples, adjacent issues, causality, and opposition</li>
+<li>Leaving rationales for humans to review the organization produced by AI</li>
+</ul>
+
+<p>These are not of a nature that can be solved by simply adding a bit more text to <code>aggregation</code>. If they do not remain as artifacts, they cannot be reused in the UI or reviews, and cannot serve as a foothold for examination as public hypotheses.</p>
+
+<h3>Concerns on the 'Complexity Increases' Side</h3>
+
+<p>The concern about adding steps is valid. The current pipeline is already a multi-stage structure of extraction → embedding → clustering → labelling → overview → aggregation → visualization, involving status, rerun, config, spec, token usage, and error handling. From <a href="pipeline.html">pipeline</a>.</p>
+
+<p>If steps are added indiscriminately to this, the following will happen.</p>
+
+<ul>
+<li>Execution time and token cost increase</li>
+<li>Tracking for status UI and spec increases</li>
+<li>Combinations of skip / rerun increase</li>
+<li>Artifact versioning increases</li>
+<li>It becomes harder for users to understand 'what should be configured'</li>
+</ul>
+
+<p>Particularly, <code>label_refinement</code> runs this risk. While this is useful as an experiment to improve the readability of the label list, it is not the fundamental purpose of the project itself. If prompt variations like <code>setwise</code> / <code>contrast</code> / <code>balanced</code> proliferate as steps, the pipeline will bloat with the history of prompt experiments. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>.</p>
+
+<p>Therefore, for the time being, <code>label_refinement</code> should be treated as an <strong>experimental step that is default off / <code>mode=none</code></strong>, and once stabilized, it would be best to absorb it into an internal mode of the 'semantic presentation' lineage. It is too early to strongly promote this as a permanent major stage of the product.</p>
+
+<h3>Concerns on the Side Where Cramming Makes it More Complex</h3>
+
+<p>On the other hand, cramming everything into existing steps is also dangerous.</p>
+
+<p>For example, if <code>aggregation</code> is tasked with heading shortening, representative document selection, boundary case extraction, counterexample detection, bridge edge classification, KJ-like unresolved cards, and report text generation all at once, the surface number of steps will not increase. However, in reality, a single step will carry multiple different artifacts and failure modes.</p>
+
+<p>The complexity in this case is worse.</p>
+
+<ul>
+<li>It is unclear what one wants to rerun</li>
+<li>It is unclear which prompt affected which artifact</li>
+<li>Artifacts required by the UI and report text generation become tightly coupled</li>
+<li>It becomes impossible to evaluate whether the 'cluster is bad' or the 'explanation artifact is bad'</li>
+<li>Later, when creating a graph view or KJ view, one will end up having to re-extract information from the text</li>
+</ul>
+
+<p>Recent research consistently moves in the direction of separating analysis artifacts, display artifacts, and explanation artifacts. The proposals to separate UMAP 2D and clustering spaces, to leave reasons in the LLM pairwise graph, to display relation types with MST + bridge, and to leave <code>unresolved_cards.md</code> in the KJ method all belong to this trend. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-umap-clustering-bertopic-deep-research-2026-05-25.md">gpt-umap-clustering-bertopic-deep-research-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-llm-pairwise-spectral-small-n-brainstorm-2026-05-25.md">gpt-llm-pairwise-spectral-small-n-brainstorm-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a>.</p>
+
+<p>Therefore, carving out boundary cases, counterexamples, bridges, and unresolved cards as <strong>interpretation artifacts</strong> rather than text generation tasks within <code>aggregation</code> is simpler in the long run.</p>
+
+<h3>Recommended Pipeline Shape</h3>
+
+<p>If aligned with current names, the following decomposition of responsibilities is good for the short to medium term.</p>
+
+<pre><code>extraction
+  -&gt; embedding / llm_pairwise_affinity
+  -&gt; structure
+       hierarchical_clustering / llm_grouping / pairwise_spectral
+  -&gt; labelling
+       initial_labelling / merge_labelling
+  -&gt; optional label_refinement
+       experiments for UI heading / label set readability
+  -&gt; interpretation_artifacts
+       representative_docs
+       boundary_cases
+       counterexamples
+       unresolved_cards
+       bridge_edges + relation_type + reason
+  -&gt; overview / aggregation
+       report text and publishable summary
+  -&gt; visualization
+       scatter / tree / graph / KJ board
+</code></pre>
+
+<p>What is important is to not necessarily make <code>interpretation_artifacts</code> the same way in all modes. In large-scale scatter systems, they can be output approximately from the vicinity of embeddings / clusters; in small-scale LLM pairwise systems, they can naturally be output from edge reasons; and in KJ systems, they can be output as board artifacts premised on human editing. What should be standardized is not the implementation but the <strong>artifact contract / capability</strong>. This aligns with the long-term strategy that we should create a contract where the product remains viable even in modes without a scatter plot. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/strategic-development-order-2026-05-23.md">strategic-development-order-2026-05-23</a>.</p>
+
+<h3>Judgment Criteria</h3>
+
+<p>Conditions under which it is acceptable to create a new step:</p>
+
+<ul>
+<li>Outputs an independent artifact that can be referenced from subsequent steps</li>
+<li>Has two or more downstream consumers, or could have them in the future</li>
+<li>When it fails, one wants to rerun and verify only that step</li>
+<li>The evaluation metric differs from existing steps</li>
+<li>The viewer / report can judge its availability as <code>analysis_capabilities</code></li>
+</ul>
+
+<p>Conditions under which it should remain a mode of an existing step:</p>
+
+<ul>
+<li>The output artifact is the same, and only the expression changes</li>
+<li>The main purpose is comparing prompt variants</li>
+<li>It is close to adjusting UI copy</li>
+<li>Even if it fails, the semantic structure of the pipeline as a whole does not change</li>
+<li>It is a one-off experiment with no reuse contract</li>
+</ul>
+
+<p>By these criteria, <code>label_refinement</code> leans towards being a <strong>mode / optional step</strong>, and <code>interpretation_artifacts</code> leans towards being a <strong>first-class step / capability</strong>.</p>
+
+<h3>Practical Judgment</h3>
+
+<p>The following policy is good for the time being.</p>
+
+<ol>
+<li><code>label_refinement</code> may be kept, but should not be shown as default complexity. Its purpose should be limited to 'experiments on label set readability', and prompt variants should not be continually increased.</li>
+<li>Boundary cases, counterexamples, bridges, and unresolved cards should not be mixed into <code>aggregation</code>; their artifact schemas should be designed first. Initially, intermediate artifacts in CSV / JSON will suffice.</li>
+<li>Do not immediately expose them to the UI. First, save them as CLI / research outputs, and let humans read them to determine their value.</li>
+<li>Only load those whose value has been confirmed into <code>analysis_capabilities</code>, making them usable by graph views / KJ views / report sections.</li>
+<li>In the non-expert experience of the Web UI, do not show the number of steps. Even if internal workflows increase, present them to users in units of artifacts like 'whether to display rationales, boundaries, and unresolved cases'.</li>
+</ol>
+
+<p>In other words, for the project, <strong>properly separating artifact responsibilities is more important than protecting the pipeline as a fixed box of 8 steps</strong>. However, that is different from adding prompt experiments as steps.</p>
+
+<h3>Corrections Based on 2026-05-28 Open PRs</h3>
+
+<p>Among the open PRs as of 2026-05-28 00:08 JST, three are directly related to yesterday's abstract discussion. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/open-pr-pipeline-step-observation-2026-05-28.md">open-pr-pipeline-step-observation-2026-05-28</a>.</p>
+
+<h4><code>#866</code> LLM grouping is a good example of avoiding cramming into existing steps</h4>
+
+<p><code>#866</code> adds <code>analysis_mode=llm_grouping</code>, the <code>analysis.llm_grouping</code> plugin, and a dedicated spec / workflow, and outputs existing viewer-compatible <code>hierarchical_clusters.csv</code> / <code>hierarchical_merge_labels.csv</code>. Even in the PR body, it is explicitly stated that this is an <strong>experimental entry point</strong> that maintains scatter plot compatibility, and that label refinement is not included as a separate issue. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/open-pr-pipeline-step-observation-2026-05-28.md">open-pr-pipeline-step-observation-2026-05-28</a>.</p>
+
+<p>This is a design that isolates LLM grouping as a separate <code>analysis_mode</code> / workflow, rather than 'cramming LLM grouping into a mode of existing <code>hierarchical_clustering</code>'. While there is a limit to keeping embedding-derived <code>x/y</code> for short-term compatibility, it is appropriate as a PR that creates an experimental entry point while recognizing that limitation.</p>
+
+<p>Judgment:</p>
+
+<ul>
+<li>The direction may be maintained</li>
+<li>Even after merging, do not evaluate 'the value of LLM grouping' based solely on scatter plot quality</li>
+<li>Proceed in the next stage to <code>analysis_capabilities</code> and receptacles for non-scatter views</li>
+</ul>
+
+<h4><code>#867</code> reuse-from is a foundation for reducing the complexity of step additions</h4>
+
+<p><code>#867</code> allows seeding intermediate artifacts from existing outputs using <code>--reuse-from</code> and skipping corresponding steps. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/open-pr-pipeline-step-observation-2026-05-28.md">open-pr-pipeline-step-observation-2026-05-28</a>.</p>
+
+<p>While this is not a new analysis method directly, it is important when adding downstream steps like <code>label_refinement</code>, <code>layout_generation</code>, and future <code>interpretation_artifacts</code>. Adding steps increases rerun costs and status complexity, but with reuse / skip, one can run experiments where 'extraction, embedding, and clustering are fixed and only the downstream is compared'.</p>
+
+<p>Judgment:</p>
+
+<ul>
+<li>This PR is of high value to be included prior to step additions themselves</li>
+<li>If testing <code>interpretation_artifacts</code>, it is best to design experiments with <code>--reuse-from</code> as a premise</li>
+</ul>
+
+<h4><code>#874</code> semantic island layout is treated as a display artifact for experimental paths</h4>
+
+<p><code>#874</code> adds a <code>hierarchical_layout_generation</code> step between aggregation and visualization, and adds named layouts like <code>embedding_umap</code> / <code>semantic_island_map</code> to <code>hierarchical_result.json.layouts</code>. Existing <code>arguments[].x/y</code> are left as embedding-derived coordinates. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/open-pr-pipeline-step-observation-2026-05-28.md">open-pr-pipeline-step-observation-2026-05-28</a>.</p>
+
+<p>This makes sense as an 'independent step of an experimental path'. This is because it is creating display artifacts that subsequent viewers can independently select, rather than mere prompt variants. Particularly, the design of making <code>layouts</code> a separate field without overwriting <code>arguments[].x/y</code> preserves both backward compatibility and the separation of responsibilities.</p>
+
+<p>However, the reason to add it permanently to the standard pipeline is still weak. Because <code>#874</code> constantly adds <code>layout_generation</code> to the default hierarchical workflow, the pipeline changes from an 8-step premise to a 9-step premise. Actually, in CI, in addition to Ruff's import / <code>np</code> annotation issues, Pytest is failing due to lingering fixed expectations of <code>len(specs) == 8</code> / <code>len(plan) == 8</code> / <code>len(orchestrator.steps) == 8</code>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/open-pr-pipeline-step-observation-2026-05-28.md">open-pr-pipeline-step-observation-2026-05-28</a>.</p>
+
+<p>This should be read not as a mere omission of a test fix, but as a <strong>gate to prevent experimental display functions from entering the standard pipeline</strong>. Therefore, <code>#874</code> should be treated as an experimental path clarifying the following. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-default-policy-decision-2026-05-28.md">pipeline-step-default-policy-decision-2026-05-28</a>.</p>
+
+<ul>
+<li><code>layout_generation</code> is not an analysis step but a display artifact step</li>
+<li>Differentiate between the value of creating <code>embedding_umap</code> in all runs and the value of creating <code>semantic_island_map</code> restricted to <code>llm_grouping</code></li>
+<li>Decide whether <code>layouts</code> should be created even when <code>without_html</code> is true</li>
+<li>Do not permanently include it in the standard workflow, and decide whether to explicitly enable it via capability, config, or analysis mode</li>
+</ul>
+
+<p>Judgment:</p>
+
+<ul>
+<li>Affirm the design direction of <code>#874</code>. Adding named layout artifacts without breaking <code>x/y</code> is correct</li>
+<li>However, it is incorrect to add it to the standard pipeline. At this stage, return it to a form where it is explicitly enabled as an experimental route</li>
+<li><code>#874</code> is not <code>interpretation_artifacts</code>. This is making 'display artifacts' first-class, and making boundary, counterexample, and bridge reasons first-class remains a separate issue</li>
+</ul>
+
+<h4>Merge / Review Order Based on Open PRs</h4>
+
+<p>Looking only at this issue, the following order is natural.</p>
+
+<ol>
+<li><code>#867</code> — green. It is the foundation for comparing downstream steps, so its priority is high.</li>
+<li><code>#866</code> — green. The direction of carving out a new mode as a workflow is appropriate.</li>
+<li><code>#874</code> — its design makes sense as an experiment, but it will not be permanently added to the standard workflow. Review it on the premise that it will be returned to an explicitly enabled experimental route after <code>#866</code> / <code>#867</code>.</li>
+</ol>
+
+<p><code>#863</code>, <code>#868</code>, and <code>#873</code> are each important, but will be treated in a separate lane from the decision to add pipeline steps.</p>
+
+<p>The judgment on <code>#874</code> has been carved out to <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-default-policy-decision-2026-05-28.md">pipeline-step-default-policy-decision-2026-05-28</a>. The focus is not on 'can we increase steps' in general, but on whether there is a reason to permanently add experimental semantic island layout generation to the standard pipeline. At this point, that reason is weak, and the fixed <code>8 steps</code> test will be maintained.</p>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>Should the schema for <code>interpretation_artifacts</code> be put into the existing <code>hierarchical_result.json</code>, or placed as a separate JSON?</li>
+<li>How should <code>unresolved_cards</code> be reconciled with exhaustive partitioning? Rather than <code>cluster_id = unresolved</code>, it might be safer to have <code>flags: ["boundary", "counterexample"]</code> in addition to normal cluster assignments.</li>
+<li>Will <code>label_refinement</code> be absorbed into <code>merge_labelling</code> in the future, or renamed to a broader step like <code>semantic_presentation</code>?</li>
+<li>To what extent can boundaries / bridges be automatically extracted in large-scale data? We should not expect the same quality as with small-scale LLM pairwise.</li>
+<li>What is the best unit to explicitly enable <code>hierarchical_layout_generation</code> in <code>#874</code>: config, analysis mode, or workflow variant?</li>
+<li>To what extent should the fixed <code>8 steps</code> test be codified as a standard pipeline contract?</li>
+<li>If named layout artifacts are introduced, will future <code>interpretation_artifacts</code> also be put in <code>hierarchical_result.json</code>, or made into separate artifacts? <code>layouts</code> are natural within the result JSON, but boundary / bridge reasons tend to bloat.</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-27: Organized the proposals for adding pipeline steps, which repeatedly appeared in recent research, as a policy to judge based on artifact responsibilities rather than the number of steps. Concluded that it makes sense to treat <code>label_refinement</code> as an optional experiment, and to make boundary cases, counterexamples, bridges, and unresolved cards first-class as <code>interpretation_artifacts</code>.</li>
+<li>2026-05-28: Reviewed open PRs <code>#866</code> / <code>#867</code> / <code>#874</code>, and corrected that while <code>#874</code>'s <code>hierarchical_layout_generation</code> makes sense in making the display artifact called named layout first-class, the reason to permanently add it to the standard pipeline is weak.</li>
+<li>2026-05-28: Added <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/pipeline-step-default-policy-decision-2026-05-28.md">pipeline-step-default-policy-decision-2026-05-28</a>, and corrected to the decision of maintaining the fixed <code>8 steps</code> test without adding <code>#874</code> to the standard pipeline, since it is an experimental feature.</li>
+</ul>
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>
