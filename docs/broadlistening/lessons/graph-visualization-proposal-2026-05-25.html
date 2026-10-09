@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Graph Visualization Proposal 2026-05-25 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/graph-visualization-proposal-2026-05-25.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/graph-visualization-proposal-2026-05-25.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/graph-visualization-proposal-2026-05-25.md">Japanese original</a>]
+
+<h2>Graph Visualization Proposal 2026-05-25</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/graph-visualization-proposal-2026-05-25.md">wiki/analyses/graph-visualization-proposal-2026-05-25.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> A proposal to break away from the design of burdening UMAP 2D with both semantic clustering and visualization quality, and instead visualize as a graph drawing using <code>intra-cluster MST + mutual kNN, inter-cluster bridge edge, and 2-stage cluster-separated layout</code>. This can be an answer from the visualization side to the existing niizuma critique.</p>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a> is a proposal that improves upon nishio's visualization idea of "adding intra-cluster MST + cross-cluster edges within the range of not breaking clear separation" by comparing it with existing research.<br>
+The value of this proposal lies in <strong>replacing the discussion</strong> around UMAP 2D with a graph drawing design problem, rather than UMAP parameter tuning or clustering algorithm selection.</p>
+
+<p>This idea was also shared in <code>#2_開発_広聴ai_アルゴリズム開発</code> on 2026-05-25 as the point cloud requirement of "1 opinion = 1 point", the collision between UMAP 2D and semantic clustering, and the combination of intra-cluster MST and inter-cluster bridge edges. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/weekly-log-2026-05-20.md">weekly-log-2026-05-20</a>.</p>
+
+<h3>1. Rereading the problem of UMAP 2D as a collision of 3 requirements</h3>
+
+<p>Rereading the issues exposed by <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/niizuma-thread-algorithm-critique.md">niizuma-thread-algorithm-critique</a> from the visualization side, UMAP 2D is trying to satisfy 3 requirements simultaneously:</p>
+
+<ul>
+<li>Want to see it as a point cloud (1 opinion = 1 point)</li>
+<li>Want it to be semantically grouped (semantic clusters are correct)</li>
+<li>Easy to see and understand (clusters appear separated)</li>
+</ul>
+
+<p>These do not hold concurrently. Semantically correct clusters create enclaves and overlaps in 2D, and easy-to-see separation breaks semantic fidelity. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a>.</p>
+
+<p>The solution in UMAP 2D is <strong>to let the meaning be read by position</strong>. The solution in MST + bridge edge is <strong>to let the semantic relationship be read by edges</strong>. The latter can compensate for the distortion of 2D coordinates with a separate channel called edges, so the collision can be dispersed.</p>
+
+<h3>2. Can be an answer from the visualization side to the niizuma critique</h3>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/niizuma-thread-algorithm-critique.md">niizuma-thread-algorithm-critique</a> ultimately organized that the artifacts returned by Kouchou-AI (広聴AI) should be divided into 3 types:</p>
+
+<ul>
+<li>Analysis artifact (which opinion belongs to which issue group)</li>
+<li>Display artifact (UI for non-experts to grasp the overall picture and trace to individual opinions)</li>
+<li>Explanation artifact (material to explain "why it was divided that way" in press, municipalities, and external reviews)</li>
+</ul>
+
+<p>The MST + bridge edge proposal <strong>separates these into different channels within the same diagram</strong>:</p>
+
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Channel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Analysis artifact</td>
+<td>cluster assignment (color + cluster outline / hull)</td>
+</tr>
+<tr>
+<td>Display artifact</td>
+<td>point placement + intra-cluster MST / kNN (position and backbone)</td>
+</tr>
+<tr>
+<td>Explanation artifact</td>
+<td>inter-cluster bridge edge + <code>relation type</code> + <code>reason</code></td>
+</tr>
+</tbody>
+</table>
+
+<p>In particular, the <code>relation type</code> (same claim / adjacent issue / cause-effect / contrast / boundary) and <code>reason</code> of the bridge edge directly function as an <strong>explanation artifact</strong>. This is a component that was missing in the UMAP 2D scatter plot.</p>
+
+<h3>3. A different direction from tokoroten's TTTC reading</h3>
+
+<p>In <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/tokoroten-spectral-clustering-reading.md">tokoroten-spectral-clustering-reading</a>, TTTC-like spectral clustering was understood as <strong>cleaning up the 2D geometry created by UMAP</strong>. tokoroten's reading is a direction to find a more natural way of cutting than k-means while leaving the scatter UX.</p>
+
+<p>In contrast, this proposal is a direction to <strong>recreate the 2D geometry itself with graph drawing</strong>, and does not depend on UMAP.</p>
+
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Starting point of 2D geometry</th>
+<th>Where semantic clustering resides</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current Kouchou-AI (広聴AI)</td>
+<td>UMAP 2D</td>
+<td>KMeans after UMAP</td>
+</tr>
+<tr>
+<td>TTTC</td>
+<td>UMAP 2D (small <code>n_neighbors</code>)</td>
+<td>SpectralClustering after UMAP</td>
+</tr>
+<tr>
+<td>TMAP / This proposal</td>
+<td>graph layout (MST + kNN + cluster separation)</td>
+<td>graph construction from embedding / LLM affinity</td>
+</tr>
+</tbody>
+</table>
+
+<p>In other words, there is a theoretically valid option in research not only to "change <code>UMAP -&gt; k-means</code> to spectral", but also "not to use UMAP". From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/clustering-deep-research-findings-2026-05-25.md">clustering-deep-research-findings-2026-05-25</a>.</p>
+
+<h3>4. Validity of 2-stage layout</h3>
+
+<p>The 2-stage design proposed by GPT and modified after nishio's pointing out ("if bridge is display-only, cluster placement becomes arbitrary"):</p>
+
+<ol>
+<li><strong>Inter-cluster layout</strong> — Place each cluster as a meta-node. Inter-cluster weight is an aggregated value such as <code>top-3 mean</code>.</li>
+<li><strong>Intra-cluster layout</strong> — Place points with <code>MST + mutual kNN</code>. Fit them around the cluster center.</li>
+<li><strong>Draw bridge edge</strong> — Plays 2 roles: drawing lines between points i, j + weak layout constraints between cluster centers.</li>
+</ol>
+
+<p>This is a method consistent with the weighted edge design of clustered graph drawing (Frishman et al.) and stress majorization (Gansner et al.), and is not something invented from scratch.<br>
+The essence hit by nishio's modification is that <strong>"making bridge overlay-only" breaks the layout</strong>, which is a design point already explicitly handled in graph drawing research.</p>
+
+<h3>5. Overall MST should be avoided</h3>
+
+<p>In nishio's original idea, it was "extract N:N similarity relationships with LLM and connect them from the strongest relationships to make a spanning tree", but if it is an overall MST, <strong>all opinions will always be connected into a single tree</strong>, so a connection is created somewhere even between originally distant clusters, making it look like an "important bridge". From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a>.</p>
+
+<p>Instead, it is safer to divide it into "intra-cluster MST + a few inter-cluster bridges". This can be read as a configuration adding semantic bridge edges to a MapSets-like idea (connecting points of the same cluster with a spanning tree to create non-overlapping regions).</p>
+
+<h3>6. Portability to current <code>kouchou-ai</code></h3>
+
+<p>The current <code>kouchou-ai</code> has a Plotly scatter plot + hierarchical tree UI. Three ways are conceivable to introduce the MST + bridge type layout:</p>
+
+<ul>
+<li><strong>A. Maintain the existing scatter plot, and add only the bridge edge as an overlay</strong> — Can be implemented with minimal changes. However, since the scatter coordinates remain UMAP 2D, only half of the advantages of this proposal (recreating the layout) can be obtained.</li>
+<li><strong>B. Add cluster-separated graph layout to another view as a View plugin</strong> — A choice at the viewer level, not <code>analysis_mode</code>. The user switches between "scatter view" and "graph view". Consistent with the view plugin contract of <a href="public-ui-requirements-for-broadlistening.html">public-ui-requirements-for-broadlistening</a>.</li>
+<li><strong>C. Add MST edges / bridge edges / cluster centers to the output schema of <code>analysis-core</code></strong> — Full path. A design where the new viewer uses this while maintaining backward compatibility.</li>
+</ul>
+
+<p>In the short term A, in the medium term B, and in the long term C seem to be the logical thread. The framework of <code>analysis_capabilities</code> / viewer <code>requirements</code> shown in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-implementation-plan.md">llm-grouping-implementation-plan</a> can also be used here.</p>
+
+<h3>7. Evaluation axis: placing bridge usefulness at the center</h3>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-mst-bridge-visualization-brainstorm-2026-05-25.md">gpt-mst-bridge-visualization-brainstorm-2026-05-25</a> places bridge usefulness at the center as the evaluation axis of this proposal:</p>
+
+<table>
+<thead>
+<tr>
+<th>Evaluation</th>
+<th>What to look at</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>semantic coherence</td>
+<td>Whether intra-cluster opinions can be read with the same heading</td>
+</tr>
+<tr>
+<td>visual separation</td>
+<td>Whether clusters are visually separated</td>
+</tr>
+<tr>
+<td>bridge usefulness</td>
+<td>Whether inter-cluster edges are insightful</td>
+</tr>
+<tr>
+<td>stability</td>
+<td>Whether it does not change significantly by re-executing LLM or changing the order</td>
+</tr>
+<tr>
+<td>editability</td>
+<td>Whether it is easy for humans to merge / split / delete edges</td>
+</tr>
+</tbody>
+</table>
+
+<p>bridge usefulness is an indicator that has not appeared in conventional UMAP evaluations, and is the core value of this proposal.<br>
+This is also consistent with the principle of "not collapsing the evaluation axes into one" of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/clustering-deep-research-findings-2026-05-25.md">clustering-deep-research-findings-2026-05-25</a>.</p>
+
+<h3>8. Handling as a design decision</h3>
+
+<p>Whether to put this proposal on the implementation backlog of the current <code>kouchou-ai</code> is another matter.<br>
+<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/development-priority-roadmap-2026-05-23.md">development-priority-roadmap-2026-05-23</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/strategic-development-order-2026-05-23.md">strategic-development-order-2026-05-23</a> prioritize Windows distribution, known bugs, and operation infrastructure, and the recreation of the visualization design is a lower priority than those.<br>
+However, there is high value in keeping this proposal as an <strong>alternative when the limitations of scatter compatibility are exposed</strong> in small-scale demonstration experiments like <a href="llm-grouping-experiment.html">llm-grouping-experiment</a>.</p>
+
+<p>Organization of priorities:</p>
+
+<ol>
+<li><strong>Discussion stock</strong> — Keep this proposal as a "usable card". The preliminary stage before dropping it directly into code.</li>
+<li><strong>Small-scale demonstration</strong> — It is worth prototyping MST + bridge once in small-scale UI experiments of the <code>policy-pr-hub.vercel.app</code> family.</li>
+<li><strong>schema extension</strong> — The direction to put MST / bridge in the output of <code>analysis-core</code> is suspended because there is no reason to hurry.</li>
+</ol>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>Can the MST + bridge design be the same for less than 100 cases and over 10,000 cases? When N is large, MST + kNN is challenged by scalability in both drawing and calculation. Hierarchization (cluster-of-clusters) may be necessary.</li>
+<li>At which LLM model generation will the automatic classification accuracy of bridge edge <code>relation type</code> be put to practical use? Misclassified bridges have a high risk of misguidance, and the impact of misjudgment becomes a design weakness that dominates the appearance.</li>
+<li>The <code>λ_inter</code> greedy schedule of the 2-stage layout has a different optimal value for each dataset. Research to empirically determine the default value is necessary.</li>
+<li>When implementing this proposal as a view plugin, should it co-exist with the existing Plotly scatter plot or replace it? If co-exist, UI duplication increases, and if replace, it betrays the expectations of existing users.</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-25: Organized the MST + bridge proposal of nishio ↔ GPT as an answer from the visualization side to the niizuma critique / a different direction from the tokoroten reading / validity of 2-stage layout / migration path to current</li>
+<li>2026-06-02: Confirmed the seed utterance on Slack of the MST + bridge proposal in the weekly dump of 2026-05-20_to_2026-05-27 of <code>oss_weekly_reporter</code>, and added <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/weekly-log-2026-05-20.md">weekly-log-2026-05-20</a> to the source</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

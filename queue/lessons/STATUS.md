@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L11
-done_items: 11 / 22
-gemini_weekly_remaining: 94.8%
-last_update: 2026-10-09 18:55 JST
+current_item: L12
+done_items: 12 / 22
+gemini_weekly_remaining: 94.5%
+last_update: 2026-10-09 18:58 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 18:55 JST
 
 ## 直近
 
+- L12 `graph-visualization-proposal-2026-05-25` を処理完了
 - L11 `umap-seed-history` を処理完了
 - L10 `llm-grouping-experiment` を処理完了
 - L09 `labelling-prompt-few-shot-template-confound-2026-06-03` を処理完了
