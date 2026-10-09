@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Local LLM Extraction Faithfulness 2026-10-05 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/local-llm-extraction-faithfulness-2026-10-05.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/local-llm-extraction-faithfulness-2026-10-05.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/local-llm-extraction-faithfulness-2026-10-05.md">Japanese original</a>]
+
+<h2>Local LLM Extraction Faithfulness 2026-10-05</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/local-llm-extraction-faithfulness-2026-10-05.md">wiki/analyses/local-llm-extraction-faithfulness-2026-10-05.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> When extracting Japanese opinions from short texts in other languages using a small local LLM (Qwen3 4B), the processing completed, but issues occurred such as reversing the subject of the claim, fabricating non-existent relationships, paraphrasing emotional expressions, and dropping requests. Completion of the run should not be considered a success; adoption should only occur after verifying against the original text.</p>
+
+<h1>"Semantic Rewriting" Occurring in Opinion Extraction by Small Local LLMs</h1>
+
+<h2>What Was Done</h2>
+
+<p>On 2026-10-05, we applied the standard opinion extraction prompt from the current <code>main</code> to <code>qwen3:4b</code> on Ollama, using privately provided data from outside (short posts in Korean), to directly extract Japanese opinions from the original Korean texts. We attached <code>/no_think</code> to shorten the thinking, but the inference was not shortened. Only 6 posts were inputted, taking about 8 minutes and 45 seconds, and 22,603 tokens.</p>
+
+<p>This is a small trial to observe processing time, not an estimation of the error rate. The verification of the output against the original text was done by Codex, not a confirmation by Korean speakers. The original texts, post IDs, and data contents will not be published.</p>
+
+<h2>Types of Failures Found</h2>
+
+<p>From the 6 posts, 7 opinions were produced, and 1 post was dropped. When checked against the original texts, outputs without problems were in the minority.</p>
+
+<table>
+<thead>
+<tr>
+<th>Type of Failure</th>
+<th>What Happened</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reversal of the subject of the claim</td>
+<td>A post stating "The poster suspects that X is doing ~" changed to "X claims ~". Who is making the claim was swapped, and the direction of the opinion was reversed.</td>
+</tr>
+<tr>
+<td>Fabrication of non-existent relationships</td>
+<td>A combination of a proper noun and a slang term for the elderly was replaced by family relationships not in the original text ("father's uncle", "mother's older sister").</td>
+</tr>
+<tr>
+<td>Substitution of emotional expressions with different evaluations</td>
+<td>An emotional reaction of "feeling refreshed in the chest" became a different evaluation of "being clear".</td>
+</tr>
+<tr>
+<td>Dropping of short requests</td>
+<td>A short command of the "do not come out" type was treated as having no opinion (an empty array).</td>
+</tr>
+<tr>
+<td>Padding by repetition</td>
+<td>A post that merely repeated the same word was split into two opinions.</td>
+</tr>
+</tbody>
+</table>
+
+<p>The most dangerous is the reversal of the subject. Because the output is fluent Japanese, the reader cannot notice the error. Since the extraction stage performs translation and summarization simultaneously, if there is no one who can read the original text, it flows directly into downstream clusters and labels as is.</p>
+
+<h2>How It Was with API Models</h2>
+
+<p>On the same day, we tried 120 posts + another 24 unused posts with API models (in both cases, original text verification was a visual inspection of a small number by Codex).</p>
+
+<ul>
+<li>The reversal of the subject mentioned above did not appear with the combination of GPT-4.1 and a prompt emphasizing faithfulness.</li>
+<li>However, even with the combination of GPT-4o mini and the standard prompt, errors occurred such as reversing questions into prohibitions, supplementing explanations not in the original text, and turning call-outs into opinions.</li>
+<li>Even with GPT-4.1, misparsing of compressed political slogans, supplementary information not in the original text, and outputs remaining untranslated into Japanese were found.</li>
+</ul>
+
+<p>Therefore, it is not a case of "local is bad, API is fine". Within the scope of observation, small local models have a larger frequency and severity of errors, and fluency hides the errors. Ultimately, in this initiative, local models were not used for extraction, and all cases were processed using API models and a prompt emphasizing faithfulness.</p>
+
+<h2>Implications for Development</h2>
+
+<ul>
+<li><strong>Do not make completing the run a condition for success.</strong> Even if the pipeline runs to the end and a map is produced, if the meaning is rewritten at the extraction stage, the entire map will stand on a false premise. This is a problem in the same direction as "do not treat extraction failure as a success" in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/issues-response-plan-2026-09-07.md">issues-response-plan-2026-09-07</a>, but this one is harder to detect because "the extraction appears to have succeeded".</li>
+<li><strong>Quality assurance for the local-only route.</strong> In the route using local LLMs without API contracts (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/hardware-procurement-local-ai-route-2026-05-31.md">hardware-procurement-local-ai-route-2026-05-31</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/llm-providers.md">llm-providers</a>), we need to include not only "does the model work" but also "does it preserve the meaning" into the acceptance criteria.</li>
+<li><strong>Confirmation pathways premised on checking against the original text.</strong> A screen that allows returning from the extracted opinion to the original text is important as a tool for quality confirmation. We recommend a procedure of passing a small amount of original text verification before expanding to all cases.</li>
+<li><strong>Cross-lingual extraction has strict conditions.</strong> This time it was "original text in another language -&gt; Japanese opinion", and there were many short sentences with slang, proper nouns, and a lack of context. It is unverified to what extent the same failures occur with Japanese inputs.</li>
+</ul>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>If the input is Japanese, does the reversal of the subject still occur even with small local models (including the default ELYZA 8B)?</li>
+<li>Will it improve if we use a slightly larger local model, or if we separate extraction and translation into different stages?</li>
+<li>Is there value in adding a stage to automatically inspect the faithfulness of extraction results (reverse verification, LLM judge, etc.) to the product? The judge itself needs calibration.</li>
+<li>Where and by whom will the boundaries be decided for handling posts determined to have "no opinion" (short requests, cheers, greetings)?</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-10-07: First creation. Only the types of failures and implications for development were extracted for publication scope from the undisclosed trial records.</li>
+<li>2026-10-09: Results of pursuing the Open Questions (Japanese input, slightly larger models, separation of translation, automatic inspection, boundaries of no opinion) with public data and synthetic challenge sets are in <a href="extraction-faithfulness-public-models-2026-10-08.html">extraction-faithfulness-public-models-2026-10-08</a>. The form of subject reversal itself did not appear in 27B and 31B; the reversal of the polarity of sarcasm and the strengthening into "should ~" were the main types.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
