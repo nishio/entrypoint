@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Extraction Faithfulness Public Models 2026-10-08 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/extraction-faithfulness-public-models-2026-10-08.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/extraction-faithfulness-public-models-2026-10-08.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/extraction-faithfulness-public-models-2026-10-08.md">Japanese original</a>]
+
+<h2>Extraction Faithfulness Public Models 2026-10-08</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/extraction-faithfulness-public-models-2026-10-08.md">wiki/analyses/extraction-faithfulness-public-models-2026-10-08.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> In the opinion extraction stage of Kouchou-AI (広聴AI), the meaning of the original text can be rewritten even if the processing completes successfully. We compared 31B, 27B, and 2B public models on the same footing using a Japanese challenge set and public data. The reversal of sarcasm polarity occurs even in 27B and 31B, and possibilities and suggestions are strengthened to "should" due to the influence of the input/output examples in the default prompt. With an extraction prompt that adds rules and a single line "confirm the true intention first", rewrites in the unused test set are reduced to 0 cases for 31B and 2 cases for 27B, but the output leans towards being a direct copy of the original text. Small models fail to perform extraction without JSON grammar constraints.</p>
+
+<blockquote>
+<p>Summary of an experiment (41 iterations) run in an unattended long session from 2026-10-07 to 08. The numbers are copied from the runs in the experiment repo. The runs and challenge sets are in a private experiment repo, and only the summaries and judgments are placed here.</p>
+</blockquote>
+
+<p>A record of pursuing the Open Questions from <a href="local-llm-extraction-faithfulness-2026-10-05.html">local-llm-extraction-faithfulness-2026-10-05</a> using a challenge set synthesized with public data. The existing observation (when extracting Japanese opinions from short sentences in other languages using a small local model, the reversal of the subject occurs even if the processing finishes) was a visual inspection of 6 posts, so we made it into a form that can be counted by type.</p>
+
+<h3>Scaffolding</h3>
+
+<ul>
+<li>Kouchou-AI is fixed to <code>main</code> as of 2026-10-06 (commit a12d68e2). For extraction, the path of <code>provider="local"</code> was directly copied: system = default <code>EXTRACTION_PROMPT</code>, user = 1 comment, temperature 0, <code>response_format</code> = JSON schema of <code>ExtractionResponse</code> (strict), and the response is read with the same rules as <code>parse_extraction_response</code>.</li>
+<li>Models (all public weights): gemma-4-31B-it, Qwen3.8-27B (NVFP4), Qwen3.5-2B (Q4_K_M, CPU delivery via llama.cpp). 31B / 27B are delivered via OpenAI-compatible APIs.</li>
+<li>Data:
+  <ul>
+  <li>Public data: <code>sample_comments.csv</code> (400 Japanese items), <code>example-polis.csv</code> (342 English items)</li>
+  <li><strong>Challenge set</strong>: Synthesized 20 items x 10 types of short Japanese sentences prone to rewriting (hearsay and the poster's stance, kinship terms, emotions, short commands, repetitions, interrogative sentences, sarcasm, greetings/cheering, possibilities and suggestions, conditional sentences). It does not include real people or organizations. Divided into a set for creating prompts (dev 100) and for testing (test 100), and test was not run while creating the prompts.</li>
+  </ul>
+</li>
+<li>Scoring: "Words to keep" and "Words that must not appear" were attached to each item, counted mechanically, and <strong>both failures and passes were visually inspected</strong>. Comparing only by the number of mechanical passes changes the ranking (narrow anchors fail models with many paraphrases, and anchors containing surface words of the original text pass models that have reversed).</li>
+</ul>
+
+<h3>Findings</h3>
+
+<h4>1. Rewriting occurs in Japanese as well. Types are separated by lineage rather than model size</h4>
+
+<p>With the default prompt, the following rewrites occurred in both 27B and 31B (all visually confirmed):</p>
+
+<table>
+<thead>
+<tr><th>Type</th><th>Original → Extraction</th></tr>
+</thead>
+<tbody>
+<tr><td>Reversal of sarcasm polarity</td><td>"A meeting to hold a meeting, it is truly meaningful." → "Meetings to hold meetings are meaningful" (both models 3/3)</td></tr>
+<tr><td>Making possibilities/suggestions obligatory</td><td>"Personally, I think it would be nice if the library's opening hours were a little longer." → "...should be longer" (both models)</td></tr>
+<tr><td>Turning emotions into evaluative words</td><td>"I'm really grateful that the library is now open until night." → "...is beneficial"</td></tr>
+<tr><td>Strengthening certainty</td><td>"I have never heard of such a story." → "The story that... is not a fact"</td></tr>
+<tr><td>Omission of short commands</td><td>"Don't come out." "Shut up." → Empty (Qwen3.8-27B only)</td></tr>
+<tr><td>Neutralization of questions</td><td>"Do you think childcare workers can live on this salary?" → "Seeking opinions on..."</td></tr>
+</tbody>
+</table>
+
+<p>The exact form of "making what someone else doubts into the poster's assertion" (the type from the original observation) was not seen in 27B and 31B. With English input, a type appeared where the antecedent of a conditional sentence turned into the poster's assertion, splitting into 2 items ("Should Phonons be part of future AI, this should be widely known" → "Phonons should be incorporated into future AI" + 1 item).</p>
+
+<h4>2. Some of the strengthening to "should" is taught by the input/output examples in the default prompt</h4>
+
+<p>The default input/output example 2 rephrases the input "need to do" to "should do" in the output. Just by returning these 2 lines to "need to do" exactly as in the input (without changing a single other character), the "would be nice → should" disappeared in both models, and the cases of adding "should", etc. despite the absence of words of obligation in the original text, decreased from 8→6 in 31B and 10→6 in 27B (out of 100 items).</p>
+
+<h4>3. Rules and a single line "confirm the true intention first" stop many types</h4>
+
+<p>After fixing the input/output examples, we added rules for subject, modality (do not strengthen weakness), conditions, emotions, sarcasm as true intention, questions as doubts, short commands as opinions, and empty for greetings without content (we removed "polarity", "do not add", and "prioritize preservation" which had no effect after taking off the rules one by one), added 1 pair of input/output examples for sarcasm, and added "even sentences that only introduce other people's troubles or facts should be left as opinions" to the subject rules. Finally, adding a single line "Before writing an opinion, determine whether the original text is sarcasm or rhetorical, and write it after confirming the true intention" greatly fixed the sarcasm of reading dissatisfaction from quantity and time.</p>
+
+<p>Comparison using the test set (120 items, scoring criteria fixed before looking at the output) which was not used to create the prompt:</p>
+
+<table>
+<thead>
+<tr><th></th><th>Default</th><th>With Rules</th></tr>
+</thead>
+<tbody>
+<tr><td>Passes / 351 (3 repetitions) 31B</td><td>264</td><td>348</td></tr>
+<tr><td>Same 27B</td><td>243</td><td>345</td></tr>
+<tr><td>Visual rewrites (1st time) 31B</td><td>—</td><td>0</td></tr>
+<tr><td>Same 27B</td><td>—</td><td>2</td></tr>
+<tr><td>Cases where a genuine compliment was read as sarcasm (10 items x 2 models)</td><td>0</td><td>0</td></tr>
+</tbody>
+</table>
+
+<p>Looking only at the effect of the single line "confirm the true intention first", the cases where the polarity could be preserved in 20 sarcastic items without words of dissatisfaction were 15→18 for 31B and 8→18 for 27B.</p>
+
+<p>Side effects and limitations:</p>
+<ul>
+<li><strong>Direct copies of the original text increase</strong> (82→202 out of 400 items for 27B on public data). Rewriting does not occur, but the "~to omoimasu" (I think...) at the end of the sentence also remains. The total number of opinions is almost the same as the default, so it doesn't get leaner in terms of numbers.</li>
+<li><strong>Comments stating only facts can sometimes be made empty</strong> (2 to 4 cases out of 400 public data items).</li>
+<li><strong>Some sarcasm requiring common sense remains</strong> ("It takes half a year for the benefits to arrive, the fun will last a long time" → "The fun will last a long time", 27B). Modifying the details of the rules can sometimes bring back sarcasm that was previously fixed.</li>
+</ul>
+
+<h4>4. Among extraction rewrites, polarity is what affects downstream</h4>
+
+<p>When extraction results flow to embedding → clustering → labels (an approximation substituted by k-means without UMAP), the reversal of sarcasm goes into the cluster of gratitude and convenience improvement, and <strong>voices of dissatisfaction are counted on the side of agreement</strong>. The "should-ification" or "is not a fact-ification" does not move from the cluster of the same topic, and the impact appears in the strength of the main text quoted in the report. Note that the reorganization of clusters when changing the prompt is the same magnitude as the reorganization from just changing the initial value of k-means, so differences in extraction cannot be measured by comparing whole clusters.</p>
+
+<h4>5. Small models require JSON grammar constraints</h4>
+
+<p>When Qwen3.5-2B is run in a delivery that ignores <code>response_format</code>, 62 out of 90 items in short sentences, greetings, and interrogative sentences do not become JSON (they start writing explanations), which would stop the process at the extraction stage in Kouchou-AI. Delivering with the JSON schema (grammar constraint) of llama.cpp makes the failures 0/400. Instead, in the default prompt, for 7-9% of short commands and greetings, <strong>it returns the sentences from the input/output examples verbatim</strong> ("Go home." → "AI can optimize the energy grid, reducing waste and carbon emissions."). Since the format is correct, it passes the parsing and is counted as an opinion. With the prompt with rules, this became 0.</p>
+
+<p>The prompt with rules (with the 1 line to confirm the true intention first) also works for 2B. In the unused test of 117 items, the passes increased from the default 82 → 98, and sarcasm with clues increased from 1 → 7 out of 10 items. However, the results for 2B fluctuate greatly: when the same prompt is sampled and run 5 times, the passes move by 18 items between 85 and 103, and differences from fine adjustments to the prompt (reducing rules, adding input/output examples, wrapping the comment in directives) fell within this fluctuation. Sarcasm requiring common sense ("It takes half a year for the benefits to arrive, the fun will last a long time") can only be read in 3 out of 10 cases (2 to 7 cases in 5 samplings, average 4.2 cases), and it remains 3 cases even with a majority vote of 5 times. 2B also sometimes copies only the first half of the original text and stops ("What a splendid plan, although none of the residents knew about it." → "What a splendid plan"). This occurs with the same sentence even when the grammar constraint is removed, so it is the model's reading, and it decreases to 0-2 cases with the prompt with rules.</p>
+
+<h4>6. Automated faithfulness checking (LLM judge) can also pick up sarcasm if it first makes the model write the true intention of the original text</h4>
+
+<p>When having an LLM judge "whether the extracted opinion has the same subject and polarity as the original text", against 209 visually inspected correct pairs, the 31B judge detected 20 out of 30 rewriting cases and falsely detected 16 out of 179 faithful cases. At this time, the judge also read sarcasm literally just like the extractor, missing "There are two buses a day, it has become very convenient". By adding "first determine whether the original text is sarcasm or rhetorical, and compare after writing the true intention in 1 sentence" to the judge's prompt, false detections became 16→3, missed types of sarcasm became 0, and misses in 65 pairs of sarcasm extractions without words of dissatisfaction also became 0 / 31 (from 16 / 31 before the addition). Misses in turning emotions into evaluative words (5-6 cases out of 12) remain.</p>
+<p>For all public data items, it pointed out 5 pairs out of 741 default extraction pairs (all 5 valid by visual inspection), and there were 0 pairs for the extraction with rules. It can be used not as a pass/fail gate, but as a step to pass rare rewrites to human review.</p>
+<p>In the English public data (example-polis), the judge sometimes reads provocative assertions asking for pros and cons ("AI corporations don't need local consent…; their expertise suffices.") as sarcasm, and points out literal extractions (1 to 2 cases out of 342). Adding "do not consider it sarcasm if there are no clues" to the instructions did not stop it, so it is treated as a type that reviewers should know about.</p>
+
+<h3>Suggestions for Developers</h3>
+
+<ol>
+<li><strong>Return the output of default input/output example 2 to "need to do"</strong> (A difference of 1 line reduces the strengthening to obligation. The side effects are small).</li>
+<li>Make the extraction prompt with rules selectable for users who value faithfulness (write in the description about the side effects of increased direct copies and cutting out other people's remarks as separate opinions, and that sarcasm requiring common sense will remain).</li>
+<li>In the recommended configuration for local LLMs, write it as mandatory to have a delivery that enforces JSON schema as a grammar constraint (Ollama's <code>format</code>, llama.cpp's <code>response_format</code>, etc.).</li>
+<li>For input in other languages, rewriting is reduced just by using the prompt with rules (Suggestion 2). In 342 English public data items, without inserting a translation stage, it was 2→0 cases for 31B and 5→2 cases for 27B (default → with rules, visual inspection of judge's points). Even if a translation stage is added under the rules, there is no additional gain (remains 0 cases for 31B and 2 cases for 27B), and translation increases the splitting of opinions and introduces new rewrites like dropping "could". If left as the default prompt, separating translation into another stage reduces cases to 4→2 for 27B and 1→0 for 31B out of 60 visually inspected cases.</li>
+<li>Immediately after extraction, consider a stage that displays an "attention required" mark on the management screen (not used for pass/fail) based on a mechanical check for empty, match with input/output examples, and overlap with the original text, as well as the judge (in a form that makes it write the true intention of the original text first). The match with input/output examples picked up all 23 fabricated items by 2B using character 2-gram overlap (similarity to example 0.5 or higher and higher than similarity to original text), and had 0 false detections in about 19,000 Japanese outputs of 27B and 31B. It cannot be used when the original text is not Japanese (the 3 default input/output examples are translations of English comments from example-polis, and their correct extraction matches the examples).</li>
+<li>Write in the prompt's comments or docs that the default input/output examples are made from the bundled example-polis comments. When evaluating extraction with example-polis, the model sees the answers in the prompt for 3 items.</li>
+</ol>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>Can sarcasm requiring common sense (which is only half fixed by the prompt) be supplemented by a check with a model of a different lineage (the 31B judgment was able to point out two-thirds of 27B's literal readings)?</li>
+<li>The occurrence rate of rewriting in actual broad listening data (which has many broken short sentences). Public data has many well-formed sentences, and even with the default it was 0.7%.</li>
+<li>In the main body's clustering passing through UMAP, to what extent are polarity reversals counted on the opposite side?</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-10-09: Initial creation. Draft from the experiment repo (commit df0a3aa) was written back to the public wiki with nishio's approval. Issues / PRs upstream (the 4 lines of input/output examples from Suggestion 1, docs additions) remain as drafts; whether to submit them will be decided after checking the content.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
