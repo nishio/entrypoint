@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L19
-done_items: 19 / 22
-gemini_weekly_remaining: 92.5%
-last_update: 2026-10-09 19:23 JST
+current_item: L20
+done_items: 20 / 22
+gemini_weekly_remaining: 91.5%
+last_update: 2026-10-09 19:26 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 19:23 JST
 
 ## 直近
 
+- L20 一覧 (`index.html` と `ja.html`) を処理完了
 - L19 `broad-listening-book-extractions` を処理完了
 - L18 `public-tool-catalog-draft-2026-06-30` を処理完了
 - L17 `kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03` を処理完了
