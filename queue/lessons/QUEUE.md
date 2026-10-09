@@ -36,6 +36,48 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 11. **題は slug のままにしない**（L01 の検めで追加）。`<title>` と `<h2>` は slug を英語の語に開いた題にする（例: `analysis-stance` → "Analysis Stance"）。
     `<title>` は `<題> — Lessons from Practice — NISHIO Hirokazu`。原文に無い意味を題に足さない
 12. 規則 4 の併記は本文の初出ごとに見落としやすい（L01 で「KJ法」の併記が抜けた）。訳し終えたら、日本語の固有の語が初出で併記されているかを見直す
+13. **英訳ページの枠はこの形に揃える**（L01・L02 の検めで追加。2 ページで上部のリンクとフッタが食い違い、L01 の「lessons」は一覧でなく 1 つ上を指し、
+    L02 の「日本語版」は日本語の一覧 `ja.html` を指していた）。`<slug>`・`<path>`・`<題>` だけを埋め、本文はこの枠の `<p class="meta">` の後に置く:
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <title><題> — Lessons from Practice — NISHIO Hirokazu</title>
+      <link rel="stylesheet" href="../../static/site.css" />
+      <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/<slug>.html" />
+      <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/<path>" />
+    </head>
+    <body>
+
+    <div id="contents">
+
+    <a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+    [<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/<path>">Japanese original</a>]
+
+    <h2><題></h2>
+
+    <p class="meta">
+    Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/<path>"><path></a> (commit <code>3459fc6</code>).
+    Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+    </p>
+
+    （本文）
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>
+    ```
+
+    `<path>` は原文の repo 内の path（例 `wiki/concepts/analysis-stance.md`）。frontmatter の `summary` の訳は本文の最初の段落に `<p><strong>Summary:</strong> …</p>` の形で置く
 
 ## 項目
 
