@@ -150,6 +150,8 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L26f 題を原文の H1 から**（`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
 - [x] **L27 英語の一覧**: `index.html` の各 `<li>` の題を L26 の題に揃える（要約と、それ以外の行は変えない）
 - [x] **L28 日本語の一覧**: `ja.html` の各 `<li>` の題を、commit `ab10e50` の H1 の日本語のまま（訳さない）にする。要約とそれ以外は変えない
+- [ ] **L26g 題を原文の H1 から（L26f の取りこぼし）**（`broad-listening-book-extractions`）— L26f で返ってこず、`<h2>` が古い "Insights from the Book for Future Development Decisions" のまま。H1 は書名『選挙を変えたブロードリスニング』を含む。書名は意味を足さずに英訳し、題に残す
+- [ ] **L27b 英語の一覧の 1 行**: `index.html` の broad-listening-book-extractions.html への `<li>` の題を、L26g の後のそのページの `<h2>` にする（ほかの行と要約は変えない）
 
 ## 回答（人間から）
 
