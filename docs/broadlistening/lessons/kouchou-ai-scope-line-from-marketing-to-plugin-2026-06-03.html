@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kouchou-AI Scope Line From Marketing To Plugin 2026-06-03 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.md">Japanese original</a>]
+
+<h2>Kouchou-AI Scope Line From Marketing To Plugin 2026-06-03</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.md">wiki/analyses/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> The lineage of the scope line: "The scope of Kouchou-AI (広聴AI) is up to the discovery of key insights, and beyond that is the accompanying partner". Starting from the 2025-07-16 marketing strategy mtg, it has been consistent through the 2025-11-29 Ken Suzuki blog and the 2025-12-06 direction meeting up to the current plugin policy.</p>
+
+<h3>Argument</h3>
+
+<p><strong>"The scope of Kouchou-AI (product) is up to the discovery of key insights, and beyond that (policy reflection, citizen satisfaction improvement) is the job of the accompanying partner."</strong> This scope demarcation is a premise of the strategy currently articulated in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">plugin-system</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>, but <strong>this line itself was already clearly stated in the 2025-07 marketing strategy mtg</strong>. It has been consistent over nearly a year, and the subsequent blog, direction discussions, and plugin design can be read as representing this line from different angles.</p>
+
+<h3>Timeline</h3>
+
+<h4>2025-07-16: Marketing strategy mtg (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/marketing-strategy-mtg-2025-07-16.md">marketing-strategy-mtg-2025-07-16</a>)</h4>
+
+<ul>
+<li>A one-off meeting of board-level members. <strong>The oldest clear statement of the kouchou-ai scope line currently confirmable on the wiki.</strong></li>
+<li>Main arguments:
+<ul>
+<li>If policy reflection is to be included in the scope, not only tools but also <strong>accompanying support and consulting-like actions are necessary.</strong></li>
+<li>However, accompanying support is not within the scope of OSS development.</li>
+<li>Therefore, a line is drawn: <strong>"The tool called Kouchou-AI handles up to the discovery of key insights, and beyond that we create success cases together with deployment partners."</strong></li>
+<li><strong>The division of roles between Polis (developed by Colin) and policy making (Audrey Tang's team)</strong> is cited as a reference model.</li>
+</ul></li>
+<li>Alongside this scope line, policies such as <strong>product improvement persona &ne; marketing persona</strong>, <strong>local government stakeholders are divided into the mayor / broad-listening department representative / engineers</strong>, and <strong>(P0) SaaS conversion (can be tried by registering an API key)</strong> were already in place.</li>
+</ul>
+
+<h4>2025-11-29: Ken Suzuki blog (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/kensuzuki-broad-listening-insight-types-2025-11-29.md">kensuzuki-broad-listening-insight-types-2025-11-29</a>)</h4>
+
+<ul>
+<li>Rather than treating "broad-listening" as a single method, it was organized that <strong>different tools are used for different types of desired insights</strong>.</li>
+<li>Divided by use case: scatter plot / cluster overview type (TTTC / Kouchou-AI) for agenda discovery, Polis for uncommon ground, AI interview for deep policy exploration.</li>
+<li>This can be read as a paraphrase of "Kouchou-AI = up to key insight discovery" from 2025-07. <strong>It was the first time that the "outside the scope of Kouchou-AI" was documented as being filled by other use-case-specific tools (Polis / AI interview).</strong></li>
+</ul>
+
+<h4>2025-12-06: About the direction of Kouchou-AI (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/kouchou-ai-direction-2025-12-06.md">kouchou-ai-direction-2025-12-06</a>)</h4>
+
+<ul>
+<li>The first direction discussion following the Ken Suzuki blog.</li>
+<li>Arguments:
+<ul>
+<li>Need to separate analysis modes by use case.</li>
+<li>A GUI node editor is too heavy; <strong>customization is more realistic with JSON / YAML-like config</strong>.</li>
+<li><strong>Do not rewrite everything before the book publication; cut a stable release and proceed with next-generation experiments on a separate track.</strong></li>
+</ul></li>
+<li>The idea that "kouchou-ai itself takes on the key insight discovery mode, and other uses run in parallel via other modes/implementations" leads from here to the v4 stabilization and v5 large-scale refactor in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/versioning-strategy.md">versioning-strategy</a>.</li>
+</ul>
+
+<h4>Present (2026-05 - 06): <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">plugin-system</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a></h4>
+
+<ul>
+<li><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">plugin-system</a>: A design that makes input/analysis/visualization replaceable as plugins. <code>docs/development/why-plugin-system.md</code> writes the reason for adoption as "<strong>A breakthrough for the dilemma of wanting to maintain compatibility vs wanting to experiment with new features. It separates concerns at technical boundaries, enabling parallel evolution without requiring consensus.</strong>"</li>
+<li><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>: A two-tier ecosystem that narrows the Web UI down to a simple default mode, loads various experiments onto the CLI, and shares them within the community.</li>
+<li>At this point, the outward scope line from 2025-07 of <strong>"Tool = up to key insight discovery / Accompanying = partner"</strong> is nested with the inward structural division of <strong>"Web UI = huge incongruity discovery / CLI = analyst experiments / Community = place for sharing"</strong>.</li>
+</ul>
+
+<h3>What has been consistent</h3>
+
+<ul>
+<li>The intention of <strong>not selling Kouchou-AI as an omnipotent tool</strong> has been consistent from 2025-07 to the present.</li>
+<li>The purpose of cutting the scope was originally on the marketing side ("What should be targeted to create a success case?"), and later aligned with technical circumstances (pluginization / compatibility / parallel evolution).</li>
+<li>The positioning of partners was also mentioned with specific names (Code for Japan / Polipoli / Polis role division) as of 2025-07, which leads from there to the current <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/dd2030.md">dd2030</a> ecosystem (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/idobata.md">idobata</a> (いどばた) / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/polimoney.md">polimoney</a> / decidim integration).</li>
+</ul>
+
+<h3>What has changed</h3>
+
+<ul>
+<li>In 2025-07, the premise of the discussion was the current recognition that "the engine quality of Kouchou-AI has not reached a practical level (Ken Suzuki's personal opinion)". Specifically, <strong>category merging, category errors, noise, and weakness in key insight discovery</strong> were mentioned. This was posed as the <strong>(P1) Engine Quality</strong> issue, and subsequently became the root of label quality-related work in 2026-Q2, such as <a href="label-coverage-policy-2026-05-29.html">label-coverage-policy-2026-05-29</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-refinement-input-scope-2026-05-29.md">label-refinement-input-scope-2026-05-29</a> / the refactoring of hierarchical labeling.</li>
+<li>In 2025-07, "(P2) UI / visualization improvement is low priority", but in 2026, UI-related discussion points have come to the fore, such as <a href="public-ui-requirements-for-broadlistening.html">public-ui-requirements-for-broadlistening</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/ohki-discussion-reflection-2026-05-25.md">ohki-discussion-reflection-2026-05-25</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/chart-scroll-ux-decision.md">chart-scroll-ux-decision</a>. This can be organized as a shift in focus to the problem of <strong>how to hand the discovery to the reader</strong> while maintaining the "key insight discovery" scope.</li>
+<li>The personas in 2025-07 were three tiers: "local government representative / mayor / frontline". <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a> in 2026 has three figures: "general user / <strong>in-house demo role</strong> / analyst, researcher", and the <strong>bridge role</strong> (close to the "broad-listening department representative / frontline" in 2025-07) is clearly stated as an independent figure. <strong>This 'in-house demo role' was an implicit layer in 2025-07.</strong></li>
+</ul>
+
+<h3>Why leave this lineage summary</h3>
+
+<ul>
+<li>When ongoing discussions (plugin / Web UI simplification / CLI expansion / community) are seen not as a <strong>new paradigm shift, but as a result of representing the 2025-07 line from the technical side</strong>, the fluctuation in design decisions is reduced.</li>
+<li>For example, when a discussion comes up about whether to "add advanced options to the Web UI", if we know that "the scope of Kouchou-AI is up to key insight discovery" from 2025-07 and the Web UI simplification decision of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a> are on the same line, the choice is less likely to waver.</li>
+<li>At the same time, the separation that the "(P1) Engine Quality" issue (category merging, error, noise) of 2025-07 is a <strong>remaining issue to be solved independently of the scope line</strong> becomes clear. Even if the scope is reduced, the quality issue does not disappear.</li>
+</ul>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>The <strong>current status of candidate partners (Code for Japan / Polipoli / decidim integration)</strong> brought up in 2025-07 needs separate inventorying. Where is the decidim integration, which was estimated to be on a 3-year span, right now?</li>
+<li>"(P0) SaaS conversion (can be tried by registering an API key)" is recorded as PR submitted and awaiting review as of 2025-07. How that connects to the current Azure demo environment / SaaS conversion discussion needs to be organized separately in the context of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/deployment.md">deployment</a> / Azure demo environment (Google Drive management).</li>
+<li>How far has the improvement work on the <strong>quality of key insight discovery</strong> (category merging, error, noise) progressed now? How has Ken Suzuki's assessment that it "has not reached a practical level" from 2025-07 changed after the label quality-related work in 2026-Q2? — This can be reconfirmed at the stage where the evaluation results of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/clustering-labeling-comparison-corpus-2026-06-02.md">clustering-labeling-comparison-corpus-2026-06-02</a> and <a href="human-pairwise-label-preference-experiment-2026-06-02.html">human-pairwise-label-preference-experiment-2026-06-02</a> are gathered.</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-06-03: Initial version created triggered by the ingest of the 2025-07-16 marketing strategy mtg. Organized as a lineage the fact that the scope line has been consistent for nearly a year.</li>
+</ul>
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>
