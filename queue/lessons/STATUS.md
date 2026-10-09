@@ -3,9 +3,9 @@
 毎項目の終わりに上書きする。
 
 ```
-state: done        # running / waiting / stopped / done
+state: waiting        # running / waiting / stopped / done
 current_item: L25
-done_items: 31 / 31
+done_items: 31 / 39
 gemini_weekly_remaining: 84.3%
 last_update: 2026-10-09 22:53 JST
 runner_note: QUEUE の項目が尽きた

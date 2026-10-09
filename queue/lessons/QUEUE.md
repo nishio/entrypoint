@@ -137,6 +137,20 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - L24 の題は、各英訳ページ（`docs/broadlistening/lessons/<slug>.html`）の `<h2>` の文字をそのまま写す。要約は原文の `summary` を全文訳す（1〜2 文に縮めない）
 - STATUS は、先頭のコードブロック（`state:` などの欄）と「## 判断待ち」「## 直近」の節を残したまま書く。判断待ちの既存の行は消さない
 
+### 直し 2（2026-10-09 西尾「もういちど」— 原文に題を付けてから）
+
+開発者 wiki の 17 ページに題（H1）が付いた（commit `ab10e50eab60db3953631ac09da70977b5474736`）。**題だけはこの commit の H1 を正本にする**（本文の訳の原文は従来の固定 commit のまま。H1 以外の本文は変わっていない）。
+各英訳ページの `<title>` と `<h2>` を、その H1 の英訳にする。英訳は意味を足さず、主張の形の題は主張の形のまま訳す（例:「〜は〜ではない」→ "... is ..., not ..."）。題以外は 1 文字も変えない。
+
+- [ ] **L26a 題を原文の H1 から**（`analysis-stance`、`broadlistening`、`pipeline`）
+- [ ] **L26b 題を原文の H1 から**（`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
+- [ ] **L26c 題を原文の H1 から**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`）
+- [ ] **L26d 題を原文の H1 から**（`graph-visualization-proposal-2026-05-25`、`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`）
+- [ ] **L26e 題を原文の H1 から**（`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`）
+- [ ] **L26f 題を原文の H1 から**（`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
+- [ ] **L27 英語の一覧**: `index.html` の各 `<li>` の題を L26 の題に揃える（要約と、それ以外の行は変えない）
+- [ ] **L28 日本語の一覧**: `ja.html` の各 `<li>` の題を、commit `ab10e50` の H1 の日本語のまま（訳さない）にする。要約とそれ以外は変えない
+
 ## 回答（人間から）
 
 - （なし）
