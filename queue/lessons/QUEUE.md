@@ -120,7 +120,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L23a 題（L01〜L03）**: `analysis-stance`、`broadlistening`、`pipeline`
 - [x] **L23b 題（L04〜L06）**: `extraction-faithfulness-public-models-2026-10-08`、`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`
 - [x] **L23c 題（L07〜L09）**: `label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`、`labelling-prompt-few-shot-template-confound-2026-06-03`
-- [ ] **L23d 題（L10〜L12）**: `llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`
+- [x] **L23d 題（L10〜L12）**: `llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`
 - [ ] **L23e 題（L13〜L15）**: `public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`
 - [ ] **L23f 題（L16〜L18）**: `pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`
 - [ ] **L23g 題（L19）**: `broad-listening-book-extractions`
