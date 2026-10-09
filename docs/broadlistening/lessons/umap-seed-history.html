@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UMAP Seed History — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/umap-seed-history.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/umap-seed-history.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/umap-seed-history.md">Japanese original</a>]
+
+<h2>UMAP Seed History</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/umap-seed-history.md">wiki/analyses/umap-seed-history.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> Fixing the seed for UMAP / k-means was not born as a 'mechanism to achieve perfect reproducibility,' but rather from a 'desire to minimize visual fluctuations as much as possible,' and was later reevaluated as a trade-off with parallelism.</p>
+
+<p>Reading the history of <code>seed</code> fixation, it is appropriate to view it not as the "result of designing a strictly deterministic pipeline," but rather as a <strong>stabilization measure pushed by practical dissatisfaction with output fluctuations</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<h2>1. The starting point of the fixation was "wanting the same output to appear again" rather than statistical strictness</h2>
+
+<p>In the Slack / issue groups around 2025-05, the main dissatisfaction was that "the result is different every time even with the same input" and "previously good results cannot be reproduced," which means the problem setting was quite close to practical user experience.<br>
+What was desired here was not so much mathematically strict reproducibility, but rather <strong>a level of stability where humans looking at it would feel "it's the same report"</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<p>Therefore, <code>UMAP(random_state=42)</code> and <code>KMeans(..., random_state=42)</code> are natural responses saying, "for now, let's fix the parts that seem likely to fluctuate."</p>
+
+<h2>2. However, it was understood from the time of introduction that fixing only the later stages was insufficient</h2>
+
+<p>What is important is that as of 2025-05, there was already an understanding that "even if OpenAI's <code>seed</code> is fixed, it is not deterministic" and "the extraction results themselves can change."<br>
+In other words, the development side adopted it as a localized improvement, <strong>knowing that seed fixation was not a complete solution to the reproducibility problem</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<p>In this sense, the later <code>PR #810</code> can be said to have foregrounded the reservations that remained from that time, rather than simply denying past decisions.</p>
+
+<h2>3. What was really wanted was "comparability" rather than seed fixation</h2>
+
+<p>Around the same time, discussions emerged about "wanting to fix UMAP" or "wanting to reuse the UMAP once created." These are alternative expressions for seed fixation, and what the development side was seeking was not mere random number fixation, but:</p>
+
+<ul>
+<li>Wanting to compare the previous report with the current report</li>
+<li>Wanting the visual appearance of the scatter plot not to jump significantly</li>
+<li>Wanting to reuse a layout that was good</li>
+</ul>
+
+<p>This was about <strong>the continuity of the coordinate system</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<p>Therefore, reading this history simply as a binary choice between "reproducibility or parallelism" is somewhat shallow. Behind it is another requirement: "how to create comparability of reports."</p>
+
+<h2>4. <code>PR #810</code> was not the abolition of fixation, but a repositioning of the reproducibility requirement</h2>
+
+<p>From 2025-07 onwards, the view strengthened that "fixing the seed only in the later stages yields little when the earlier stages are non-deterministic" and "for that, the parallelism of UMAP is lost."<br>
+The proposal in <code>PR #810</code>, taking this re-evaluation into account, was to <strong>downgrade reproducibility from default to opt-in</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<p>What is important here is that the reproducibility requirement itself was not erased. In cases where comparability is important, such as reusing embeddings, a reproducibility flag is still considered necessary.<br>
+In other words, the decision changed not to "reproducibility is unnecessary," but to <strong>it is not a strong enough requirement to place as the default for general cases</strong>.</p>
+
+<h2>5. For new contributors, it is better to understand that "seed fixation is not evidence of algorithmic correctness"</h2>
+
+<p>Reading the current code and history, <code>random_state=42</code> is not a mark that "the reproducibility design of this pipeline is complete."<br>
+Rather, it is a <strong>trace of a realistic compromise</strong> that:</p>
+
+<ul>
+<li>The upstream LLM / extraction is non-deterministic</li>
+<li>The downstream UMAP / k-means was fixed to suppress visual fluctuations even a little</li>
+<li>However, that fixation conflicts with parallelism</li>
+</ul>
+
+<p>From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/seed-reproducibility-history.md">seed-reproducibility-history</a></p>
+
+<p>With this understanding, the UMAP warning in <code>gotchas</code> and the change of direction in <code>PR #810</code> can be read naturally.</p>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>If comparability is truly desired, isn't UMAP model reuse or another coordinate stabilization method a more proper approach than seed fixation?</li>
+<li>How can the reproducibility option and the parallelism option be expressed in the UI / API to be less misleading to users?</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-05-18: Organized the history of <code>seed</code> fixation as a flow from "emergence of reproducibility requirement &rarr; recognition of limitations &rarr; re-evaluation alongside parallelism"</li>
+</ul>
+
+<h2>Updates &mdash; 2026-09-09 01:00 Consistency between current main and old Issues</h2>
+
+<p>From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/issue-backlog-audit-2026-09-09.md">issue-backlog-audit-2026-09-09</a>, in the current main <code>2dd5adc</code>, UMAP/KMeans do not have a fixed random_state. By cross-referencing with the intentional change in commit <code>8fa8ee7</code>, the old comment in #513 that "seed settings are completed for all locations" should not be used as the basis for current completion. The parallelism of #809 and the choice of reproducibility when comparing using saved inputs should be tracked separately.</p>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
