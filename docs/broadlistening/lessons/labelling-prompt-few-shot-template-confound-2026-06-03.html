@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Labelling Prompt Few-Shot Template Confound 2026-06-03 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/labelling-prompt-few-shot-template-confound-2026-06-03.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md">Japanese original</a>]
+
+<h2>Labelling Prompt Few-Shot Template Confound 2026-06-03</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md">wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> As a result of running 7 items of human preference A/B (none vs setwise_refine) on the 2026-06-02 LLM grouping 400-item corpus with label_only, setwise_refine was the winner in 7/7 cases. Initially, this result was organized as a verbosity confound, but a reinvestigation on 6/8 and 6/9 revealed that I had conversely misidentified "which one is more verbose". In fact, refine_none (= no top-level refinement = merge_labels as is) is verbose, and refine_setwise (sibling-aware refinement) is shorter. Therefore, the v1 result captured "refinement on &gt; refinement off", and the exact structure is that the verbosity reduction effect and the sibling-awareness effect are mixed within the refinement. The templating issue of the MERGE_LABELLING_PROMPT few-shot remains valid.</p>
+
+<blockquote>
+<p><strong>Major Correction on 2026-06-09</strong>: The first edition on 2026-06-03 and the correction on 2026-06-04 of this page <strong>mistakenly reversed</strong> the direction of verbose/concise for <code>refine_none</code> and <code>refine_setwise</code>. Reinvestigation showed that in reality, <code>refine_none</code> (no refinement = merge_labels as is) is verbose, and <code>refine_setwise</code> (sibling-aware refinement) is shorter, and the user's "the shorter candidate wins 7/7" was actually "refine_setwise wins 7/7". Therefore, the framing of "verbosity confound" itself was incorrect, and the v1 result actually captured a meaningful signal of "refinement on &gt; refinement off". See the "Correction on 2026-06-09" section below for details. The old text of this page is kept for history.</p>
+</blockquote>
+
+<h3>Correction on 2026-06-09</h3>
+
+<h4>Correct length ordering</h4>
+
+<p>Confirmed on cluster 1_1:</p>
+
+<table>
+<thead>
+<tr>
+<th>labelling_run</th>
+<th>label</th>
+<th>Length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>refine_none</code></td>
+<td>AI技術による顧客体験の向上と業務効率化の推進</td>
+<td><strong>Long</strong></td>
+</tr>
+<tr>
+<td><code>refine_setwise</code></td>
+<td>AIによる顧客体験と業務効率の向上</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>refine_short</code></td>
+<td>AIによる顧客体験向上</td>
+<td>Short</td>
+</tr>
+</tbody>
+</table>
+
+<p>The <code>refine_none</code> mode is a mode that <strong>does not execute top-level refinement</strong>, and adopts the output of the merge_labels stage as it is as the top-level label. Because merge_labels is strongly guided by the MERGE_LABELLING_PROMPT (few-shot example <code>AI技術の導入による意見分析の効率化への期待</code>) and converges to the <code>AI技術による…の推進</code> form, the labels of <code>refine_none</code> are verbose.</p>
+
+<p><code>refine_setwise</code> is a process of sibling-aware rewriting, and as a result, it organizes verbose merge_labels. Although there is no length constraint, rewriting to differentiate from siblings naturally works in the direction of reducing verbosity.</p>
+
+<p><code>refine_short</code> further adds <code>max_label_length=18</code> to shrink it even shorter.</p>
+
+<h4>Correct interpretation of v1 results</h4>
+
+<p>nishio's 7 answers to the v1 bundle (none vs setwise_refine) of <a href="human-pairwise-label-preference-experiment-2026-06-02.html">human-pairwise-label-preference-experiment-2026-06-02</a> are:</p>
+
+<ul>
+<li><code>refine_setwise</code> was the winner in 7/7, all with confidence 3</li>
+<li>It is true that "the shorter candidate wins", but that "shorter candidate" is <code>refine_setwise</code>, and the "longer candidate" is <code>refine_none</code></li>
+<li>nishio's free text "For the others, shorter is generally better" is correct in the sense of "I prefer shorter", but that preference is identical to the preference for <code>refine_setwise</code></li>
+</ul>
+
+<p>In other words, the v1 result shows <strong>"sibling-aware refinement (setwise) &gt; no refinement (none)"</strong> in 7/7 cases.</p>
+
+<p>This is a meaningful signal, but not a pure sibling-awareness effect:</p>
+<ul>
+<li>In refinement on vs off, both (a) sibling-awareness and (b) the effect of rewriting the verbose expression of merge_labels are <strong>operating simultaneously</strong></li>
+<li>It is impossible to isolate whether nishio's preference is (a) or (b) in this comparison</li>
+</ul>
+
+<h4>Policy for restarting (after re-re-correction)</h4>
+
+<p>"Verbosity confound" was an incorrect framing, so it is withdrawn. Instead, the following:</p>
+
+<h5>Path A: Fix the templating of MERGE_LABELLING_PROMPT few-shot (current <code>main</code>)</h5>
+
+<p>This remains valid. The <code>refine_none</code> mode is verbose because the MERGE_LABELLING_PROMPT few-shot example "AI技術の導入による意見分析の効率化への期待" bakes in the <code>〜による〜の〜</code> syntax. Making the few-shot topic-neutral / syntax-diverse will improve the output of refine_none, which in turn improves the input to refine_setwise.</p>
+
+<p>Specific correction proposals (A1 + A2 are realistic):</p>
+<ul>
+<li>A1. Make the example topic-neutral: Remove the <code>〜による〜の〜</code> form from the output examples and replace it with a noun phrase style starting with a content word</li>
+<li>A2. Explicit prohibition: Add "avoid boilerplate syntax like <code>〜による〜の〜</code>" and "use short noun phrases" to the prompt body</li>
+<li>A3. Diverse few-shots: Line up multiple examples with different syntax</li>
+<li>A4. Zero-shot: Discard the example and use only instructions</li>
+</ul>
+
+<h5>Path B (Old): default length constraint on <code>setwise_refine</code> &rarr; <strong>Withdrawn</strong></h5>
+
+<p>This path was proposed because the old analysis mistakenly assumed that "setwise_refine is elaborating verbosely". In reality, setwise_refine is already rewriting in a shorter direction, so a default length constraint is unnecessary. It is sufficient to keep <code>refine_short</code> as a separate mode.</p>
+
+<h5>Path D (New): Set up a comparison to measure the isolated effect of sibling-awareness</h5>
+
+<p>Since the v1 result (setwise &gt; none) is a combined effect of refinement on/off, measuring the pure sibling-awareness effect requires "sibling-aware refinement vs non-sibling-aware refinement (both about the same length)".</p>
+
+<p>The <code>refine_balanced</code> / <code>refine_contrast</code> modes exist in the existing artifacts, but it is unconfirmed what these modes do. I will confirm that first before designing the A/B.</p>
+
+<h5>Path C (Old): Reconfigure with <code>none</code> vs <code>setwise_refine_short</code> &rarr; <strong>Rejected</strong></h5>
+
+<p>In the old analysis, I thought this would be a length control, but in reality, none (long) vs short (shortest) widens the length gap even further. It does not improve the confound and is rejected.</p>
+
+<h3>Old Analysis Text (For Reference)</h3>
+
+<p>The text is left as is for those who want to compare the old framing and the corrected version. Because it contains content with a direction misidentification, read it by cross-referencing with the correction above.</p>
+
+<h4>(Old) Conclusion</h4>
+
+<blockquote>
+<p>The comparison of <code>factor_under_test=labelling_process</code> (none vs setwise) on the 2026-06-02 corpus was designed such that the isolated effect of <code>labelling_process</code> could not be measured because <strong>two independent issues were confounded</strong>. The experiment is temporarily reset and not used as material for adoption decisions.</p>
+<p>The two issues (details below):</p>
+<ol>
+<li><strong>INITIAL/MERGE labelling few-shot template</strong>: It bakes the <code>〜による〜の〜</code> syntax and the "AIによる" prefix into all labelling outputs &larr; Issue 1 itself is valid, but the target it bakes into is the labels of the <code>refine_none</code> mode (= merge_labels)</li>
+<li><strong>No length constraint on setwise_refine</strong>: The refinement step elaborates and rewrites into a long form like "AI技術による…の推進" &larr; <strong>It was reversed</strong>. setwise_refine is the one that shortens</li>
+</ol>
+</blockquote>
+
+<h4>(Old) Observation (with direction misidentification)</h4>
+
+<blockquote>
+<p>The "shorter candidate" was the winner in 7/7 cases, and all confidences were 3 (high). All 7 winning cases were short noun phrases starting with <code>AIによる…</code>, and all 7 losing cases were a somewhat long prefix + action noun like <code>AI技術による…の推進</code> / <code>…への取り組み</code></p>
+</blockquote>
+
+<p>The factual relationship (the shape of the label) is correct. The error was in the direction assuming "short <code>AIによる…</code> = <code>refine_none</code>, long <code>AI技術による…の推進</code> = <code>refine_setwise</code>", whereas the reality is the opposite.</p>
+
+<h4>(Old) Explanation of "elaboration" for Issue 2 &rarr; Withdrawn</h4>
+
+<p>The old version's "setwise_refine elaborates the base label like AI技術による…の推進" is incorrect. The reality is that the base merge_labels is in the form of AI技術による…の推進, and setwise_refine rewrites it shorter.</p>
+
+<h3>Generalized rules (extracted from this case)</h3>
+
+<p>Aside from the direction misidentification issue, the following two general rules can be extracted from this entire case:</p>
+<ol>
+<li><strong>Spot-check the actual output of both candidates before conducting an A/B evaluation.</strong> Do not infer style from the candidate name (none/setwise/short), but directly check the artifact CSV. I failed to do this and mistook the direction.</li>
+<li><strong>The few-shot example becomes the ceiling of label quality.</strong> <code>AI技術の導入による意見分析の効率化への期待</code> in the MERGE_LABELLING_PROMPT strongly guides the syntax, making the merge_labels output without refinement verbose. In labelling quality improvement, starting by reviewing the prompt example yields a greater return than process / sibling-awareness.</li>
+</ol>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li><del>What kind of refinement do the <code>refine_balanced</code> / <code>refine_contrast</code> modes do? Can they be used for an A/B measuring the isolated effect of sibling-awareness?</del> &rarr; Confirmed on 2026-06-09, all 4 are sibling-aware variants and a non-sibling-aware one is absent. To isolate sibling-awareness alone, a new mode (D-3) is required</li>
+<li>When the MERGE_LABELLING_PROMPT few-shot is changed to be topic-neutral, will only the refine_none output improve, or will the refine_setwise output also follow and improve?</li>
+<li>The v1 result (setwise &gt; none) is the effect of refinement on/off, but is it appropriate to use this as an "adoption rationale", or should it be kept strictly exploratory?</li>
+<li>For the result of v2 (setwise vs short), the only factor is length cap on/off, but will nishio's v1 free text "too short and loses too much information, which is a problem" reproduce in cluster 1_8, or is the 18 cap acceptable across all clusters?</li>
+</ul>
+
+<h3>Next Actions</h3>
+
+<p>Priority order:</p>
+<ol>
+<li><strong>nishio answers the v2 bundle (24 items)</strong> — Open and answer the locally saved <code>raw/experiments/2026-06-02-llm-grouping-400-tree-label-corpus/bundles/label_preference_ab.html</code> (inaccessible from the public site). At least 8 <code>label_only</code> items, preferably all 24 (3 contexts &times; 8 clusters)</li>
+<li><strong>Path A (MERGE_LABELLING_PROMPT few-shot fix PR)</strong> — Can proceed independently of v2. On a topic branch in <code>work/kouchou-ai/</code>, replace the few-shot examples around <code>packages/analysis-core/src/analysis_core/prompts/__init__.py:91</code> with ones that are topic-neutral + have instructions for brevity. Whether to proceed as a child of issue #881 (label quality improvement tracking) or as an independent issue requires discussion</li>
+<li><strong>Path D-3 (Add new mode <code>refine_independent</code>)</strong> — Necessary if isolating sibling-awareness alone. Add a mode that refines each label independently without looking at the sibling context, and compare setwise vs independent. This requires adding code + re-labelling, so judge after seeing the v2 results</li>
+<li><strong>judge calibration</strong> — Create a judge that reproduces the human preferences collected in v2 (originally step 4 of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-human-preference-improvement-plan-2026-06-03.md">label-quality-human-preference-improvement-plan-2026-06-03</a>). Start after the number of v2 responses is sufficient</li>
+</ol>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-06-09: Major correction. Realized the error of mistakenly reversing the verbose/concise direction of <code>refine_none</code> and <code>refine_setwise</code>, and corrected the framing from "verbosity confound" to "v1 was actually capturing the effect of refinement on/off". Withdrew Path B (length constraint on setwise_refine) as it was a proposal based on a misidentification, and rejected Path C (reconfiguration with none vs short) as it only widens the length gap. Instead, added Path D (measuring the isolated effect of sibling-awareness, starting from the confirmation of <code>refine_balanced</code> / <code>refine_contrast</code>). Path A (MERGE_LABELLING_PROMPT few-shot fix) remains valid</li>
+<li>2026-06-04: (Correction based on misidentification, later withdrawn on 2026-06-09) Re-read the refinement step and organized the true structure of the verbosity confound as a composition of two independent issues. Expanded to 3 paths</li>
+<li>2026-06-03: First edition. Started with nishio's critique of the sibling_label_set design, and recorded the decision to restart the current experiment because it became clear that all 3 contexts had a redundancy confound derived from the same prompt few-shot template</li>
+</ul>
+
+<h3>Updates — 2026-09-07</h3>
+
+<p>Because the relative link to the unpublished raw artifact escaped the Pages base path and caused the link check to fail, it was corrected to a code representation of the local save destination. The artifact was not published.</p>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

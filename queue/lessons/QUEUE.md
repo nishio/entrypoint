@@ -89,7 +89,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L06 `label-coverage-policy-2026-05-29`** — 元: `wiki/analyses/label-coverage-policy-2026-05-29.md`
 - [x] **L07 `label-quality-rubric-evaluation-2026-05-29`** — 元: `wiki/analyses/label-quality-rubric-evaluation-2026-05-29.md`
 - [x] **L08 `human-pairwise-label-preference-experiment-2026-06-02`** — 元: `wiki/analyses/human-pairwise-label-preference-experiment-2026-06-02.md`
-- [ ] **L09 `labelling-prompt-few-shot-template-confound-2026-06-03`** — 元: `wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md`
+- [x] **L09 `labelling-prompt-few-shot-template-confound-2026-06-03`** — 元: `wiki/analyses/labelling-prompt-few-shot-template-confound-2026-06-03.md`
 - [ ] **L10 `llm-grouping-experiment`** — 元: `wiki/analyses/llm-grouping-experiment.md`
 - [ ] **L11 `umap-seed-history`** — 元: `wiki/analyses/umap-seed-history.md`
 - [ ] **L12 `graph-visualization-proposal-2026-05-25`** — 元: `wiki/analyses/graph-visualization-proposal-2026-05-25.md`
