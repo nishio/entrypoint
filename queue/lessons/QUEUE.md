@@ -30,6 +30,12 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 7. **判断が要るもの**（訳しようのない語、原文の誤りらしきもの、公開に向かないと思える記述）は訳を止めずに、`STATUS.md` の「判断待ち」に 1 行書く
 8. **枠**: Gemini の週次の残りが 20% を切ったら新しい項目に入らない（西尾自身が使う分を残す）
 9. 原文の版は開発者 wiki の commit `3459fc653917039e8906a2bf09b9164855ee84e3` に固定する（`git show 3459fc653917039e8906a2bf09b9164855ee84e3:wiki/<path>` で読む）
+10. **リンク先の path を推測しない**（L01 の検めで追加、2026-10-09）。`[[name]]` の先は `concepts/` `analyses/` `sources/` `entities/` のどれにあるか名前からは決まらない。
+    原文の `wiki/index.txt`（全ページの stem と path の表）で path を引いてから URL を作る。URL は
+    `https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/<path>`。L01 では 7 本中 2 本が推測した誤った directory を指していた
+11. **題は slug のままにしない**（L01 の検めで追加）。`<title>` と `<h2>` は slug を英語の語に開いた題にする（例: `analysis-stance` → "Analysis Stance"）。
+    `<title>` は `<題> — Lessons from Practice — NISHIO Hirokazu`。原文に無い意味を題に足さない
+12. 規則 4 の併記は本文の初出ごとに見落としやすい（L01 で「KJ法」の併記が抜けた）。訳し終えたら、日本語の固有の語が初出で併記されているかを見直す
 
 ## 項目
 
