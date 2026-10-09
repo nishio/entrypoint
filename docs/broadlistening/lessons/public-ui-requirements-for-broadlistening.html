@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Public UI Requirements for Broadlistening — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/public-ui-requirements-for-broadlistening.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-ui-requirements-for-broadlistening.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-ui-requirements-for-broadlistening.md">Japanese original</a>]
+
+<h2>Public UI Requirements for Broadlistening</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-ui-requirements-for-broadlistening.md">wiki/analyses/public-ui-requirements-for-broadlistening.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> The requirements for the public UI of broadlistening results are not "whether it is a scatter plot", but the volume, perspectives, issues, traceability to individual opinions, avoidance of burying minority opinions, elimination of arbitrariness, and visualization of the next questions. Derived from ohki-shingo's organization.</p>
+
+<p>
+<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a> organized the "tension between the analysis style not assuming embedding and the scatter plot-centric product" chronologically, but the remaining question there, <strong>"how to replace the role played by the scatter plot with another view"</strong>, remained conceptual.<br>
+In <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-public-ui-requirements-2026-05-23.md">slack-public-ui-requirements-2026-05-23</a> on 2026-05-23, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/ohki-shingo.md">ohki-shingo</a> explicitly broke down this question and verbalized the <code>requirements for the public UI</code> into 7 items. This page records this organization in connection with the design decision to make <code>analysis_mode</code> / <code>view</code> independent.
+</p>
+
+<h3>Conclusion</h3>
+
+<p>
+The requirements for the public UI of broadlistening results can be organized into the following 7 items. This is independent of embedding / scatter plots, and is a view-side contract that should be satisfied by any analysis method: long-context LLM direct classification / taxonomy-guided / metric space-based.
+</p>
+
+<ol>
+<li><strong>Visualization of volume</strong> — What kind of voices and how many were handled</li>
+<li><strong>Visualization of perspectives for organization</strong> — From what perspectives they were organized</li>
+<li><strong>Visualization of major issues</strong> — What the major issues are</li>
+<li><strong>Traceability to individual opinions</strong> — Whether it can be traced back to the original individual opinions</li>
+<li><strong>Avoidance of burying minority opinions</strong> — Whether minority opinions or voices difficult to classify are not buried</li>
+<li><strong>Elimination of arbitrariness</strong> — Whether it does not look like the administration arbitrarily summarized them</li>
+<li><strong>Visualization of the next questions</strong> — Whether what should be discussed or explored next is visible</li>
+</ol>
+
+<p>
+From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-public-ui-requirements-2026-05-23.md">slack-public-ui-requirements-2026-05-23</a>
+</p>
+
+<h3>Why the current scatter plot is accepted</h3>
+
+<p>
+<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/ohki-shingo.md">ohki-shingo</a> organizes that <strong>the scatter plot itself is not the essence</strong>. It is accepted because it is easy to simultaneously present the following 5 elements on a single screen:
+</p>
+
+<ul>
+<li>It can be seen at a glance that a large amount of opinions are handled (→ Requirement 1)</li>
+<li>It looks like they are organized by similar opinions (→ Implicit presentation of Requirement 2)</li>
+<li>The whole picture can be explored (→ Requirement 3)</li>
+<li>It can return not only to summaries and labels, but also to individual opinions (→ Requirement 4)</li>
+<li>It looks like the administration did not arbitrarily summarize them, but published them with transparency (→ Requirement 6)</li>
+</ul>
+
+<p>
+In other words, it can be read that the value of the scatter plot is <strong>not the precision of distance, but the simultaneous presentation of these requirements</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-public-ui-requirements-2026-05-23.md">slack-public-ui-requirements-2026-05-23</a>
+</p>
+
+<p>
+The discussion on the "limits of the scatter plot method" traced by <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a> was centered on the limits on the <strong>analysis side</strong>, such as clustering accuracy, burying of conflicting axes, and adverse effects of dimensionality reduction, but the organization on this page isolates the <strong>role of the view side</strong>. The two are in a complementary relationship.
+</p>
+
+<h3>Non-essentiality of embedding distance precision</h3>
+
+<p>
+Using the requirements in reverse, the upper limit of the <code>distance precision required for the view side</code> can be seen.
+</p>
+
+<ul>
+<li>Separation between clusters is visible: Required (→ Requirements 2, 3, 5)</li>
+<li>Distance precision within clusters: Not required (Sufficient if they are displayed naturally close)</li>
+</ul>
+
+<p>
+From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-public-ui-requirements-2026-05-23.md">slack-public-ui-requirements-2026-05-23</a>
+</p>
+
+<p>
+This is consistent with the judgment of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-design-intents-2026-q1.md">slack-design-intents-2026-q1</a> in 2026-Q1 recorded by <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a>, that <strong>"embedding is not theoretically essential, but is a convenient scaffold for transition"</strong>. For the <code>x/y</code> calculation to project LLM grouping-based analysis into scatter plot compatibility, it means that <strong>it is not necessary to reproduce the semantic distance with high precision, as long as the cluster grouping is visually preserved</strong>.
+</p>
+
+<p>
+This greatly relaxes the technical bar for the short-term scatter plot compatibility plan (<code>x/y</code> compatibility of <code>analysis_mode=llm_grouping</code> in the <code>PR #827</code> plan of <a href="pipeline.html">pipeline</a>). Force-directed placement, per-cluster local UMAP, 2D placement based on LLM labels, etc., all enter as candidates that "satisfy sufficient distance precision as a public UI".
+</p>
+
+<h3>Correspondence with independent <code>analysis_mode</code> / <code>view</code></h3>
+
+<p>
+In <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-design-intents-2026-q1.md">slack-design-intents-2026-q1</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a>, visualization separation has been explained as:
+</p>
+
+<ul>
+<li>"A necessary condition to accept LLM grouping-based analysis into the platform" (discussion of necessity)</li>
+</ul>
+
+<p>
+The 7 items on this page supplement this with <strong>"sufficient conditions on the view side"</strong>.
+</p>
+
+<p>
+In other words, when designing the <code>analysis_capabilities</code> / <code>requirements</code> of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">plugin-system</a>, the contract for the view plugin can be considered in the following 2 layers:
+</p>
+
+<ol>
+<li><strong>Lower contract (existing)</strong> — Input data structure (cluster tree / presence of embedding / individual argument list, etc.) and machine-readable capability</li>
+<li><strong>Upper contract (this page)</strong> — Satisfying the 7 requirements as a public UI</li>
+</ol>
+
+<p>
+With only the lower contract, "a view that is scatter plot compatible but cannot return to individual opinions" or "a view that visualizes clusters but buries minority opinions" would pass as a plugin. If the upper contract is explicitly stated in the docs / design review side, it is easier to judge the addition or replacement of a view plugin based on "whether it can maintain its role as a public UI".
+</p>
+
+<h3>Matching with structure grasping stance / overall trend grasping use case / division of labor with other tools (Added 2026-05-30)</h3>
+
+<p>
+Overlaying the organization of <a href="analysis-stance.html">analysis-stance</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-redesign-reset-2026-05-30.md">label-quality-redesign-reset-2026-05-30</a> finalized on 2026-05-30 (structure grasping stance, single overall trend grasping use case, KJ principles (KJ原則) #3/#4/#5 complemented by other tools) onto the 7 requirements, the responsibilities are divided as follows.
+</p>
+
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Requirement</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Visualization of volume</td>
+<td>Kouchou-AI (広聴AI) main body</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Visualization of perspectives for organization</td>
+<td>Kouchou-AI main body (to be read as a structure grasping device)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Visualization of major issues</td>
+<td>Kouchou-AI main body (to be read as a structure grasping device)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Traceability to individual opinions</td>
+<td>Kouchou-AI main body</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Avoidance of burying minority opinions</td>
+<td><strong>Other tools</strong>. The overall trend grasping use case leans towards exhaustive partitioning and is determined not to create a minority residual artifact (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-redesign-reset-2026-05-30.md">label-quality-redesign-reset-2026-05-30</a>), so the Kouchou-AI main body does not bear it.</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Elimination of arbitrariness</td>
+<td>Kouchou-AI main body</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Visualization of the next questions</td>
+<td><strong>Other tools</strong>. The <code>interpretation_artifacts</code> area, such as boundaries / counterexamples / bridges / unresolved cards, is on the other tools side (<a href="pipeline-step-addition-framing-2026-05-27.html">pipeline-step-addition-framing-2026-05-27</a>).</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+In other words, the Kouchou-AI main body <strong>bears 5 of the 7 requirements (1/2/3/4/6)</strong>. The remaining 2 (5/7) are expected to be borne by other tool groups in the ecosystem, and are not permanently incorporated into the main body.
+</p>
+
+<p>
+In addition to this, <strong>2 items are added</strong> as evaluation axes for the structure grasping device (From <a href="analysis-stance.html">analysis-stance</a>):
+</p>
+
+<ul>
+<li><strong>Is it material that the reader can explain to others?</strong> (reader = not a passive reader, but a narrator who explains the structure to others)</li>
+<li><strong>Is it material that is easy to cross-reference with the reader's prior mental model?</strong> (Surprise itself is subjective and outside the scope of the product; the materiality for cross-referencing is the subject of product design)</li>
+</ul>
+
+<p>
+The 7 requirements remain valuable as ohki-shingo's organization, but as a view design decision for the Kouchou-AI main body, it is more realistic to evaluate with <strong>"5 items of the main body + 2 additional axes of structure grasping"</strong>.
+</p>
+
+<h3>Implications for the existing scatter plot view</h3>
+
+<p>
+The scatter plot-centric view of the current <code>apps/client-statics</code> can also be evaluated with these 7 requirements:
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Requirement</th>
+<th>Guarantee in the current scatter plot view</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Visualization of volume</td>
+<td>◯ (The sense of volume is visible by the total number of points)</td>
+</tr>
+<tr>
+<td>Visualization of perspectives for organization</td>
+<td>△ (There are cluster labels, but the basis for the chosen perspective is weak)</td>
+</tr>
+<tr>
+<td>Visualization of major issues</td>
+<td>△ (Cluster summaries are displayed, but they are not necessarily organized as "issues")</td>
+</tr>
+<tr>
+<td>Traceability to individual opinions</td>
+<td>◯ (Reach the original text by clicking a point. However, it was broken for a long time in <code>#710 -&gt; PR #857</code>)</td>
+</tr>
+<tr>
+<td>Avoidance of burying minority opinions</td>
+<td>× tendency (Easy to be crushed by dimensionality reduction) From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a></td>
+</tr>
+<tr>
+<td>Elimination of arbitrariness</td>
+<td>◯ (Arbitrariness appears weak because raw opinions and classifications are visible simultaneously)</td>
+</tr>
+<tr>
+<td>Visualization of the next questions</td>
+<td>× (No explicit display of "issues to be discussed next")</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+The fact that the current view is "accepted as a total while including △ and ×" also means that it is established by a combination of strong and weak requirements. When creating a new view, if you lean towards improving the weak requirements (5, 7) while maintaining the strong requirements (4, 6), it is more likely to be evaluated as "better than a scatter plot" as a public UI.
+</p>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>Of the 7 requirements, <code>#2 Visualization of perspectives for organization</code> and <code>#7 Visualization of the next questions</code> seem stronger in LLM direct classification / taxonomy-guided analysis, but does this naturally emerge if <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/ohki-shingo.md">ohki-shingo</a>'s organization is dropped into the implementation contract, or does it require separate design?</li>
+<li>Organized as a self-answer in the context of use by municipalities, but are the 7 requirements the same in other contexts such as elections, citizen participation, and internal company surveys, or does the weight change for each context?</li>
+<li>Assuming that a 2D placement that guarantees only cluster grouping is performed in the short-term scatter plot compatibility plan, how should the <code>way it is decided</code> for that placement be disclosed on the docs / reports to satisfy the "elimination of arbitrariness" requirement?</li>
+<li>If the 7 requirements on this page are officially described in the docs as a contract for the view plugin, which page will be the original text (here, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/plugin-system.md">plugin-system</a>, or <a href="broadlistening.html">broadlistening</a>)?</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-30: Unified terminology to descriptive Japanese (<code>contract A</code> → overall trend grasping use case, <code>β</code> → structure grasping stance / structure grasping device, etc.)</li>
+<li>2026-05-30: Added the overall trend grasping use case / division of labor with other tools / matching with structure grasping stance section. Re-organized that requirements 5 and 7 of the 7 requirements are on the other tools side, the remaining 5 items are the Kouchou-AI main body, and 2 evaluation axes for structure grasping (materiality for explanation / materiality for cross-referencing) are added.</li>
+<li>2026-05-23: Initial version created. The "5 elements of scatter plot acceptance factors", "7 requirements for public UI", and "non-essentiality of embedding distance precision" organized by <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/ohki-shingo.md">ohki-shingo</a> in the 2026-05-23 thread of <code>#2_開発_広聴ai</code> were re-organized as an answer to "how to replace the role of the scatter plot with another view" left by <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-background-history.md">llm-grouping-background-history</a>.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
