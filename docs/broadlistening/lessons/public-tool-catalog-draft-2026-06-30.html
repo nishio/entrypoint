@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Public Tool Catalog Draft 2026-06-30 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/public-tool-catalog-draft-2026-06-30.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-tool-catalog-draft-2026-06-30.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-tool-catalog-draft-2026-06-30.md">Japanese original</a>]
+
+<h2>Public Tool Catalog Draft 2026-06-30</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-tool-catalog-draft-2026-06-30.md">wiki/analyses/public-tool-catalog-draft-2026-06-30.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> A tool catalog draft to explain Kouchou-AI (広聴AI) / Idobata (いどばた) / Cartographer / Jigsaw Sensemaker / tttc-light-js to the outside world without confusion. It will be repurposed for the #564 public case page and the August 2nd tech/tool materials.</p>
+
+<h2>Conclusion</h2>
+
+<p>For the #564 public case page and the August 2nd tech/tool materials, it is safer to divide <code>broad listening</code> into six layers: <strong>collect / deepen / analyze / show / classify / read-and-act</strong>, rather than trying to explain it in a single word. Even in the meeting minutes, Kouchou-AI, Idobata, Cartographer, Jigsaw Sensemaker, and tttc-light-js appear to be in the same ecosystem, but their primary inputs, deliverables, and reader expectations are different. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-cartographer-idobata-boundary-2026-06-30.md">meeting-cartographer-idobata-boundary-2026-06-30</a></p>
+
+<p>The shortest outward-facing explanation should position Kouchou-AI as "an OSS that organizes collected free-text descriptions and makes it easier to find issues," and present Idobata / Cartographer on the collection/deepening side, with Jigsaw Sensemaker / tttc-light-js added as alternative routes for direct LLM classification or TTTC lineage. This avoids the misreading that Kouchou-AI automatically handles everything from collection, dialogue, conflict mediation, to policy decisions. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/report-reading-guide-minimum-wording-2026-06-30.md">report-reading-guide-minimum-wording-2026-06-30</a></p>
+
+<h2>Public Tool Catalog Draft</h2>
+
+<table>
+<thead>
+<tr>
+<th>layer</th>
+<th>reader question</th>
+<th>primary tool / route</th>
+<th>say this</th>
+<th>avoid saying</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>collect</td>
+<td>How to collect voices</td>
+<td>Questionnaires, SNS, in-person records, public comments, existing data, input plugins as needed</td>
+<td>Kouchou-AI imports collected free-text descriptions into a manageable form for analysis.</td>
+<td>The entire design of opinion collection is completed solely by Kouchou-AI.</td>
+</tr>
+<tr>
+<td>deepen</td>
+<td>How to listen deeply</td>
+<td><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/idobata.md">idobata</a> / Cartographer</td>
+<td>Idobata-style tools are on the side of deepening opinions through 1-on-1 dialogue and follow-up questions.</td>
+<td>Idobata / Cartographer are standard features of Kouchou-AI.</td>
+</tr>
+<tr>
+<td>analyze</td>
+<td>How to view the overall structure</td>
+<td><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/kouchou-ai.md">kouchou-ai</a></td>
+<td>Kouchou-AI extracts, clusters, and labels pre-collected free-text descriptions, making it easier to find issues.</td>
+<td>It guarantees proof of majority, statistical public opinion, or correctness of policy decisions.</td>
+</tr>
+<tr>
+<td>show</td>
+<td>How to share and verify</td>
+<td>public viewer / report / individual opinions</td>
+<td>It allows returning from the overall view to individual opinions, enabling humans to verify the AI's summary.</td>
+<td>The visual appearance of the diagram directly represents analysis quality or representativeness.</td>
+</tr>
+<tr>
+<td>classify</td>
+<td>How to classify into different structures</td>
+<td>LLM grouping, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/jigsaw-sensemaker.md">jigsaw-sensemaker</a>, <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/talk-to-the-city.md">tttc-light-js</a></td>
+<td>Direct LLM classification and tree-native routes are being considered as analytical styles distinct from scatter plots.</td>
+<td>Equating Jigsaw or tttc-light-js with the Kouchou-AI current UI.</td>
+</tr>
+<tr>
+<td>read-and-act</td>
+<td>How to connect to decisions</td>
+<td>Human interpretation, additional research, policy/operational decisions</td>
+<td>The report is supplementary material for discovering issues and grasping points of contention, serving as a basis for deciding what to investigate next.</td>
+<td>AI single-handedly determines public will, conclusions, or consensus building.</td>
+</tr>
+</tbody>
+</table>
+
+<h2>Drop-in Copy</h2>
+
+<h3>Short public copy</h3>
+
+<p>Kouchou-AI is an OSS that organizes collected free-text opinions using LLMs and clustering, making it easier to discover issues and points of contention. It is used to read voices gathered from questionnaires, public comments, SNS, in-person records, etc., while navigating back and forth between the overall picture and individual opinions.</p>
+
+<p>However, Kouchou-AI does not automate statistical public opinion polls or policy decisions. Since the results depend on the target data and how it was collected, for important decisions, they must be read in conjunction with the collection method, original data, context, and human verification. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/report-reading-guide-minimum-wording-2026-06-30.md">report-reading-guide-minimum-wording-2026-06-30</a></p>
+
+<h3>Ecosystem copy</h3>
+
+<p>In the stage of collecting or deepening voices, aspects such as questionnaire design, in-person records, interactive tools like Idobata, and follow-up questions/comprehension aids like Cartographer are involved. Kouchou-AI takes on the role in the subsequent stage, analyzing and visualizing the collected free-text descriptions, and making them easy to read as a public viewer or report. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-cartographer-idobata-boundary-2026-06-30.md">meeting-cartographer-idobata-boundary-2026-06-30</a></p>
+
+<p>Direct LLM classification / TTTC-style routes like Jigsaw Sensemaker and tttc-light-js serve as references for analytical styles distinct from the scatter plot-centric Kouchou-AI. In particular, conflict axis discovery and tree-native organization are important next themes, but they are not promised as default capabilities of the current Kouchou-AI. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/jigsaw-sensemaker.md">jigsaw-sensemaker</a>, from <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/talk-to-the-city.md">talk-to-the-city</a></p>
+
+<h2>Placement</h2>
+
+<table>
+<thead>
+<tr>
+<th>surface</th>
+<th>recommended role</th>
+<th>note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DD2030 website / #564 public case page</td>
+<td>External canonical. Place the tool catalog and reading guide before the list of cases.</td>
+<td>Use as the initial answer to #564's "What is Kouchou-AI? / What can it do?"</td>
+</tr>
+<tr>
+<td>8/2 event material</td>
+<td>A single tool ecosystem diagram. Separate collect / deepen / analyze / show / classify / read-and-act.</td>
+<td>Use as a bridge between the tech/tool lane and the practice lane.</td>
+</tr>
+<tr>
+<td>kouchou-ai docs</td>
+<td>Tech-leaning supplements for "Viewing the report," "Preparing data," and "How to read."</td>
+<td>Separate the audience from developer quickstart and Windows setup.</td>
+</tr>
+<tr>
+<td>public-viewer / README</td>
+<td>Misreading prevention, locus of responsibility, how to read diagrams and labels.</td>
+<td>Treat as the trust layer for #696 / #542.</td>
+</tr>
+</tbody>
+</table>
+
+<p>The DD2030 website is natural as an external canonical, but as of 2026-06-30, it is a hardcoded page to <code>src/kouchou-ai/case.vto</code>, with no case schema or <code>tool_lineage</code> field. Website issues #208 / #216 / #125 serve as receptacles for case updates, and #123 indicates a future cross-product case-news list structure. Therefore, consider separating the short-term as the <code>case.vto</code> first slice, and the long-term as a tagged list / CMS possibility. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/website-kouchou-ai-case-live-2026-06-30.md">website-kouchou-ai-case-live-2026-06-30</a></p>
+
+<h2>How this changes #564</h2>
+
+<p>In the first slice of #564, before increasing the number of cases, briefly insert this tool catalog at the top of the case page. This is because those considering implementation want to know not only "what cases exist," but also "whether what we need is collection, deepening, analysis/visualization, or a public viewer." From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-case-page-skeleton-2026-06-30.md">public-case-page-skeleton-2026-06-30</a></p>
+
+<p>The <code>tool_lineage</code> of the case list distinguishes at least the following values:</p>
+
+<ul>
+<li><code>kouchou-ai</code>: Kouchou-AI confirmed / public artifact available</li>
+<li><code>Talk to the City lineage</code>: TTTC / tttc-light-js / derived from TTTC</li>
+<li><code>broad listening adjacent</code>: broad listening in a broader sense / AI-assisted citizen dialogue</li>
+<li><code>idobata / dialogue</code>: collection, deepening, and proposal generation side</li>
+<li><code>enterprise / VOC</code>: enterprise / Voice of Customer analysis</li>
+<li><code>candidate</code>: primary public source / publication permission / tool lineage is unconfirmed</li>
+</ul>
+
+<p>Without this classification, broad listening official cases in a broader sense like Osaka Prefecture, policy formation cases involving multiple tools like Team Mirai, TTTC lineage cases like DirectVote, and enterprise / VOC cases like Cybozu / Altius Link would all be misread as "Kouchou-AI implementation track records." From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/public-case-page-skeleton-2026-06-30.md">public-case-page-skeleton-2026-06-30</a></p>
+
+<h2>What Not To Do</h2>
+
+<ul>
+<li>Do not use Kouchou-AI as a "generic term for overall broad listening."</li>
+<li>Do not list Idobata / Cartographer / Jigsaw Sensemaker / tttc-light-js as current product capabilities of Kouchou-AI.</li>
+<li>Do not promise conflict axis discovery as a default output of the current Kouchou-AI.</li>
+<li>Do not display broad listening in a broader sense / TTTC lineage / enterprise VOC / candidate collectively as <code>Kouchou-AI usage track records</code> on the public case page.</li>
+<li>Do not use Slack-only / Drive-only cases or screenshots with unconfirmed permissions as the basis for a public page.</li>
+</ul>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>Is the authoritative version of this tool catalog the DD2030 website, the kouchou-ai docs, or the August 2nd event material?</li>
+<li>Should Cartographer be presented as a proper noun in outward-facing materials, or generalized as a <code>prototype for follow-up questions and comprehension aids</code>?</li>
+<li>Should the <code>tool_lineage</code> value be fixed as a field on the public case page, or kept only for internal organization?</li>
+<li>If conflict axis discovery is explained as a future capability of LLM grouping, to what extent should it be placed on the public roadmap?</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-06-30: Initial creation. To repurpose <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-cartographer-idobata-boundary-2026-06-30.md">meeting-cartographer-idobata-boundary-2026-06-30</a> for the #564 public case page and the August 2nd tech/tool materials, it was broken down into an outward-facing tool catalog draft and drop-in copy.</li>
+<li>2026-06-30: Reflected <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/website-kouchou-ai-case-live-2026-06-30.md">website-kouchou-ai-case-live-2026-06-30</a>, adding that the DD2030 website is a short-term canonical candidate, but is currently hardcoded in <code>case.vto</code>, and the long-term should be separated into #123's cross-cutting case-news list.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

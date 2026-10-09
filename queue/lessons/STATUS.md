@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L17
-done_items: 17 / 22
-gemini_weekly_remaining: 93.2%
-last_update: 2026-10-09 19:17 JST
+current_item: L18
+done_items: 18 / 22
+gemini_weekly_remaining: 92.9%
+last_update: 2026-10-09 19:20 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 19:17 JST
 
 ## 直近
 
+- L18 `public-tool-catalog-draft-2026-06-30` を処理完了
 - L17 `kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03` を処理完了
 - L16 `pipeline-step-addition-framing-2026-05-27` を処理完了
 - L15 `auto-cluster-defaults` を処理完了
