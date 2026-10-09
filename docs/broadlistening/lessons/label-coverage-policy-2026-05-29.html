@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Label Coverage Policy 2026-05-29 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/label-coverage-policy-2026-05-29.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-coverage-policy-2026-05-29.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-coverage-policy-2026-05-29.md">Japanese original</a>]
+
+<h2>Label Coverage Policy 2026-05-29</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-coverage-policy-2026-05-29.md">wiki/analyses/label-coverage-policy-2026-05-29.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> Human judgment on label design: Labels should be organized as "summaries" rather than "tables of contents," covering up to the top 2-3 axes. However, the evaluation criteria depend on the use case, and the desirable behavior of sampling, rep args, and judge changes between grasping the overall trend and discovering a small number of important issues. One of the root causes for dimensions dropping out of labels is that the upstream labeling input is a random sampling of up to 30 items via API and 10 items in CLI/default.</p>
+
+<p>In response to the results where Claude judge raised 3 issues "to be assigned to humans" in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-refinement-input-scope-2026-05-29.md">label-refinement-input-scope-2026-05-29</a>, human judgments were returned from multiple people in the Slack discussion from 2026-05-29 to 30. At the same time, tokoroten pointed out the upstream sampling constraints, ohki-shingo pointed out that the evaluation axes change depending on the use case, and code verification revealed that the "root cause of axes dropping out of labels" exists even before refinement. This page organizes those judgments and policies in the product context. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a>, from <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-label-algorithm-improvement-2026-05-30.md">slack-label-algorithm-improvement-2026-05-30</a></p>
+
+<h3>Issue 1: "Short but missing" vs. "Long but redundant"</h3>
+
+<p><strong>Human judgment: Prioritize coverage, tolerate redundancy.</strong></p>
+
+<p>A writing style like <code>AIによる持続可能な社会構築</code> in <code>balanced</code> where the <code>災害対応</code> axis drops out makes it easier to scan, but for users it looks like "topics outside the label are mixed in the cluster". In tokoroten's words, "it feels worse when things outside the category are included." Therefore, even if it is long like the <code>none</code> series, it is on the safer side if all dimensions appear in the label. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a></p>
+
+<p>This is a product definition choice to treat labels not as "table of contents headings on the list UI" but as "cluster summaries".</p>
+
+<h3>Issue 2: Up to how many missing items are OK?</h3>
+
+<p><strong>Human judgment: Complete coverage with 1 keyword is impossible. Compromise in the direction of expanding to the extent of "A and B" with the top 2-3 keywords.</strong></p>
+
+<p>It is rare that all 26 items in a cluster can be expressed with 1 keyword A, and it is impossible to "throw away absolutely nothing". However, we want to minimize the loss. The specific idea is as follows:</p>
+
+<ul>
+<li>First, take the most frequent topic A</li>
+<li>Take the next most frequent B among the residuals not covered by A</li>
+<li>Make the label in the format <code>A and B</code></li>
+<li>Do not allow 4 or more axes like <code>A and B and C and D</code> (scanability breaks down)</li>
+</ul>
+
+<p>This is the idea of greedy max-coverage, and it also leads to the discussion of shifting the way of taking upstream sampling and rep args to "maximum coverage".</p>
+
+<h4>Proposed Algorithm Candidates</h4>
+
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Overview</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tokoroten plan</td>
+<td>Choose the title that maximizes the sum of cos similarities between the title candidate embedding and each element embedding <code>∑ cos(emb(title), emb(item))</code></td>
+<td>Light with only embedding calculation</td>
+</tr>
+<tr>
+<td>nishio plan 1</td>
+<td>Generate multiple title candidates with LLM → score by emb distance → select</td>
+<td>LLM calls increase for the generated candidates</td>
+</tr>
+<tr>
+<td>nishio plan 2</td>
+<td>Directly score whether each data point is covered by the title and choose the best candidate</td>
+<td>Assuming cost is disregarded</td>
+</tr>
+<tr>
+<td>nishio plan 3</td>
+<td>Show multiple candidates on the UI and let humans choose</td>
+<td>Calculation cost is medium, valuable as a UX that takes over the burden of verbalizing user preferences</td>
+</tr>
+</tbody>
+</table>
+
+<p>None of these are things to be put into the main pipeline immediately, but are worth comparing as an experimental step.</p>
+
+<h3>Issue 3: Colloquial register like "entertainment"</h3>
+
+<p><strong>Human judgment: Depends on the use case. At worst, it can be absorbed by string replacement.</strong></p>
+
+<p>The issue of colloquialisms being mixed in, like <code>AIによるエンタメと研究革新</code> in <code>contrast</code>, has a tolerance that changes depending on the tone of the product (assistance for policy decision-making vs. lightweight report). The priority is lower than issues 1 and 2, and they can be aligned with post-processing if necessary.</p>
+
+<h3>Premise: Output for which use case?</h3>
+
+<p>In the Slack on 2026-05-30, ohki-shingo pointed out that the direction to tackle changes depending on specifically which use case's output we want to improve. For example, whether we want to grasp the overall trend or discover a small number of seemingly important issues, the appropriate processing and evaluation are different. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/slack-label-algorithm-improvement-2026-05-30.md">slack-label-algorithm-improvement-2026-05-30</a></p>
+
+<p>This is not a story that weakens the above "omission NG" policy, but a correction that we need to define what is called an omission first.</p>
+
+<ul>
+<li><strong>Grasping the overall trend</strong>: Labels should stably summarize the top topics with large cluster mass. Accidental omissions due to random sampling should be avoided, but stuffing even minuscule edge cases into the label will ruin scanability.</li>
+<li><strong>Discovering a small number of important issues</strong>: It is unreasonable to stuff all minority dimensions into the label alone. Rather, it is better to pick them up with a separate artifact like examples showing breadth, boundary examples, minority flag, or subtopic list.</li>
+<li><strong>Accountability of public UI</strong>: The label is an entrance, and it is necessary to avoid misguidance as a set with description / rep args / drill-down to individual opinions.</li>
+</ul>
+
+<p>Therefore, in the next experiment, it is necessary to specify not only whether the label quality improves with full-item input, but also which use case's quality is being measured in the run metadata and judge prompt.</p>
+
+<h3>Upstream Sampling Constraints (New Discovery)</h3>
+
+<p>While discussing Issue 2, tokoroten pointed out the possibility that "some specimens may not be read, causing information to drop out from the label" during sampling for labeling. Checking the actual code shows the following.</p>
+
+<ul>
+<li><code>packages/analysis-core/src/analysis_core/steps/hierarchical_initial_labelling.py:154-155</code></li>
+<li><code>packages/analysis-core/src/analysis_core/steps/hierarchical_merge_labelling.py:262-266</code></li>
+</ul>
+
+<p>Both cut the number of items with <code>sampling_num = min(sampling_num, len(cluster_data))</code> and then call <code>cluster_data.sample(n=sampling_num)</code>. This is DataFrame.sample in polars and is complete random sampling.</p>
+
+<p>The maximum number of items differs depending on the execution path:</p>
+
+<ul>
+<li>Normal report creation via admin screen/API: <code>apps/api/src/services/report_launcher.py:42-49</code> specifies <code>sampling_num = 30</code> for both initial / merge</li>
+<li>analysis-core CLI / config default / builtin plugin default: <code>sampling_num = 10</code> for both initial / merge</li>
+</ul>
+
+<ul>
+<li><code>compat/config_converter.py:120 / 129</code>: <code>setdefault("sampling_num", 10)</code> (both initial / merge)</li>
+<li><code>plugins/builtin/hierarchical_initial_labelling.py:51</code>: <code>step_config.get("sampling_num", 10)</code></li>
+<li><code>plugins/builtin/hierarchical_merge_labelling.py:51</code>: <code>step_config.get("sampling_num", 10)</code></li>
+</ul>
+
+<p>In other words, in the normal Web path, if a cluster has more than 30 opinions, the labeling targets are randomly selected 30 items, and in the CLI/default path, if there are more than 10 items, only randomly selected 10 items are chosen. tokoroten's statement of "default 30" is correct via the API, and looking only at the analysis-core default, it is 10. The essence that "information drops out due to random sampling" is the same for both paths. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a></p>
+
+<p>What this means for Issues 1 and 2:</p>
+
+<ul>
+<li>The larger the cluster, the more the dimensions reflected in the label are pulled by the randomly hit 10/30 items rather than the "entity of the cluster".</li>
+<li>Even if it is rewritten by refinement, the upstream random bias cannot be recovered (since refinement does not see rep args <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-refinement-input-scope-2026-05-29.md">label-refinement-input-scope-2026-05-29</a>).</li>
+<li>To realize coverage-oriented labels, rather than increasing the input for refinement, it is more essential to switch the sampling strategy of <code>hierarchical_initial_labelling</code> to <code>random → farthest point sampling / max coverage / k-medoids</code>.</li>
+</ul>
+
+<h3>The same problem also applies to rep args display on the UI</h3>
+
+<p>Separately from the sampling during labeling, when displaying "label + 3-5 rep args" on the UI, which args to choose (random vs. highly representative ones covered by the label) is also a series of the same maximum coverage problem.</p>
+
+<p>In the current main <code>0c294da</code>, the normal overview (<code>ClusterOverview</code>) of the public-viewer has only the label / count / takeaway, and representative arguments are not lined up. In the hierarchical list display (<code>HierarchyListChart</code>), arguments can be expanded only for the deepest-level cluster, but representative selection is not done here either. The implementation picks up the arguments of the target cluster with <code>argumentList.filter((arg) =&gt; arg.cluster_ids.includes(cluster.id))</code>, and the initial display is <code>argumentsList.slice(0, 10)</code>. In other words, it is the first 10 items of the array, and neither maximum coverage, label fitness, cluster centrality, nor random redrawing. Since the aggregation packs all items of the arguments array of <code>hierarchical_result.json</code> in the row order of <code>hierarchical_clusters.csv</code>, the display order largely follows the upstream argument order. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a></p>
+
+<p>When putting in representative example selection, things near the cluster center or things with high similarity to the label embedding give a sense of conviction, but just that will make the scattering within the cluster look underestimated. If only typical examples are lined up, even a cluster that actually includes multiple axes and peripheral issues will easily look like a "single issue beautifully gathered at the center", inviting overconfidence in both the public UI and judge input.</p>
+
+<p>Therefore, it is better for rep args not to be 1 type of "representative", but to divide at least the following.</p>
+
+<ul>
+<li><strong>Typical example</strong>: An argument near the centroid, or with high similarity to the label embedding. Used to quickly understand the meaning of the label.</li>
+<li><strong>Example showing breadth</strong>: An argument that is far from the typical example but belongs to the cluster, or an argument chosen by FPS / k-medoids / subtopic coverage. Used to show the scattering and sub-issues that the cluster holds.</li>
+<li><strong>Boundary example</strong>: An argument near the boundary with a sibling cluster. Used to inspect places where the difference between labels is ambiguous.</li>
+</ul>
+
+<p>On the UI, rather than just "3 representative examples", taking them out by dividing roles like typical example 2 + breadth 2 + boundary 1 makes it easier to balance conviction and underrepresentation. It is the same for judge input; passing only typical examples easily leads to overestimating the goodness of the label.</p>
+
+<h3>Lessons from Experimental Operations</h3>
+
+<p>The flow this time:</p>
+
+<ol>
+<li>Felt that GPT judge was untrustworthy.</li>
+<li>Spit out the target of judgment into Markdown in a fixed format (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a>).</li>
+<li>Let Claude Code judge it.</li>
+<li>Asked Claude, "Are there things that should be confirmed with humans?", and drew out 3 issues.</li>
+<li>Gathered human judgments on Slack, and even a hypothesis on upstream sampling came out from tokoroten.</li>
+<li>Confirmed the hypothesis with code, and fixed it as a policy on this page.</li>
+</ol>
+
+<p>This loop functioned as a division of labor: "Codex executes the experiment → Claude judges and cuts the issues → Humans decide the policy". This same format can be used when running experiments on sampling strategies and title selection algorithms in the future.</p>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>What is the implementation cost of switching the sampling of <code>hierarchical_initial_labelling</code> to max coverage / FPS? Should <code>merge_labelling</code> also be switched in the same way?</li>
+<li>When implementing the tokoroten plan that chooses label candidates by the sum of embedding similarities, how many candidates is it practical to generate? (trade-off with the number of LLM calls)</li>
+<li>When dividing the rep args passed to UI / judge into typical example / example showing breadth / boundary example, how many of each is it good to put out? Is a small composition like typical example 2 + breadth 2 + boundary 1 sufficient for now?</li>
+<li>Where is the place to clearly write the coverage policy of "up to the top 2-3 axes" as a product? (refinement prompt? UI specifications? guidelines?)</li>
+<li>In what phase should the UX that lets humans choose candidates on the UI (Plan 3) be positioned? (admin UX at the time of creation? review UX after publication?)</li>
+<li>If grasping the overall trend and discovering a small number of important issues are treated as separate modes, which parts of label / description / rep args / judge rubric should be made common, and which should be separated?</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-30: Turned the Slack log provided by users into a source, and added ohki-shingo's point that "the processing and evaluation will change depending on whether it is grasping the overall trend or discovering a small number of but important issues". In the next experiment, the use-case contract needs to be specified in the run metadata / judge prompt.</li>
+<li>2026-05-30: Following nishio's point, added that there is a risk of underestimating the scattering within the cluster if rep args are chosen only by the vicinity of the centroid or label embedding similarity. It is better to have a policy that designs rep args by dividing them into typical example / example showing breadth / boundary example.</li>
+<li>2026-05-30: Reconfirmed current main <code>0c294da</code>, and corrected that <code>sampling_num</code> during labeling is 30 in the normal API path and 10 in the analysis-core default. Both are Polars random samples without a seed, and are not maximum coverage. Also added that the UI's "individual data" display is not a representative selection but the first 10 items of the array of the deepest-level cluster.</li>
+<li>2026-05-29: Created the first edition. Recorded human judgments on Slack (Issue 1: coverage priority / Issue 2: up to top 2-3 axes / Issue 3: OK to postpone) and confirmed the sampling constraint pointed out by tokoroten in the code (<code>sampling_num</code> default 10, polars random sample). This led to the policy that it is more essential to review the upstream sampling strategy before improving refinement.</li>
+<li>2026-05-29: Point from nishio: "Since it is already known that the cost of the labeling part is very small compared to extraction, wouldn't a simple experiment of first passing all items to try, and reducing them if that doesn't work be sufficient before jumping to complex algorithms like max coverage / FPS?". This is valid, and the policy written in the first edition to "switch the sampling strategy to <code>random → max coverage / FPS / k-medoids</code>" was premature. The order is reorganized as follows:
+  <ol>
+  <li><strong>First experiment</strong>: Effectively disable <code>sampling_num</code> (sufficiently large value or None) and pass all items to the labeling LLM to see if the label quality improves. Since the number of LLM calls does not change and only the token amount of each call increases, the cost increase compared to extraction is small.</li>
+  <li>Only if the quality does not improve with (1), or if a cluster where the context window is realistically severe appears, proceed to the comparison of max coverage / FPS / k-medoids.</li>
+  <li>The tokoroten plan (maximizing the sum of cos similarities of title candidate emb × each element emb) is an improvement on a different axis from "whether the LLM can write a label with representativeness from a long context" which remains even in (1), so it can be experimented in parallel.</li>
+  </ol>
+  By using this order, it can be confirmed at the minimum cost whether "upstream sampling is really the bottleneck".</li>
+<li>2026-05-29: Excavation of past discussion. At <code>raw/meeting_minutes.txt:5169-5170</code> (2025-06-18 regular meeting), tokoroten proposed "For labeling, it seems better to use Farthest Point Sampling instead of random sampling", and nishio held it as "Algorithmically good, but unconfirmed about calculation amount", remaining unimplemented for about 11 months. The reason tokoroten wrote on Slack this time, "Is it included to give a title encompassing the whole sample with Farest-something sampling?", was remembering his own past proposal. Today's "passing all items" proposal by nishio is an approach that <strong>avoids the "FPS calculation amount unconfirmed" which had remained as a gating question 11 months ago, by taking a route that questions the necessity of sampling itself before implementing FPS</strong>. Recorded as an example of advancing an idea that had been left with its implementation cost unconfirmed, in a form that invalidates it from another angle.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

@@ -4,11 +4,11 @@
 
 ```
 state: stopped        # running / waiting / stopped / done
-current_item: L05
-done_items: 5 / 22
-gemini_weekly_remaining: 97.6%
-last_update: 2026-10-09 18:36 JST
-runner_note: 連続 3 回の失敗（runs/lessons/ を見る）
+current_item: L06
+done_items: 6 / 22
+gemini_weekly_remaining: 96.6%
+last_update: 2026-10-09 18:37 JST
+runner_note: 
 ```
 
 ## 判断待ち
@@ -17,6 +17,7 @@ runner_note: 連続 3 回の失敗（runs/lessons/ を見る）
 
 ## 直近
 
+- L06 `label-coverage-policy-2026-05-29` を処理完了
 - L05 `local-llm-extraction-faithfulness-2026-10-05` を処理完了
 - L04 `extraction-faithfulness-public-models-2026-10-08` を処理完了
 - L03 `pipeline` を処理完了
