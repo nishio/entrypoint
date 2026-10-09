@@ -3,11 +3,12 @@
 毎項目の終わりに上書きする。
 
 ```
-state: running        # running / waiting / stopped / done
+state: stopped        # running / waiting / stopped / done
 current_item: L05
 done_items: 5 / 22
 gemini_weekly_remaining: 97.6%
-last_update: 2026-10-09 18:28 JST
+last_update: 2026-10-09 18:36 JST
+runner_note: 連続 3 回の失敗（runs/lessons/ を見る）
 ```
 
 ## 判断待ち
