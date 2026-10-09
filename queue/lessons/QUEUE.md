@@ -101,7 +101,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L18 `public-tool-catalog-draft-2026-06-30`** — 元: `wiki/analyses/public-tool-catalog-draft-2026-06-30.md`
 - [x] **L19 `broad-listening-book-extractions`** — 元: `wiki/analyses/broad-listening-book-extractions.md`
 - [x] **L20 一覧**: `index.html`（英）と `ja.html`（日）を作る。並びは「概念 → 抽出 → ラベル → クラスタリングと可視化 → 公開 UI と範囲 → 周辺」の順
-- [ ] **L21 入口からのリンク**: `docs/broadlistening/index.html` と `ja.html` に一覧への 1 行を足す
+- [x] **L21 入口からのリンク**: `docs/broadlistening/index.html` と `ja.html` に一覧への 1 行を足す
 - [ ] **L22 同期の手順**: 開発者 wiki の最新と固定 commit を比べ、元が更新されたページの一覧を `STATUS.md` に出す方法を `README.md` に書く（訳し直しは別の QUEUE で）
 
 ## 回答（人間から）

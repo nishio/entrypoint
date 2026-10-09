@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L20
-done_items: 20 / 22
-gemini_weekly_remaining: 91.5%
-last_update: 2026-10-09 19:26 JST
+current_item: L21
+done_items: 21 / 22
+gemini_weekly_remaining: 90.9%
+last_update: 2026-10-09 19:30 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 19:26 JST
 
 ## 直近
 
+- L21 入口からのリンク (`docs/broadlistening/index.html` と `ja.html`) を処理完了
 - L20 一覧 (`index.html` と `ja.html`) を処理完了
 - L19 `broad-listening-book-extractions` を処理完了
 - L18 `public-tool-catalog-draft-2026-06-30` を処理完了
