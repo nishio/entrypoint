@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L23a
-done_items: 23 / 31
-gemini_weekly_remaining: 90.9%
-last_update: 2026-10-09 20:17 JST
+current_item: L23b
+done_items: 24 / 31
+gemini_weekly_remaining: 90.0%
+last_update: 2026-10-09 20:21 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 20:17 JST
 
 ## 直近
 
+- L23b 題（L04〜L06）を処理完了
 - L23a 題（L01〜L03）を処理完了
 - L22 同期の手順 (`README.md` の作成) を処理完了
 - L21 入口からのリンク (`docs/broadlistening/index.html` と `ja.html`) を処理完了
