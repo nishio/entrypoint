@@ -123,7 +123,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L23d 題（L10〜L12）**: `llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`
 - [x] **L23e 題（L13〜L15）**: `public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`
 - [x] **L23f 題（L16〜L18）**: `pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`
-- [ ] **L23g 題（L19）**: `broad-listening-book-extractions`
+- [x] **L23g 題（L19）**: `broad-listening-book-extractions`
 - [ ] **L24 英語の一覧**: `index.html` の各行の題を L23 の題に揃え、要約を原文の frontmatter の `summary` の忠実な英訳にする（圧縮で留保を落とさない。
   例: L04 は「出力が原文の写しに寄る」を残す）
 - [ ] **L25 日本語の一覧**: `ja.html` の各行の題を**原文の H1 の日本語のまま**、要約を原文の `summary` の日本語のまま（訳さない）にする。リンクは原文と英訳の両方。
