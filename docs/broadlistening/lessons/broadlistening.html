@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Broadlistening — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/broadlistening.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/broadlistening.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="ja.html">日本語版</a>]
+
+<h2>Broadlistening</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/broadlistening.md">https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/broadlistening.md</a>（commit <code>3459fc6</code>）。
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p>
+Broadlistening — A method of aggregating and clustering large-scale free-text opinions using LLMs to create an "opinion map"
+</p>
+
+<h3>Definition</h3>
+
+<p>
+<strong>Broad listening</strong> is, as the counterpart to broad<strong>casting</strong>, a method of collecting free-text opinions from many citizens, users, and participants, and aggregating, organizing, and visualizing them using LLMs. The emphasis is on <strong>listening</strong> broadly.
+</p>
+
+<p>
+<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/kouchou-ai.md">Kouchou-AI (広聴AI)</a> is one of the reference implementations of this method, a Japanese-specialized version starting from a fork of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/talk-to-the-city.md">Talk to the City</a>.
+</p>
+
+<p>
+However, in practice, the term "broad listening" can refer to <strong>the analysis and visualization of already collected free-text opinions in a narrow sense</strong>, and <strong>the entire activity including interactive collection, deep-diving, and dialogue design in a broad sense</strong>. In meeting minutes, it is organized that Kouchou-AI may be recognized as broad listening by mayors and top-level management, while a deep-diving tool like <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/idobata.md">idobata (いどばた)</a> may be recognized as broad listening by frontline public relations and public hearing departments. In public docs, it is necessary to separate this discrepancy in the tool catalog. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-cartographer-idobata-boundary-2026-06-30.md">meeting-cartographer-idobata-boundary-2026-06-30</a>
+</p>
+
+<h3>How to Read — "Amusement Park Map" Metaphor</h3>
+
+<p>
+The "opinion map" is not a static map, but assumes that the reader will read it in a three-step exploration pattern: <strong>get a bird's-eye view of the zone structure → select a zone of interest → drill in</strong>. To use an amusement park map as a metaphor, the reading style would be, "So this area is the Western zone and this area is the sci-fi zone... I'm interested in sci-fi, so let's look at the sci-fi zone in detail." From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-amusement-park-map-metaphor-2026-06-03.md">nishio-amusement-park-map-metaphor-2026-06-03</a>
+</p>
+
+<p>
+Consequences derived from this:
+</p>
+
+<ul>
+<li>It is premised that the zone names (top-level cluster labels) function as "clues for choosing by interest," rather than reading all items from the beginning.</li>
+<li>If the quality of the top-level labels is low and they do not function as zone names, this exploration will not be established, and the reader will discard the map and revert to reading all items or give up.</li>
+<li>Therefore, the hierarchical structure and label quality are not "appearances," but <strong>functional requirements to establish the reader's exploration</strong>.</li>
+</ul>
+
+<h3>Typical Pipeline</h3>
+
+<ol>
+<li><strong>Extraction</strong> — Extract "units of opinion" from raw comments using an LLM. In many cases, 1 comment → multiple opinions.</li>
+<li><strong>Embedding</strong> — Vectorize each opinion.</li>
+<li><strong>Dimensionality reduction</strong> — 2D via UMAP.</li>
+<li><strong>Clustering</strong> — k-means or HDBSCAN.</li>
+<li><strong>Labeling</strong> — Group representative opinions of clusters and have the LLM write a title/summary.</li>
+<li><strong>Visualization</strong> — Scatter charts, treemaps, hierarchical lists.</li>
+</ol>
+
+<p>
+Implementation details are covered in <a href="pipeline.html">pipeline</a>.
+</p>
+
+<h3>Two Architectural Lineages</h3>
+
+<p>
+Section 13.5 of the book (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/broad-listening-book-source.md">broad-listening-book-source</a>) organizes broad listening implementations into two lineages:
+</p>
+
+<ul>
+<li><strong>Scatter chart type</strong> — Kouchou-AI / TTTC Scatter. Embedding → UMAP → Clustering → Visualization. Automatically generates an "opinion map," intuitive, but accuracy is compromised due to clustering after 2D compression.</li>
+<li><strong>Long Context type</strong> — TTTC Turbo / LLM direct grouping without embedding / Fujitsu-central ministry demonstration experiment. Directly has the LLM read all items without using Embedding and UMAP. Strong at separating pros/cons and distinguishing nuances, with high accuracy, but does not produce visually appealing scatter charts.</li>
+</ul>
+
+<p>
+Kouchou-AI started from the scatter chart type, but <code>analysis_mode=llm_grouping</code> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/pr-827-llm-grouping-capabilities-plan-2026-05-18.md">pr-827-llm-grouping-capabilities-plan-2026-05-18</a>) is attempting to include the branch of the Long Context lineage. Both are rapidly developing technologically, and their pros and cons will fluctuate in the future.
+</p>
+
+<h3>Why It Is Important</h3>
+
+<ul>
+<li><strong>Public comment (パブコメ) attacks / Public comment DDoS</strong> — Countermeasures against massive comment posting by AI are a modern administrative issue (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-minutes.md">meeting-minutes</a> 2025-03-26). Deduplication, removal of low-quality comments, and distinction from statistical public opinion are necessary. Agency for Cultural Affairs public comment data (<code>nishio/aipubcom-data</code> 8000→25000 items), etc., are subjects of research.</li>
+<li><strong>Boundary with administrative RAG</strong> — There are fragments around the Digital Agency, e-Gov, and RAG, but as of 2026-05-25, in the wiki / meeting minutes alone, a primary organization that squarely explains the "Digital Agency's article RAG" has not been found. Proposals for Kouchou-AI's public comment integration and draft response support are treated separately from legal article search and article QA. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/digital-agency-legal-rag.md">digital-agency-legal-rag</a></li>
+<li><strong>Visualization of minority opinions that cannot be picked up by existing public opinion polls</strong> — Extracting a random K items completely misses opinions with proportion p with a probability of <code>exp(-K·p)</code> (36.4% for 1% and K=100). The demo where you can experience this mathematics is <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/zipf-broadlistening.md">zipf-broadlistening</a></li>
+<li>Reducing <strong>the opinion aggregation costs for local governments and political parties</strong> (substituting AI for the manual work of public comment staff).</li>
+</ul>
+
+<h3>Related Terms</h3>
+
+<ul>
+<li><strong>Dense opinion groups / Dense clusters</strong> — Clusters with high opinion density. UI elements designed for datasets of 10,000 items or more.</li>
+<li><strong>Attribute filter (属性フィルタ)</strong> — A feature to filter clusters by metadata such as age and region (PR #531).</li>
+<li><strong>Public will vs. statistical public opinion</strong> — A distinction on the <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/broad-listening-book.md">Book</a> side. Outside the scope of the Wiki, but frequently appears as a term.</li>
+<li><strong>Narrative approach</strong> — <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/tokoroten.md">tokoroten</a>'s chat-style intake method. A style of "taking your emotions seriously," contrasted with Kouchou-AI's "in short~" type bucketing.</li>
+</ul>
+
+<h3>Related Projects</h3>
+
+<ul>
+<li><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/talk-to-the-city.md">Talk to the City</a> — Upstream. Originated from AI Objectives Institute, currently archived (2025-08-01). tttc-light-js has no scatter.</li>
+<li><strong>idobata</strong> — 1-on-1 deep-diving interview AI. There could be a connection where themes are found in Kouchou-AI and passed to idobata, or proposal / PR data derived from idobata is analyzed in Kouchou-AI. However, AI-generated long text has a different data shape from normal short-text surveys.</li>
+<li><strong>Cartographer</strong> — A derivative prototype of the idobata lineage. Since it leans toward generating follow-up questions, meeting understanding, and detecting omissions in user research design, it should not be mixed with Kouchou-AI's standard analysis mode.</li>
+<li><strong>DivCon</strong> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/tokoroten.md">tokoroten</a>) — Another lineage of experiments handling local government data.</li>
+<li><strong>farbrain</strong> (<code>tokoroten/farbrain</code>) — A gamification derivative using UMAP+k-means+labeling.</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-17: Initial creation.</li>
+<li>2026-05-21: Added the two-architecture organization of scatter chart vs. Long Context derived from Section 13.5 of the book (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/broad-listening-book-source.md">broad-listening-book-source</a>).</li>
+<li>2026-06-03: Verbalized the reader's exploration pattern (bird's-eye view → zone selection → drill in) using the "amusement park map" metaphor, and added the reason why label quality is a functional requirement (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/nishio-amusement-park-map-metaphor-2026-06-03.md">nishio-amusement-park-map-metaphor-2026-06-03</a>).</li>
+<li>2026-06-30: Reflected <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-cartographer-idobata-boundary-2026-06-30.md">meeting-cartographer-idobata-boundary-2026-06-30</a> and added the need for a tool catalog that separates analysis and visualization in a narrow sense from collection and deep-diving in a broad sense.</li>
+<li>2026-09-09: Added a link to the mathematical demo of "why all items instead of sampling" <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/entities/zipf-broadlistening.md">zipf-broadlistening</a> (nishio, https://nishio.github.io/zipf-broadlistening/ ) to "Why It Is Important."</li>
+<li>2026-10-05: Connected the Digital Agency's article RAG research memo as the boundary with administrative RAG.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>
