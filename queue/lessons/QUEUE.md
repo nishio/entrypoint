@@ -143,7 +143,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 各英訳ページの `<title>` と `<h2>` を、その H1 の英訳にする。英訳は意味を足さず、主張の形の題は主張の形のまま訳す（例:「〜は〜ではない」→ "... is ..., not ..."）。題以外は 1 文字も変えない。
 
 - [x] **L26a 題を原文の H1 から**（`analysis-stance`、`broadlistening`、`pipeline`）
-- [ ] **L26b 題を原文の H1 から**（`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
+- [x] **L26b 題を原文の H1 から**（`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
 - [ ] **L26c 題を原文の H1 から**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`）
 - [ ] **L26d 題を原文の H1 から**（`graph-visualization-proposal-2026-05-25`、`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`）
 - [ ] **L26e 題を原文の H1 から**（`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`、`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`）
