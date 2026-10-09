@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Label Quality Rubric Evaluation 2026-05-29 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/label-quality-rubric-evaluation-2026-05-29.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-rubric-evaluation-2026-05-29.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-rubric-evaluation-2026-05-29.md">Japanese original</a>]
+
+<h2>Label Quality Rubric Evaluation 2026-05-29</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-rubric-evaluation-2026-05-29.md">wiki/analyses/label-quality-rubric-evaluation-2026-05-29.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> It is better to decompose the judge of cluster label quality into a rubric evaluation of binary criteria + weights + fatal penalty, rather than an abstract 1-5 point scale. First, it should be calibrated against human judgment using the existing judge bundle of <code>[8,40]</code>, and run as an experimental artifact instead of putting it into the standard pipeline.</p>
+
+<p>The "label quality" handled here refers not to GitHub issue labels, but to the <strong>quality of the cluster label / description</strong> that appears in the analysis output of Kouchou-AI (広聴AI).</p>
+
+<p>Conclusion: If we are to improve the current label judge, it is better to decompose it into <strong>binary criteria + points</strong> like the Ubie article style, rather than increasing abstract 1-5 point scoring. While keeping <code>consistency / specificity / comprehensiveness / distinctiveness</code> as upper categories, the actual judge should return <code>true/false</code> on whether it "meets the criterion". From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/zenn-llm-as-a-judge-rubric-evaluation-2026-05-29.md">zenn-llm-as-a-judge-rubric-evaluation-2026-05-29</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-judge-mechanism-2026-05-25.md">label-judge-mechanism-2026-05-25</a>.</p>
+
+<h3>Why</h3>
+
+<p>The existing OpenAI judge has split winners between the <code>cluster-level judge</code> and the <code>label-set direct judge</code>, and since the generator and the judge are from the same lineage of LLMs, we need to suspect self-evaluation bias. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-judge-mechanism-2026-05-25.md">label-judge-mechanism-2026-05-25</a>.</p>
+
+<p>On the other hand, in human judgment, there is a product policy stating that "labels are summaries, not tables of contents", "prefer redundancy over omission", and "cover up to the top 2-3 axes". Therefore, the judge also needs to treat <strong>the omission of important axes closer to fatal</strong>, not just focus on "readable brevity". From <a href="label-coverage-policy-2026-05-29.html">label-coverage-policy-2026-05-29</a>.</p>
+
+<p>Also, in current main <code>0c294da</code>, both <code>hierarchical_initial_labelling</code> and <code>hierarchical_merge_labelling</code> are defaulted to <code>sampling_num=10</code>, and label arguments within a cluster by randomly sampling them. In large clusters, label quality issues arise not only from the "judge" but also because they are "not visible in the input". From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a>.</p>
+
+<h3>Proposed Rubric Shape</h3>
+
+<p>Output the following JSONL with 1 row per 1 cluster. Be sure to save not only the total score but also the judgment for each criteria.</p>
+
+<pre><code class="language-json">{
+  "rubric_version": "label-quality-v0",
+  "cluster_id": "cluster-level-1:5",
+  "label": "AIによる顧客体験と業務効率の向上",
+  "score": 48,
+  "max_score": 75,
+  "score_rate": 0.64,
+  "fatal_flags": [
+    "unsupported_axis"
+  ],
+  "criteria_results": [
+    {
+      "id": "COV_MAIN_TOPIC",
+      "axis": "coverage",
+      "points": 20,
+      "criteria_met": true,
+      "signed_score": 20,
+      "rationale": "shown arguments contain business efficiency and data analysis"
+    }
+  ]
+}
+</code></pre>
+
+<p>The scoring looks at <code>fatal_flags</code> as well as <code>score_rate</code>. For example, "the label claims an axis not in the material" breaks the UI trust even if the average score is high, so it is made a gate condition.</p>
+
+<h3>Cluster-Level Criteria v0</h3>
+
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th style="text-align: right">points</th>
+<th>criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>COV_MAIN_TOPIC</code></td>
+<td style="text-align: right">+20</td>
+<td>The label includes the most central argument among the presented arguments</td>
+</tr>
+<tr>
+<td><code>COV_TOP_AXES</code></td>
+<td style="text-align: right">+15</td>
+<td>When the cluster contains multiple axes, the top 2-3 axes appear in the label or description</td>
+</tr>
+<tr>
+<td><code>GROUND_LABEL</code></td>
+<td style="text-align: right">+15</td>
+<td>Each main word in the label is grounded by the presented arguments or child cluster label/description</td>
+</tr>
+<tr>
+<td><code>DESC_BOUNDARY</code></td>
+<td style="text-align: right">+10</td>
+<td>The description explains "what is included" and supplements arguments that would be dropped by the label alone</td>
+</tr>
+<tr>
+<td><code>DIST_SIBLING</code></td>
+<td style="text-align: right">+10</td>
+<td>Compared to the list of sibling labels, the coverage scope of this label is distinguishable</td>
+</tr>
+<tr>
+<td><code>SCAN_LENGTH</code></td>
+<td style="text-align: right">+5</td>
+<td>The label fits within a scannable length in the UI, and differences are not hidden simply by using a generic prefix</td>
+</tr>
+<tr>
+<td><code>REGISTER_OK</code></td>
+<td style="text-align: right">+5</td>
+<td>It is not an unnatural colloquialism or excessive marketing word in a public / policy context</td>
+</tr>
+<tr>
+<td><code>UNSUPPORTED_AXIS</code></td>
+<td style="text-align: right">-25</td>
+<td>The label claims an important axis that cannot be confirmed from the presented material</td>
+</tr>
+<tr>
+<td><code>MISSING_VISIBLE_AXIS</code></td>
+<td style="text-align: right">-20</td>
+<td>Although there is a clear important axis in the presented material, it is dropped from both the label and description</td>
+</tr>
+<tr>
+<td><code>DUPLICATE_SIBLING</code></td>
+<td style="text-align: right">-15</td>
+<td>The meaning overlaps significantly with a sibling, making it difficult for the user to judge which one to open</td>
+</tr>
+<tr>
+<td><code>GENERIC_BUCKET</code></td>
+<td style="text-align: right">-10</td>
+<td>Although there are specific arguments, it escapes into generic buckets such as "AI utilization" or "social issues"</td>
+</tr>
+</tbody>
+</table>
+
+<p>In this v0, <code>COV_TOP_AXES</code> and <code>MISSING_VISIBLE_AXIS</code> are the parts where the judgment of "covering up to the top 2-3 axes" from <a href="label-coverage-policy-2026-05-29.html">label-coverage-policy-2026-05-29</a> has been dropped into the judge.</p>
+
+<h3>Label-Set Criteria v0</h3>
+
+<p>Apart from the cluster unit, the entire top-level label set is also evaluated once. This corresponds to the <code>Label-Set Direct Judge</code> in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-judge-mechanism-2026-05-25.md">label-judge-mechanism-2026-05-25</a>, but this is also divided into binary criteria.</p>
+
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th style="text-align: right">points</th>
+<th>criterion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SET_DISTINCT_HEADINGS</code></td>
+<td style="text-align: right">+15</td>
+<td>The main labels can be distinguished from each other even when just looking at the first few words</td>
+</tr>
+<tr>
+<td><code>SET_GRANULARITY</code></td>
+<td style="text-align: right">+10</td>
+<td>The granularity does not deviate significantly between labels</td>
+</tr>
+<tr>
+<td><code>SET_COVERAGE</code></td>
+<td style="text-align: right">+15</td>
+<td>The top-level label set roughly covers the main themes of the presented clusters</td>
+</tr>
+<tr>
+<td><code>SET_NO_PREFIX_NOISE</code></td>
+<td style="text-align: right">+5</td>
+<td>Common prefixes like <code>By AI technology...</code> do not hinder the understanding of differences</td>
+</tr>
+<tr>
+<td><code>SET_REGISTER_CONSISTENT</code></td>
+<td style="text-align: right">+5</td>
+<td>The tone is consistent across the entire label set</td>
+</tr>
+<tr>
+<td><code>SET_DUPLICATE_PAIR</code></td>
+<td style="text-align: right">-20</td>
+<td>There is a label pair with almost the same meaning</td>
+</tr>
+<tr>
+<td><code>SET_HIDDEN_RESIDUAL</code></td>
+<td style="text-align: right">-15</td>
+<td>Important themes of large clusters have become invisible on the label set</td>
+</tr>
+</tbody>
+</table>
+
+<h3>Input Design</h3>
+
+<p>The material passed to the judge is divided into 3 layers.</p>
+
+<ol>
+<li><code>label / description / size</code></li>
+<li><code>representative arguments</code></li>
+<li><code>sibling labels</code></li>
+</ol>
+
+<p>However, since the labeling itself in current main relies on random 10 items, showing only the same 3 items to the judge is likely to cause misjudgment. First, we will calibrate with the existing <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a>, and then see how the judge results change between the all-args input and sample input. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a> and <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a>.</p>
+
+<h3>Experimental Plan</h3>
+
+<ol>
+<li><strong>Fix the v0 rubric</strong>: Fix the above criteria as JSON or YAML, and leave <code>rubric_version</code> in the evaluation results</li>
+<li><strong>Re-evaluate with existing bundle</strong>: Evaluate <code>none / setwise / contrast / balanced</code> at both the cluster-level and label-set</li>
+<li><strong>Match with human judgment</strong>: Treat "prefer redundancy over omission" and "top 2-3 axes" from <a href="label-coverage-policy-2026-05-29.html">label-coverage-policy-2026-05-29</a> as the product policy closer to the correct answer, and see if the rubric can detect the same failures</li>
+<li><strong>Check judge reproducibility</strong>: Evaluate the same input 10-50 times and calculate the match rate for each criterion. Look at the match of <code>criteria_met</code>, not the average of the total score</li>
+<li><strong>Input scope comparison</strong>: Under the 3 conditions of representative 3 items, random 10 items, and all args, observe the appearance of <code>UNSUPPORTED_AXIS</code> / <code>MISSING_VISIBLE_AXIS</code></li>
+<li><strong>Adoption judgment</strong>: Do not make it a standard pipeline step until human alignment is achieved, but save it as an experimental evaluation artifact</li>
+</ol>
+
+<h3>Implementation Notes</h3>
+
+<p>An offline script like <code>scripts/evaluate_label_quality_rubric.py</code> is a good implementation candidate before putting it into the standard pipeline. The inputs are <code>hierarchical_merge_labels.csv</code> and <code>hierarchical_clusters.csv</code>, and the outputs are <code>label_quality_rubric.jsonl</code> and <code>label_quality_summary.csv</code>. With this, it is easy to put it on the label quality improvement tracking of <code>#881</code>, and it can be compared without increasing the pipeline contract.</p>
+
+<p>For criteria execution, in initial experiments, 1 cluster 1 call returns all criteria as JSON. 1 criterion 1 call like the Ubie article is strict for seeing reproducibility, but it is expensive from the start. First, find weaknesses with 1 cluster 1 call, and individually make calls only for criteria that vary. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/zenn-llm-as-a-judge-rubric-evaluation-2026-05-29.md">zenn-llm-as-a-judge-rubric-evaluation-2026-05-29</a>.</p>
+
+<h3>Do Not Optimize Only The Score</h3>
+
+<p>This rubric is not used to mechanically decide the winner of label refinement, but to <strong>decompose why it is bad and decide the next experiment</strong>. For example, if <code>SCAN_LENGTH</code> improves but <code>MISSING_VISIBLE_AXIS</code> worsens, it is not an improvement under the product policy. From <a href="label-coverage-policy-2026-05-29.html">label-coverage-policy-2026-05-29</a>.</p>
+
+<h3>Open Questions</h3>
+
+<ul>
+<li>Can the judge stably recognize the "top 2-3 axes" of <code>COV_TOP_AXES</code>? If not, a preprocessing step to first extract topic candidates from the argument group is needed.</li>
+<li>If the context is long with all-args input, will judge oversights increase? Long text input increases coverage, but can cause distraction on the judge side.</li>
+<li>To what extent should <code>fatal_flags</code> be a product gate? Even if it can be gated in experiments, differences in label preferences and usage will appear in user data.</li>
+<li>How many human judges are sufficient? First, it is realistic to start with the top-level 8 clusters of <code>[8,40]</code>.</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+<li>2026-05-30: Re-evaluated the implemented rubric judge for level 1 of the saved past outputs <code>llm_grouping_sample_comments_400_hierarchical_8_40_refine_{none,setwise,contrast,balanced}</code> with <code>gpt-4o-mini</code> / <code>sample-mode all</code>. Total tokens were input 145,652 / output 29,187 / total 174,839, and the estimated cost based on the OpenAI public unit price is $0.03936. The result was <code>none=1.0</code>, <code>setwise=1.0</code>, <code>balanced=1.0</code>, <code>contrast=0.9766</code> with 0 fatal flags, so it was found that the v0 rubric could not sufficiently detect the "deviation of 3/5 clusters found by past human / Claude judges", and that strictness of criteria or prepending evidence extraction is necessary.</li>
+<li>2026-05-29: Added experimental implementation to <code>codex/remaining-experiment-wip</code>. Created a new <code>experiments/evaluation_report/src/evaluation_label_rubric_llm.py</code>, allowing the execution of cluster-level / label-set rubric judges from <code>run_evaluation.py --judge rubric</code>. The outputs are <code>inputs/{dataset}/evaluation_label_rubric_level{level}.json</code>, and prompt-only is <code>outputs/{dataset}/label_rubric_prompt_level{level}.txt</code>. Also displays <code>rubric_score_rate</code> / fatal flags / comments in the CSV / HTML reports. Furthermore, to allow direct re-evaluation of past outputs, <code>--dataset-path /path/to/past-output</code> and <code>--output-dir</code> were also added.</li>
+<li>2026-05-29: Created the first edition. Organized cluster-level and label-set binary criteria proposals, input scope, and experimental plans, referencing Zenn / Ubie rubric evaluation articles.</li>
+</ul>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

@@ -4,10 +4,10 @@
 
 ```
 state: stopped        # running / waiting / stopped / done
-current_item: L06
-done_items: 6 / 22
-gemini_weekly_remaining: 96.6%
-last_update: 2026-10-09 18:37 JST
+current_item: L07
+done_items: 7 / 22
+gemini_weekly_remaining: 96.2%
+last_update: 2026-10-09 18:41 JST
 runner_note: 
 ```
 
@@ -17,6 +17,7 @@ runner_note:
 
 ## 直近
 
+- L07 `label-quality-rubric-evaluation-2026-05-29` を処理完了
 - L06 `label-coverage-policy-2026-05-29` を処理完了
 - L05 `local-llm-extraction-faithfulness-2026-10-05` を処理完了
 - L04 `extraction-faithfulness-public-models-2026-10-08` を処理完了
