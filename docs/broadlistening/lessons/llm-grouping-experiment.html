@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LLM Grouping Experiment — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/llm-grouping-experiment.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-experiment.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-experiment.md">Japanese original</a>]
+
+<h2>LLM Grouping Experiment</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-experiment.md">wiki/analyses/llm-grouping-experiment.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> For the first experiment of LLM grouping, it is good to run <code>analysis_mode=llm_grouping</code> with 400 lines of Japanese comments and observe to what extent the scatter-compatible appearance holds up.</p>
+
+<p>Regarding the first experiment of LLM grouping, <strong>it is better to have a dedicated record page</strong>. The reason is that this experiment is not a mere bugfix, but simultaneously involves multiple points of discussion: the product value of <code>analysis_mode=llm_grouping</code>, the limits of scatter compatibility, and the next view design. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-implementation-plan.md">llm-grouping-implementation-plan</a>)</p>
+
+<p>As the first experimental data as of 2026-05-25, it is good to use <code>work/kouchou-ai/apps/admin/public/sample_comments.csv</code>. This file has <strong>400 lines of Japanese comments</strong>, and is a size that is "neither too small nor too large, making it easy to handle as the first LLM grouping experiment" for the current <code>analysis-core</code> implementation. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a>)</p>
+
+<h2>Purpose</h2>
+
+<p>There are 3 purposes for this experiment.</p>
+
+<ol>
+<li>To verify whether <code>analysis_mode=llm_grouping</code> can directly perform LLM classification of raw arguments while truly generating viewer-compatible artifacts.</li>
+<li>To observe to what extent the scatter plot overlaying LLM grouping results on embedding-derived <code>x/y</code> becomes "visible but not quite right."</li>
+<li>Based on that observation, to determine which of <code>hierarchyList</code>, <code>treemap</code>, or a dedicated view should be prioritized next.</li>
+</ol>
+
+<h2>Data used this time</h2>
+
+<p>Target file:</p>
+
+<ul>
+<li><code>work/kouchou-ai/apps/admin/public/sample_comments.csv</code></li>
+</ul>
+
+<p>Observed properties:</p>
+
+<ul>
+<li>Number of lines is <strong>400</strong></li>
+<li>Column is <strong>only 1 column of <code>comment</code></strong></li>
+<li>Comments are in Japanese</li>
+<li>The contents are somewhat scattered in themes, such as agreement, expectations, concerns, regulations, employment, education, privacy, etc., regarding AI.</li>
+</ul>
+
+<h2>Why this data is good</h2>
+
+<h3>1. Can be observed in Japanese</h3>
+
+<p>The current implementation and prompt are easy to observe assuming Japanese. <code>example-polis.csv</code> is good in terms of quantity, but since it is English data, 400 lines of Japanese are more suitable for the initial experiment of "humans taking a quick look at the results and grasping the sense of incongruity."</p>
+
+<h3>2. 400 lines is just right for the first experiment</h3>
+
+<ul>
+<li>With 5 lines of <code>small_comments.csv</code>, the properties of LLM grouping are hard to see.</li>
+<li>Even with 20 lines of <code>dummy-comments-japan.csv</code>, the incongruity of the scatter is hard to observe.</li>
+<li>With 400 lines, the collapse of top-level grouping, the bias in cluster size, and the way they mix on the scatter can be seen to some extent.</li>
+</ul>
+
+<h3>3. Admin public sample, making it easy to return to the UI path later</h3>
+
+<p>Since this file is in <code>apps/admin/public/</code>, the context is less likely to be cut off when returning to the Admin/API path after experimenting with analysis-core alone.</p>
+
+<h2>Notes</h2>
+
+<p>Currently, this data only has a <code>comment</code> column, not the <code>comment-id, comment-body</code> format. Therefore, <strong>input preprocessing</strong> is required to pass it through the current CLI canonical path as is.</p>
+
+<p>The following minimum preprocessing is sufficient.</p>
+
+<ul>
+<li><code>comment-id</code>: Add sequential numbers</li>
+<li><code>comment-body</code>: Rename <code>comment</code></li>
+</ul>
+
+<p>Even without source or attribute columns, there is no hindrance to this first experiment.</p>
+
+<h2>Points to observe</h2>
+
+<p>At a minimum, the following 4 points should be looked at after the experiment.</p>
+
+<ol>
+<li><strong>The cohesiveness of LLM grouping itself</strong><br>
+Whether the label / description is natural from a human perspective</li>
+<li><strong>Incongruity on the scatter</strong><br>
+Whether the same group appears unnaturally scattered on the 2D plane</li>
+<li><strong>Bias in cluster size</strong><br>
+Whether it is sucking too much into 1 group</li>
+<li><strong>Candidates for the next view</strong><br>
+Whether <code>hierarchyList</code>, <code>treemap</code>, or a dedicated view seems more natural to look at than scatter</li>
+</ol>
+
+<h2>Next practical tasks</h2>
+
+<p>What should be left in the next update of this page is at least the following.</p>
+
+<ol>
+<li>Whether the 400 lines of data were converted to the <code>analysis-core</code> input format</li>
+<li>Whether it actually completed with <code>analysis_mode=llm_grouping</code></li>
+<li>How the scatter-compatible appearance was</li>
+<li>What view to prioritize next</li>
+</ol>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>Since <code>sample_comments.csv</code> has themes biased around AI, is it sufficient for observing the "discovery of opposing axes" in LLM grouping?</li>
+<li>Is the current implementation, which first samples to determine top-level groups rather than doing group discovery for 400 lines at once, sufficient?</li>
+<li>Should the second experiment be expanded to an English/real data-oriented sample like <code>example-polis.csv</code>?</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-05-25: Created the first version. Recorded the decision to adopt the 400 lines of Japanese data from <code>sample_comments.csv</code> as the first observation target for LLM grouping.</li>
+<li>2026-05-25: Conducted the experiment. Formatted 400 items of <code>sample_comments.csv</code> into the <code>comment-id, comment-body</code> format, and was able to classify 422 arguments into 8 groups with <code>analysis_mode=llm_grouping</code>. The group labels themselves are natural, but the separation on the embedding-derived <code>x/y</code> is weak, the silhouette score was <code>-0.039</code>, and the centroid-based reclassification accuracy was <code>0.488</code>. Therefore, although it holds up as a short-term compatibility plan, what should be prioritized next is the consideration of an alternative group-first view rather than scatter improvement. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Compared with conventional hierarchical clustering with <code>cluster_nums: [8]</code> using the same 422 arguments / same embeddings. The conventional method had a silhouette score of <code>0.400</code> and a centroid-based reclassification accuracy of <code>1.000</code>, and was clearly superior in the readability of the scatter. In other words, this comparison supports the interpretation that "it is not that LLM grouping is bad," but "it is unnatural to put LLM grouping on a scatter plot." (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Referring to the 2025-02 judge in <code>~/broadlistening-research</code>, also compared top-level label quality using the OpenAI API. The average score for <code>Consistency / Specificity / Comprehensiveness / Distinctiveness</code> was <code>LLM grouping 85.0</code> and <code>hierarchical 80.4</code>, and the overall judgment of the judge was also a win for <code>llm_grouping</code>. Therefore, the conclusion this time should be held on two axes: "geometry is the conventional method, and label semantics is LLM grouping." (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Including cost-effectiveness, in the same-args downstream comparison, <code>LLM grouping</code> took <code>35,654 tokens / 149s</code>, and the conventional method took <code>7,088 tokens / 49s</code>. In other words, <code>LLM grouping</code> is relatively expensive for improving the scatter, and should be interpreted as an additional cost for improving label semantics. Next, just increasing the mode without changing the view is unlikely to be cost-effective. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Also experimented with <code>K=20</code>. For geometry, the conventional hierarchical was superior as with <code>K=8</code>, but for label quality, the average score reversed with <code>LLM grouping K20 83.3</code> and <code>hierarchical K20 85.0</code>. On the other hand, the direct judge looking at the entire set returned a win for <code>llm_grouping_k20</code>, and it was also found that the conclusion fluctuates depending on the granularity of the judge. In the future, <code>K</code> and <code>judge granularity</code> should also be treated as major variables, not just <code>method</code>. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Also tried multi-layer hierarchical <code>[8, 40]</code>. When creating the <code>40</code> layer first and then aggregating to <code>8</code>, the geometry is not much different from a single layer <code>K=8</code>, while the top-level label became more abstract and representative. In the OpenAI judge as well, <code>[8, 40] level1</code> outperformed the single layer <code>K=8</code> with an average of <code>82.1 vs 79.4</code>, and it was found that the difference appears more in the "meaning-making of the upper layer" rather than the "clustering boundary." (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Also directly compared <code>LLM grouping K=8</code> and <code>hierarchical [8,40] level1</code>. In the cluster average score, <code>[8,40] level1</code> at <code>88.0</code> outperformed <code>LLM grouping K=8</code> at <code>85.6</code>, but the direct judge of the entire label set was a win for <code>llm_grouping_k8</code>. In other words, while <code>[8,40]</code> has strong representativeness, its headings tend to be long as they are, and LLM grouping has an advantage in readability. What should be looked at next is a compromise plan where the aggregation structure remains hierarchical, but only the top-level label is paraphrased shorter. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: The product implications have also been narrowed down considerably. At <code>K=8</code>, LLM grouping was strong, but at <code>K=20</code>, conventional hierarchical won in individual label quality, and what is more, LLM grouping decreased in quality with increased tokens. Therefore, a role division where LLM grouping is for coarse bird's-eye views and conventional hierarchical is for fine-grained analysis might be more natural. Furthermore, in the <code>[8,40]</code> experiment, <code>Consistency / Comprehensiveness</code> increased and <code>Distinctiveness</code> decreased slightly, so it is highly likely that the focus of future improvement lies not in the clustering itself but in the differentiation between top-level labels and heading shortening during <code>aggregation</code>. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: To run the subsequent improvements as an independent experimental system, added the <code>hierarchical_label_refinement</code> step to <code>analysis-core</code>. It is a step to collectively review the top-level label set after <code>merge_labelling</code>, and <code>mode = none / setwise_refine / setwise_refine_short</code> can be switched via config. The workflow and rerun spec were also updated, and from now on, a foundation has been built to conduct comparative experiments solely on "aggregation-like label improvements" while keeping the clustering fixed. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a>)</li>
+<li>2026-05-25: In that new experimental system, compared <code>none / setwise_refine / setwise_refine_short</code> against the same <code>[8,40]</code> structure. In the cluster average score, the baseline <code>none</code> was the highest at <code>87.0</code>, but the direct judge of the entire label set ranked <code>setwise_refine</code> 1st. In other words, for the improvement of the top-level label set, "readability when viewed as a list" and "uniformity of granularity" are effective as different evaluation axes than the representativeness of individual clusters. Since <code>setwise_refine_short</code>, which was made too short, leaned towards insufficient information, the next focus is on how to balance the sibling difference and length constraints based on <code>setwise_refine</code>. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: Furthermore, also tried <code>contrast</code> and <code>balanced</code> as prompt variations of <code>setwise_refine</code>. In the cluster average score, it was <code>contrast 85.0 &gt; setwise 84.4 &gt; balanced 83.8</code>, and the best tradeoff for individual quality seemed to be <code>contrast</code>. On the other hand, the direct judge ranked <code>balanced</code> 1st, and as expected, the optimal points for "information density" and "list readability" diverge in the top-level label set. At present, it is natural to maintain two lineages: the main line for algorithm improvement is the <code>contrast</code> series, and the candidate for UI heading is the <code>balanced</code> series. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+<li>2026-05-25: However, the judges up to this point are OpenAI/GPT-based, and both the generating side and the judging side are LLMs of the same lineage. Therefore, rather than using these rankings directly for design decisions, we have entered a stage where we should first explain the mechanism in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-judge-mechanism-2026-05-25.md">label-judge-mechanism-2026-05-25</a>, and use <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/label-refinement-judge-bundle-2026-05-25.md">label-refinement-judge-bundle-2026-05-25</a> to interpose calibration by Claude / human judges. (From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>)</li>
+</ul>
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>

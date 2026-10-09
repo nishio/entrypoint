@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L09
-done_items: 9 / 22
-gemini_weekly_remaining: 95.5%
-last_update: 2026-10-09 18:48 JST
+current_item: L10
+done_items: 10 / 22
+gemini_weekly_remaining: 95.2%
+last_update: 2026-10-09 18:52 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 18:48 JST
 
 ## 直近
 
+- L10 `llm-grouping-experiment` を処理完了
 - L09 `labelling-prompt-few-shot-template-confound-2026-06-03` を処理完了
 - L08 `human-pairwise-label-preference-experiment-2026-06-02` を処理完了
 - L07 `label-quality-rubric-evaluation-2026-05-29` を処理完了
