@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auto Cluster Defaults — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/auto-cluster-defaults.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/auto-cluster-defaults.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/auto-cluster-defaults.md">Japanese original</a>]
+
+<h2>Auto Cluster Defaults</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/auto-cluster-defaults.md">wiki/analyses/auto-cluster-defaults.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> The essence of the cluster count default issue is not about "algorithm selection" but rather "the discrepancy in AI usage paths between docs, implementation, and interfaces," and <code>PR #832</code> is a fix that narrows this gap.</p>
+
+<p>It is closer to the reality to read the <code>[3, 6]</code> issue not just as a pure algorithm theory of "what is the appropriate number of clusters," but as a problem of <strong>which specific example written where propagates as the de facto default to AI and users</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>1. The problem was that a bad example in the docs was directly tied to the CLI implementation</h2>
+
+<p>If <code>[3, 6]</code> had been just one example in the docs, it might have been solved by "fixing the example." However, in reality, compat / specs / plugin fallback also had <code>[3, 6]</code>, and the <code>analysis-core</code> initialization path itself supplemented a fixed value.<br>
+Therefore, it is better to understand this problem not as "the explanation is outdated," but that <strong>the explanation, the implementation, and the AI's reference destinations were all biased in the same direction</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/source-code.md">source-code</a></p>
+
+<h2>2. Admin already had a different common sense, creating a double standard within the repo</h2>
+
+<p>README / getting-started / Admin UI docs had another common sense of "1000 -&gt; 10,100 based on the cube root," and users of the Web path read that. On the other hand, CLI / <code>analysis-core</code> users see the quickstart and fallback of <code>[3, 6]</code>.<br>
+In other words, <strong>a double standard of "cube-root rule for Web" and "<code>[3, 6]</code> for CLI"</strong> had long coexisted within the repo. The meeting minutes from this time captured the exact moment this divergence was exposed by AI usage. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>3. The value of <code>PR #832</code> lies not in "optimization" but in "connecting existing tacit knowledge to the CLI"</h2>
+
+<p>The merged <code>PR #832</code> did not revive advanced automatic exploration. What it did was simply adopt the cube-root rule, which was already in the Admin-side docs / UI, as the default behavior for <code>analysis-core</code> when omitted, and removed the fixed fallback.<br>
+However, this "simply" is important; <strong>unless explicitly specified by the user, the same lineage of common sense as the Web is now adopted in the CLI as well</strong>. This is less an algorithm improvement and more a restoration of consistency in usage paths. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>4. The aim of the calculation is to "align the number of sub-elements per cluster at each stage while gently reflecting the increase in the number of items"</h2>
+
+<p>The formula itself is quite simple:</p>
+
+<ul>
+<li>First layer: <code>round(cuberoot(n))</code></li>
+<li>Second layer: <code>lv1^2</code></li>
+</ul>
+
+<p>Since it uses a cube root, the number of items needs to increase by 8 times for the first layer to roughly double. In other words, the rule is oriented to <strong>not sharply increase the number of clusters even if the number of data items increases, maintaining the visibility of the top-level clusters first</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<p>At the same time, this formula is not just "slow in its rate of increase," but makes it <strong>easy to roughly align the number of sub-elements hanging from one cluster at each stage</strong>.<br>
+If we view it as <code>lv1 = n^(1/3)</code> and <code>lv2 = n^(2/3)</code>,</p>
+
+<ul>
+<li>From the whole to the first layer, there are <code>n / lv1 ≒ n^(2/3)</code> items each</li>
+<li>From the whole to the second layer, there are <code>n / lv2 ≒ n^(1/3)</code> items each</li>
+<li>The number of second-layer clusters per one first-layer cluster is <code>lv2 / lv1 = n^(1/3)</code></li>
+</ul>
+
+<p>In short, <strong>it is an explicitly geometric-progression-like design that splits at roughly the same ratio each time you go down a hierarchy</strong>. It is easier to understand this not as an "optimal cluster count estimation," but as an operational rule to avoid making the branch structure extreme when put onto a 2-stage UI / report structure. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<p>With this rule,</p>
+
+<ul>
+<li><code>125 -&gt; [5, 25]</code></li>
+<li><code>1000 -&gt; [10, 100]</code></li>
+</ul>
+
+<p>come out exactly neatly. On the other hand, for <code>400</code>, the implementation actually results in <code>[7, 49]</code>, so the "7→50" in the README and others should be understood as an easy-to-read rounding for explanation purposes, and <strong>the numerical examples in the docs and the strict implementation values are not always 1:1</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>5. Even so, a subtle shift from "comment count" to "argument count" has newly arisen</h2>
+
+<p>In the meeting minutes, it was initially discussed as "calculated from the number of comments," but with the materialization of <code>Issue #830</code>, the criterion became the number of <code>argument</code>s after extraction. This is natural as an implementation, allowing it to match the number of the clustering targets themselves.<br>
+On the other hand, the README / getting-started / how-to-use still explain it as "based on comment count," so it is currently in a state where <strong>the words in the Web docs and the implementation intent of <code>analysis-core</code> are slightly misaligned</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>6. This case is also a lesson to consider that "docs read by AI are the implementation itself"</h2>
+
+<p>The reason the problem became visible in the 2026-05-18 meeting minutes was not because humans referred to the docs, but because the AI coding agent straightforwardly repurposed the <code>[3, 6]</code> from the quickstart.<br>
+In this sense, the docs for Kouchou-AI (広聴AI) are not just explanatory materials, but also <strong>reusable prompts / templates for AI</strong>. The lesson remains that specific examples should be evaluated not only on "whether the reader will copy and paste them," but also on "whether the AI will regard them as defaults." From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/meeting-minutes.md">meeting-minutes</a></p>
+
+<h2>7. In implementation reviews, it is necessary to check "whether it breaks with small inputs" to the end, rather than "whether the rule is elegant"</h2>
+
+<p>In the pre-merge review this time, a hole was found where <code>2 -&gt; [2, 4]</code> resulted in a crash due to <code>n_clusters &gt; n_samples</code>. Even if the cube-root rule itself looks good, <strong>it was separately necessary to tighten the lower bound to ensure that the actual number of clusters passed to KMeans does not exceed the number of data items</strong>.<br>
+This point is important in software that is executed on small fixtures and test data, even while its main battleground is "hundreds to tens of thousands of items" like Kouchou-AI. As a general rule, in reviews of recommended value rules, it is safer to <strong>always look at the minimum cases (<code>2</code>, <code>3</code>) as well as the large typical examples (<code>1000 -&gt; [10, 100]</code>)</strong>. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/issue-830-pr-832-auto-cluster-defaults-2026-05-18.md">issue-830-pr-832-auto-cluster-defaults-2026-05-18</a></p>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>Should the Admin docs also be brought into line with the <code>argument</code> count base, or should the explanation based on comment count be kept for the Web UX?</li>
+<li>After bringing the CLI / Web closer to the same rule, how should the room for returning to more advanced automatic selection like silhouette-score be preserved in the future?</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-05-18: First edition created</li>
+<li>2026-05-19: Added the implication of <code>PR #832</code> merged and the tiny dataset review fix</li>
+</ul>
+
+    </div>
+    <hr>
+    <div id="footer">
+    [<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+    Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+    </div>
+
+    </body>
+    </html>
