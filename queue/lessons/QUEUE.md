@@ -94,7 +94,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L11 `umap-seed-history`** — 元: `wiki/analyses/umap-seed-history.md`
 - [x] **L12 `graph-visualization-proposal-2026-05-25`** — 元: `wiki/analyses/graph-visualization-proposal-2026-05-25.md`
 - [x] **L13 `public-ui-requirements-for-broadlistening`** — 元: `wiki/analyses/public-ui-requirements-for-broadlistening.md`
-- [ ] **L14 `kj-method-broadlistening-framing-2026-05-25`** — 元: `wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md`
+- [x] **L14 `kj-method-broadlistening-framing-2026-05-25`** — 元: `wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md`
 - [ ] **L15 `auto-cluster-defaults`** — 元: `wiki/analyses/auto-cluster-defaults.md`
 - [ ] **L16 `pipeline-step-addition-framing-2026-05-27`** — 元: `wiki/analyses/pipeline-step-addition-framing-2026-05-27.md`
 - [ ] **L17 `kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`** — 元: `wiki/analyses/kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03.md`

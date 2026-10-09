@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KJ Method Broadlistening Framing 2026-05-25 — Lessons from Practice — NISHIO Hirokazu</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/kj-method-broadlistening-framing-2026-05-25.html" />
+  <link rel="alternate" hreflang="ja" href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">Broad Listening</a>] [<a href="index.html">Lessons from Practice</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md">Japanese original</a>]
+
+<h2>KJ Method Broadlistening Framing 2026-05-25</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md">wiki/analyses/kj-method-broadlistening-framing-2026-05-25.md</a> (commit <code>3459fc6</code>).
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p><strong>Summary:</strong> A teleology connecting Kouchou-AI (広聴AI) to the public hypothesis formation of the KJ Method (KJ法). It separates unverified hypotheses and product design principles without assuming the quality improvement of the KJ Method prompt has been verified.</p>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a> is a brainstorm connecting Kouchou-AI to Jiro Kawakita / the KJ Method. 
+In summary, it is an argument that redefines Kouchou-AI not as a <strong>"summarization tool for government administration" but as a "KJ-like meaning-making apparatus for the public sphere."</strong>
+This is not a technical theory but a <strong>teleology</strong>, and I will organize here how it affects the design decisions of the current <code>kouchou-ai</code>.</p>
+
+<h2>1. Rereading the "KJ Method prompt" as a product design principle</h2>
+
+<p><a href="broad-listening-book-extractions.html">broad-listening-book-extractions</a> cited section 13.2.6 of the book and organized it as "including Japanese specialized terms like KJ Method / Nameplate (表札) in the prompt improves labeling quality." This has been read as <strong>prompt engineering tips</strong>.</p>
+
+<p><strong>Correction of the premise (2026-09-15)</strong>: To begin with, the premise that "quality improves" itself is unverified. The comparative experiment issue <a href="https://github.com/digitaldemocracy2030/kouchou-ai/issues/882"><code>#882</code></a> clearly states that "whether putting KJ-like words into the prompt truly improves label quality has not yet been isolated as a comparative experiment," and as of 2026-09-15, it remains OPEN and the experiment is unexecuted. The following "rereading" is not about changing the meaning of a technique whose effect has been confirmed, but about <strong>how to position an unverified hypothesis</strong>.</p>
+
+<p>However, what <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a> shows is that the KJ Method is not merely a labeling technique but a <strong>methodology for raising public hypotheses from chaos</strong>, and simply writing "KJ Method" in the prompt does not make it a KJ-like product.
+In other words, "using a KJ Method prompt" and "putting KJ-like design principles through the product" are separate issues.</p>
+
+<p>If we take section 13.2.6 of the book as a starting point, there remains a path to deploy the methodology behind it across the entire product.</p>
+
+<h2>2. Six design principles of Kouchou-AI from a KJ Method perspective</h2>
+
+<p>When overlaying the principles presented in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a> onto the current state of <code>kouchou-ai</code>, the degree of achievement is mixed:</p>
+
+<table>
+<thead>
+<tr>
+<th>Principle</th>
+<th>Content</th>
+<th>Current state of <code>kouchou-ai</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Returnable to the original text</td>
+<td>Can trace back from labels, clusters, and summaries to the original comments</td>
+<td>Drill-down to the original text from the scatter / hierarchy view is implemented. It is maintained in <code>report.html</code> as well</td>
+</tr>
+<tr>
+<td>Do not apply to existing categories</td>
+<td>Automatic classification into administrative categories "silences the chaos"</td>
+<td>Currently not doing such automatic classification. It remains free clustering even in <code>analysis_mode=llm_grouping</code></td>
+</tr>
+<tr>
+<td>Nameplates are not finalized by AI</td>
+<td>Cluster names are hypotheses to be examined by humans</td>
+<td>There is no label editing UI. AI-generated labels are the de facto finalized values</td>
+</tr>
+<tr>
+<td>Leave the minority, contradictions, and classification difficulties</td>
+<td>"Seeds for the next question" like <code>unresolved_cards.md</code></td>
+<td>Exhaustive partitioning is the premise, and there is no schema to express "doesn't fit"</td>
+</tr>
+<tr>
+<td>Show the structure of points at issue</td>
+<td>Diagrams of opposition, complement, and cause-and-effect rather than "conclusions"</td>
+<td>Structure emerges from scatter + hierarchical tree. Opposition and cause-and-effect do not emerge</td>
+</tr>
+<tr>
+<td>Return to the field</td>
+<td>Do not end with a one-off analysis</td>
+<td>Analysis units are basically one-shot. Continuous involvement is outside the product</td>
+</tr>
+</tbody>
+</table>
+
+<p>In other words, "Returnable to the original text" and "Do not apply to existing categories" are achieved, while "Human examination of nameplates," "Leave the minority," "Structure of opposition and cause-and-effect," and "Continuous involvement" are unachieved.
+This sorting makes it easier to organize the future branches as a product.</p>
+
+<h2>3. Overlap with ohki-shingo's public UI requirements</h2>
+
+<p>The 7 public UI requirements organized by <a href="public-ui-requirements-for-broadlistening.html">public-ui-requirements-for-broadlistening</a> partially overlap with the KJ Method principles:</p>
+
+<ul>
+<li><strong>Returnable to the original text</strong> — The same as ohki-shingo's requirement to "drill-down to individual opinions"</li>
+<li><strong>Leave the minority</strong> — Corresponds to the requirement "not to let minority voices be buried"</li>
+<li><strong>Editability</strong> — Potential to correspond to the requirement that "municipalities and citizens can correct the results"</li>
+</ul>
+
+<p>In other words, the KJ Method design principles can be used as a <strong>framework that theoretically underpins</strong> ohki-shingo's argument.
+To the composition that <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/ohki-discussion-reflection-2026-05-25.md">ohki-discussion-reflection-2026-05-25</a> organized as "re-questioning from technical theory compatible with scatter plots to the accountability of the public UI," this brainstorm can add the resolution that "the accountability of the public UI is KJ-like public hypothesis formation."</p>
+
+<h2>4. The tension between "listening broadly" and "listening deeply" is exposed in the product as well</h2>
+
+<p><a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a> lists 4 pressures working in government broad listening:</p>
+
+<ul>
+<li>Emphasizing "what many people are saying"</li>
+<li>Picking up "opinions that are easy to address with existing policies"</li>
+<li>Arranging into "cluster names that are easy to explain"</li>
+<li>Treating "exceptional and minority voices" as noise</li>
+</ul>
+
+<p>These directly affect the design decisions of the current <code>kouchou-ai</code> as well:</p>
+
+<ul>
+<li><code>analysis_mode=llm_grouping</code> adheres to the principle in the direction of creating <strong>free clusters that are not existing categories</strong></li>
+<li>The <code>dense cluster extraction</code> (濃いクラスタ抽出) feature (<code>digitaldemocracy2030/kouchou-ai</code> README) is explicitly stated as a <strong>defense against majority attacks</strong>, which is important from a KJ Method perspective</li>
+<li>On the other hand, the <code>∛n</code> empirical value of <code>auto_cluster_defaults</code> (<a href="auto-cluster-defaults.html">auto-cluster-defaults</a>) is determined <strong>based on visibility</strong>, and it structurally possesses a bias towards prioritizing "ease of understanding"</li>
+</ul>
+
+<p>The fact that section 13.4.2 of the book notes in a footnote, "Reason for not adopting automatic optimization such as silhouette score: it is more practical for users to be able to choose the granularity they want to see," is exactly a design decision that prevents this tension from being exposed to the product. However, from a KJ Method perspective, the "granularity they want to see" itself can become the subject of exploration.</p>
+
+<h2>5. "Letting LLM do the KJ Method" won't reach it</h2>
+
+<p>The core of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/gpt-kawakita-kj-method-broadlistening-2026-05-25.md">gpt-kawakita-kj-method-broadlistening-2026-05-25</a> is,</p>
+<blockquote>
+<p>Simply throwing it to the LLM with "organize using the KJ Method" should be avoided. Doing so black-boxes the process, and the property of "seeing the basis, process, and product of the idea," which is emphasized in the KJ Method, is lost.</p>
+</blockquote>
+<p>This also applies to the situation observed in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/llm-grouping-experiment-output-2026-05-25.md">llm-grouping-experiment-output-2026-05-25</a>, where "LLM grouping is strong in top-level labels but has poor scatter compatibility" and "the classification basis remains only in the <code>reason</code> column."</p>
+
+<p>As the next improvement point for LLM grouping, leaving the <code>reason</code> in a format that gets on the decision-making track (per cluster, per boundary case, per unresolved case) becomes important from a KJ Method perspective.
+This can be explicitly stated in the output of <code>analysis_capabilities</code> as an extension of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/llm-grouping-implementation-plan.md">llm-grouping-implementation-plan</a>.</p>
+
+<h2>6. Incorporation into design decisions (low priority)</h2>
+
+<p>For the implementation backlog of the current <code>kouchou-ai</code>, the conclusion of this brainstorm is not the kind that immediately falls into implementation. Organizing the priorities:</p>
+
+<ul>
+<li><strong>Schema expansion</strong> (<code>representative_docs</code>, <code>boundary_cases</code>, <code>unresolved_cards</code>, <code>edge reasons</code>) is mid-term. It can be put on the plugin contract of <code>analysis-core</code>.</li>
+<li><strong>Label editing UI</strong> is valuable even in the short term, but after the view plugin design (<a href="public-ui-requirements-for-broadlistening.html">public-ui-requirements-for-broadlistening</a>) is solidified.</li>
+<li><strong>Opposition/cause-and-effect structure display</strong> can connect with the bridge edge <code>relation type</code> of <a href="graph-visualization-proposal-2026-05-25.html">graph-visualization-proposal-2026-05-25</a>: <code>contrast</code>, <code>cause-effect</code>, and <code>same claim across clusters</code> directly correspond to the "opposition, complement, and cause-and-effect" of the KJ Method.</li>
+<li><strong>Continuous involvement</strong> is not a problem for the product alone. It is something to consider in connection with the book release and verification experiments.</li>
+</ul>
+
+<p>It does not demand changes to the priorities of <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/development-priority-roadmap-2026-05-23.md">development-priority-roadmap-2026-05-23</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/strategic-development-order-2026-05-23.md">strategic-development-order-2026-05-23</a> (which prioritize Windows distribution, known bugs, and operational infrastructure).
+However, for the question at the research theme layer, "What is Kouchou-AI optimizing?", it adds one candidate answer: <strong>"optimizing the generation of public hypotheses."</strong> This is a perspective that is also effective for writing papers for <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kouchou-ai-paper-draft-strategy.md">kouchou-ai-paper-draft-strategy</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/kouchou-ai-paper-draft-ja.md">kouchou-ai-paper-draft-ja</a>.</p>
+
+<h2>7. Connection with graph-visualization-proposal</h2>
+
+<p>The bridge edge <code>relation type</code> (same claim / adjacent issue / cause-effect / contrast / boundary) of <a href="graph-visualization-proposal-2026-05-25.html">graph-visualization-proposal-2026-05-25</a> directly corresponds to the "opposition, complement, and cause-and-effect" of the KJ Method.
+In other words, the graph visualization proposal can be read as a <strong>specific design to incorporate KJ-like diagramming into the product</strong>. The visualization and the methodology coincide by chance.</p>
+
+<p>This is a good opportunity for co-design:</p>
+<ul>
+<li>KJ Method principles are a guideline for <strong>what should be shown</strong></li>
+<li>The graph visualization proposal is a means of <strong>how to show it</strong></li>
+</ul>
+
+<p>It is good to hold both as independently established design proposals while checking that neither gets distorted when merging them.</p>
+
+<h2>Open Questions</h2>
+
+<ul>
+<li>When putting a schema to express "doesn't fit / wavers / counterexamples" into the current <code>analysis-core</code>, can it coexist with the exhaustive partitioning of <code>cluster_id</code>? Should a sentinel like <code>cluster_id = unresolved</code> be inserted, or should it be a separate field?</li>
+<li>It is unreasonable to handle "return to the field" with the product alone. On the other hand, in settings combining the book release (2026-09) and verification experiments, how <code>kouchou-ai</code> embodies this principle remains unorganized.</li>
+<li>How to incorporate the KJ-like "structure of points at issue rather than conclusions" into the current report format (HTML / Web UI). Right now, it is a flat structure of cluster lists and scatter, and the relationships of opposition, complement, and cause-and-effect cannot be expressed.</li>
+<li>Between Ken Suzuki's "broad listening requires different insights for different uses" (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/sources/kensuzuki-broad-listening-insight-types-2025-11-29.md">kensuzuki-broad-listening-insight-types-2025-11-29</a>) and this brainstorm's "public hypothesis formation," which is the higher-level problem setting? The former is industrial structure theory, the latter is methodology.</li>
+</ul>
+
+<h2>Updates</h2>
+
+<ul>
+<li>2026-05-25: Organized the brainstorm connecting to Jiro Kawakita / the KJ Method as a shelf of product design principles. From the existing mention of "KJ Method prompt" (book section 13.2.6), it is deployed to the methodology side, connecting at multiple points with ohki-shingo's public UI requirements, LLM grouping, and graph visualization proposals.</li>
+</ul>
+
+<h2>Updates — 2026-10-05 Retention of notes during index regeneration</h2>
+
+<p>The reservation that "the effect is unverified" added to the main text and index.txt on September 15th was also reflected in the frontmatter summary so that it would not disappear during index regeneration. This is not a newly conducted effect verification.</p>
+
+</div>
+<hr>
+<div id="footer">
+[<a href="../../index.html">NISHIO Hirokazu's homepage(entrypoint)</a>]<br/>
+Feel free to contact me: nishio (dot) hirokazu (at) gmail (dot) com. Thanks for visiting my site. NISHIO Hirokazu
+</div>
+
+</body>
+</html>

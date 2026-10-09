@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L13
-done_items: 13 / 22
-gemini_weekly_remaining: 93.8%
-last_update: 2026-10-09 19:02 JST
+current_item: L14
+done_items: 14 / 22
+gemini_weekly_remaining: 93.5%
+last_update: 2026-10-09 19:06 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 19:02 JST
 
 ## 直近
 
+- L14 `kj-method-broadlistening-framing-2026-05-25` を処理完了
 - L13 `public-ui-requirements-for-broadlistening` を処理完了
 - L12 `graph-visualization-proposal-2026-05-25` を処理完了
 - L11 `umap-seed-history` を処理完了
