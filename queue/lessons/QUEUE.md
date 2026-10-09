@@ -33,7 +33,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 
 ## 項目
 
-- [ ] **L01 `analysis-stance`** — 元: `wiki/concepts/analysis-stance.md`
+- [x] **L01 `analysis-stance`** — 元: `wiki/concepts/analysis-stance.md`
 - [ ] **L02 `broadlistening`** — 元: `wiki/concepts/broadlistening.md`
 - [ ] **L03 `pipeline`** — 元: `wiki/concepts/pipeline.md`
 - [ ] **L04 `extraction-faithfulness-public-models-2026-10-08`** — 元: `wiki/analyses/extraction-faithfulness-public-models-2026-10-08.md`

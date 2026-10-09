@@ -3,11 +3,11 @@
 毎項目の終わりに上書きする。
 
 ```
-state: not-started        # running / waiting / stopped / done
-current_item:
-done_items: 0 / 22
-gemini_weekly_remaining:
-last_update:
+state: running        # running / waiting / stopped / done
+current_item: L01
+done_items: 1 / 22
+gemini_weekly_remaining: 99.9%
+last_update: 2026-10-09 18:10 JST
 ```
 
 ## 判断待ち
@@ -16,4 +16,4 @@ last_update:
 
 ## 直近
 
-- （なし）
+- L01 `analysis-stance` を処理完了

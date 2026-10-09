@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>analysis-stance — Lessons from practice</title>
+  <link rel="stylesheet" href="../../static/site.css" />
+  <link rel="alternate" hreflang="en" href="https://nhiro.org/broadlistening/lessons/analysis-stance.html" />
+</head>
+<body>
+
+<div id="contents">
+
+<a href="../../index.html"><h1>NISHIO Hirokazu</h1></a>
+[<a href="../../index.html">home</a>] [<a href="../index.html">lessons</a>] [<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/analysis-stance.md">Original (Japanese)</a>]
+
+<h2>analysis-stance</h2>
+
+<p class="meta">
+Translated from the Japanese original: <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/analysis-stance.md">wiki/concepts/analysis-stance.md</a> (commit <code>3459fc6</code>).<br/>
+Machine-translated by Gemini and not yet reviewed by NISHIO Hirokazu.
+</p>
+
+<p>
+<strong>Summary:</strong> Kouchou-AI (広聴AI) is a tool built on the "structure grasping stance" (構造把握スタンス), not the "quantitative analysis stance" (定量分析スタンス). Its purpose is not to pretend to understand the whole by looking at cluster sizes and frequency distributions (falling into quantitative analysis), but rather to have the user read the overall structure. The single "grasping overall trends use-case" (全体傾向把握ユースケース = rephrased by tokoroten as "finding huge oversights / huge feelings of wrongness") handled by the Web UI is also realized through the structure grasping stance.
+</p>
+
+<p>
+This page clarifies the core stance that permeates the design decisions of the Kouchou-AI (広聴AI) core. It was finalized when nishio organized the thought that <code>Kouchou-AI is not a tool for quantitative analysis</code> in a dialogue on 2026-05-30. From now on, design decisions should be narrowed down starting from this stance.
+</p>
+
+<h3>Two Design Stances</h3>
+
+<h4>Quantitative Analysis Stance (Design completed with frequency distribution)</h4>
+
+<p>
+The way of thinking that "grasping the whole = measuring what is frequent and what is rare".
+</p>
+
+<ul>
+  <li>The output is completed with cluster + label + size.</li>
+  <li>Relationships between clusters (conflict / complement / causality) are not included in the main artifact.</li>
+  <li>Spatial visualizations like scatter plots are decorative. The main body is the list of frequency distributions.</li>
+  <li>The user looks at the aggregated results. They have no responsibility to read the structure.</li>
+</ul>
+
+<p>
+There are tools that adopt this stance, and there are use cases where it is sufficient. However, Kouchou-AI does not take this stance.
+</p>
+
+<h4>Structure Grasping Stance (Design that makes the user read the structure)</h4>
+
+<p>
+The way of thinking that "grasping the whole = the accumulation of individual opinions ≠ the whole picture. Grasping the whole comes only after reading the structure".
+</p>
+
+<ul>
+  <li>The output is not a mere frequency distribution, but an apparatus for the user to decipher the structure.</li>
+  <li>Scatter plots / cluster layouts / hierarchical tree / drill-down are means to make the user read the structure.</li>
+  <li>It does not go as far as <strong>explicitly extracting and drawing</strong> the structure as an artifact. The user reads it.</li>
+  <li>Grasping the overall trends is not about counting numbers, but grasping the contours of the issue space.</li>
+</ul>
+
+<h3>Kouchou-AI = Structure Grasping Stance</h3>
+
+<p>
+The Kouchou-AI core is designed with the structure grasping stance.
+</p>
+
+<p>
+We set the <strong>"grasping overall trends use-case"</strong> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-redesign-reset-2026-05-30.md">label-quality-redesign-reset-2026-05-30</a>) as the only use-case contract handled by the Web UI / standard run, but this does not mean creating a quantitative analysis-like apparatus to "look at the frequency of the top N topics". It is a premise that <strong>the grasping overall trends use-case is also realized through the structure grasping stance</strong>.
+</p>
+
+<p>
+As an operational rephrasing by tokoroten, the grasping overall trends use-case can be expressed as an apparatus to <strong>"find huge oversights, huge feelings of wrongness"</strong>. It is more specific than "grasping overall trends" and easier to use as a criterion for judging what to show and what not to show. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-stance-discussion-2026-05-30.md">slack-stance-discussion-2026-05-30</a>.
+</p>
+
+<p>
+Specifically, the means by which Kouchou-AI realizes the structure grasping stance:
+</p>
+
+<ul>
+  <li>Scatter plot (current main figure): An apparatus to directly make the user read the layout of the opinion space.</li>
+  <li>Cluster + label + drill-down (current state): Returning to the original text starting from the cluster and making the user read the structure.</li>
+  <li>Hierarchical tree: Showing the hierarchical structure from coarse to fine.</li>
+  <li><code>semantic island map prototype</code> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/semantic-island-map-prototype-2026-05-26.md">semantic-island-map-prototype-2026-05-26</a>): A main figure candidate under consideration that divides between clusters and within clusters to make the user read the structure.</li>
+</ul>
+
+<p>
+These do not "extract the structure as an artifact". They implement the structure grasping stance as an apparatus to <strong>make the user read the structure</strong>.
+</p>
+
+<h3>The meaning of "not a quantitative analysis tool"</h3>
+
+<p>
+This phrase does not say "do not count numbers". It says "do not pretend to understand just by counting numbers".
+</p>
+
+<p>
+Implications:
+</p>
+
+<ul>
+  <li>It does not promote as a product the simplistic reading that "it is important because the cluster size is large".</li>
+  <li>It does not lean towards a UI design completed with a list of labels + sizes (= avoids falling into quantitative analysis).</li>
+  <li>However, the size and cluster ID are output secondarily. It's not "not counting", but "not <em>only</em> counting".</li>
+</ul>
+
+<h3>The reader is not "someone who reads" but "someone who explains"</h3>
+
+<p>
+As an evaluation axis for the structure grasping stance, not only "can the reader read the structure?" but also <strong>"can the reader explain the structure to others / can they talk while pointing at it?"</strong> is added. The reader is not someone who consumes passively, but a subject where policymakers / local governments / citizens <strong>(re)narrate the structure towards others</strong>. If the report cannot provide material to say "let's talk about this", it will be shelved by the reader.
+</p>
+
+<p>
+As a typical example of this "someone who explains", there is the <code>internal demo role</code> (bridge role). They are the ones who show the working report to decision-makers / budget deciders, and they themselves are often neither engineers nor data scientists. The actual spread of Kouchou-AI is carried by this layer, so whether the evaluation axis of structure grasping (nature as explanation material / nature as cross-referencing material) is satisfied is particularly questioned by this reader. See also the "3 reader personas" in <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>.
+</p>
+
+<p>
+Verbalizing one source of ease of talking, it is <strong>"surprise = discovery of a discrepancy with the classification the reader implicitly held beforehand"</strong>. The reader visits with their own mental model (agree/disagree, cost/effect, etc.), and when the difference between that and the current findings becomes visible, it becomes "ah, I can talk about this".
+</p>
+
+<p>
+However, since "what one finds surprising" depends on individual subjectivity, <strong>we do not adopt a design that guarantees surprise itself as a product</strong>. What can be aimed for as a product is one step before that: <strong>providing "material that is easy for the reader to cross-reference with their own prior mental model"</strong>.
+</p>
+
+<ul>
+  <li>❌ An apparatus to generate surprise (subjectivity-dependent and cannot be guaranteed)</li>
+  <li>✅ An apparatus to provide cross-referencing material (subjectivity is placed on the reader's side)</li>
+</ul>
+
+<p>
+Scatter plots are strong in this sense: it is easy for the reader side to superimpose "if I color-coded it in my mind", "what would I name it under my classification", and "how would I cut it at my granularity". On the other hand, a list of cluster + label + size (the imagined form of falling into quantitative analysis) is difficult to cross-reference in this way. The design judgment of the structure grasping apparatus can use "ease of cross-referencing" as a yardstick.
+</p>
+
+<p>
+Furthermore, "what makes a report strong as explanation material" and "the boundary for being shelved" depend on individual subjectivity, so it is an area handled by separate tools or operations / literacy, not product features.
+</p>
+
+<h4>Structural limits of the structure grasping apparatus — the phenomenon of "stopping"</h4>
+
+<p>
+Observation by ohki-shingo: "Looking at the report generated by Kouchou-AI, being unable to find insights, going 'hmm', and stopping there." This can be explained as a <strong>structural consequence of the structure grasping apparatus</strong>. When the reader side does not have a prior mental model, or when the prior model matches the current findings, even if there is cross-referencing material, "difference = surprise" is not born, and the motivation to explain does not arise. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-stance-discussion-2026-05-30.md">slack-stance-discussion-2026-05-30</a>.
+</p>
+
+<p>
+Implications: Even if the structure grasping apparatus is polished, it will not reach readers who do not have a prior model. This is already team-aligned as a limit of the product (<code>entrust to the ability / context of the reader side</code>). An operation with an <strong>explicit prior model</strong>, such as "how opinions map or do not map against an already existing comprehensive plan" mentioned by ohki-shingo, is the scenario where the structure grasping apparatus shines the most.
+</p>
+
+<h3>UX guidelines for the Web UI</h3>
+
+<p>
+Readers of the Web UI often cannot distinguish what they want to do at a resolution like "grasping overall trends / grasping structure / detailed exploration". Therefore, a UI that makes them choose <code>(what they want to do)</code> does not function. Instead, we design with the following policies. From <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-stance-discussion-2026-05-30.md">slack-stance-discussion-2026-05-30</a>.
+</p>
+
+<ul>
+  <li>Provide a "finding huge oversights / huge feelings of wrongness" (= grasping overall trends use-case) view as the <strong>default mode</strong>.</li>
+  <li>Lean towards a post-induction type UX that guides to another view after seeing the reaction.</li>
+  <li>A mode switch at the level of "rough mode (fewer top clusters, suitable for scatter plots) / detailed mode (more clusters, suitable for tree views)" could be prepared.</li>
+  <li>However, forcing a choice creates a "which one should I choose?" problem, so assistance making them comparable via a <strong>sample analysis results catalog</strong> is needed.</li>
+  <li>User custom prompts and complex analysis method selection are on the CLI side (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>).</li>
+</ul>
+
+<h3>Ecosystem — CLI and shared community</h3>
+
+<p>
+The basic policy of delegating artifact extraction features (KJ Method 6 principles #3 #4 #5 series) and minority opinion rescue systems to separate tools while maintaining the structure grasping stance (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-redesign-reset-2026-05-30.md">label-quality-redesign-reset-2026-05-30</a>) is specifically implemented in the form of <strong>stacking diverse experimental features in the CLI and encouraging trial and error and sharing within the community</strong>. For details, see <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>.
+</p>
+
+<h3>Division of labor between structure grasping stance and "complementing with separate tools"</h3>
+
+<p>
+Among the 6 KJ Method-like principles (<a href="kj-method-broadlistening-framing-2026-05-25.html">kj-method-broadlistening-framing-2026-05-25</a>), #3 (human scrutiny of nameplates) / #4 (minority survival) / #5 (showing structure = conflict/causality) became a policy of <strong>not including them in the Kouchou-AI core, but complementing them with a group of separate tools in the future</strong> in the dialogue on 2026-05-30. This does not contradict the adoption of the structure grasping stance.
+</p>
+
+<p>
+Organization:
+</p>
+
+<ul>
+  <li>Kouchou-AI core = <strong>An apparatus that maintains the structure grasping stance</strong>. It has UI / visualization / drill-down to make the user read the structure.</li>
+  <li>Separate tools = <strong>Apparatuses that extract specific artifacts within the structure grasping stance</strong>. Conflict cards, causality illustration, human scrutiny of nameplates, minority residual extraction, etc.</li>
+  <li>Both share the "structure grasping stance" while delegating responsibilities.</li>
+</ul>
+
+<p>
+In other words, adopting the structure grasping stance does not mean "Kouchou-AI does everything". It is an ecosystem design where Kouchou-AI is the entrance for structure grasping, and the group of artifact extraction tools is the exit for structure grasping.
+</p>
+
+<h3>Derived design decisions</h3>
+
+<p>
+With the determination of the structure grasping stance, the following decisions are automatically directed.
+</p>
+
+<ul>
+  <li><strong>Maintaining the scatter plot</strong> (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/open-decisions.md">open-decisions</a> A1): Since the scatter plot is a major apparatus of the structure grasping stance, it is preserved until a better candidate is found. Alternative candidates are evaluated as structure grasping.</li>
+  <li><strong>Positioning of semantic island map prototype</strong>: It has the possibility of entering the Kouchou-AI core as a main figure candidate for structure grasping. It did not "fall into a separate tool candidate".</li>
+  <li><strong>Whether to cut the <code>interpretation_artifacts</code> step</strong> (<a href="pipeline-step-addition-framing-2026-05-27.html">pipeline-step-addition-framing-2026-05-27</a> / <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/thinking-targets.md">thinking-targets</a> 3-1): It is a structure grasping stance, but since artifact extraction is on the separate tools side, it leans towards the direction of not putting it in the Kouchou-AI core.</li>
+  <li><strong>Continuous engagement (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/concepts/thinking-targets.md">thinking-targets</a> 1 series #6)</strong>: It aligns as a design that extends the apparatus to "make the user read the structure" along the time axis. Support for continuing to read the structure continuously is an extension of structure grasping.</li>
+  <li><strong>7 requirements for public UI</strong> (<a href="public-ui-requirements-for-broadlistening.html">public-ui-requirements-for-broadlistening</a>): ohki-shingo's organization leans towards structure grasping. With the stance determined, its consistency as an upper contract on the public UI side has increased.</li>
+</ul>
+
+<h3>Open Questions</h3>
+
+<ul>
+  <li>Whether the scatter plot or the semantic island map is a better approach as the main figure for structure grasping is waiting for the prototype evaluation results. The judgment criterion is "how well the user could read the structure" (any operationalization is pending).</li>
+  <li>To what extent to support "making the user read the structure" as a product (e.g., whether to include an onboarding tutorial for reading the structure, whether to provide hints for untrained users) is undecided.</li>
+  <li>How to visually prevent "not only counting" on the Web UI is undecided (displaying the cluster size large might induce falling into quantitative analysis).</li>
+  <li>Where the group of separate tools should exist within the ecosystem is unorganized (in-house / OSS / individual development).</li>
+</ul>
+
+<h3>Updates</h3>
+
+<ul>
+  <li>2026-05-30: Realigned terminology to descriptive Japanese. Replaced <code>α / β stance</code> with <code>quantitative analysis stance / structure grasping stance</code>, <code>β apparatus</code> with <code>structure grasping apparatus</code>, <code>β evaluation axis</code> with <code>evaluation axis of structure grasping</code>, <code>contract A</code> with <code>grasping overall trends use-case</code>, etc. Short labels become unreadable without context over time, so they were unified into expressions that can be read by their content.</li>
+  <li>2026-05-31: Added the <strong>"internal demo role" (a bridge role who is neither an engineer nor a data scientist)</strong> as a typical example in the "The reader is someone who explains" section. Since the actual spread of Kouchou-AI is carried by this layer, the evaluation axis of structure grasping is particularly questioned by this reader.</li>
+  <li>2026-05-30: Reflected the discussion in the Slack team channel (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/slack-stance-discussion-2026-05-30.md">slack-stance-discussion-2026-05-30</a>). (1) tokoroten presented the operational rephrasing of the grasping overall trends use-case as "finding huge oversights / huge feelings of wrongness", (2) organized the "stopping" phenomenon as a structural limit of the structure grasping apparatus (it does not reach readers without a prior model, confirmed by ohki-shingo), (3) codified providing a default mode + post-reaction induction type as UX guidelines for the Web UI, (4) connected to ecosystem = CLI + shared community (newly established <a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/broadlistening-tool-ecosystem-vision.md">broadlistening-tool-ecosystem-vision</a>).</li>
+  <li>2026-05-30: Added the "The reader is someone who explains" section. Added "whether the reader can explain to others" to the evaluation axis of the structure grasping apparatus, and verbalized the source of ease of talking as "discovery of a discrepancy with a prior mental model = surprise". Surprise is subjectivity-dependent and outside the scope of the product; clarified the boundary that what can be aimed for as a product is one step before that: "providing cross-referencing material". The strength of the scatter plot as a structure grasping apparatus can also be re-evaluated by this "ease of cross-referencing".</li>
+  <li>2026-05-30: Initial version. Created in response to nishio explicitly stating the structure grasping stance as the correct answer in the thinking-targets dialogue on 2026-05-30, and verbalizing the core stance that <code>Kouchou-AI is not a tool for quantitative analysis</code>. Organized the relationship with the determination of the grasping overall trends use-case (<a href="https://github.com/nishio/kouchou-ai-developer-wiki/blob/3459fc653917039e8906a2bf09b9164855ee84e3/wiki/analyses/label-quality-redesign-reset-2026-05-30.md">label-quality-redesign-reset-2026-05-30</a>).</li>
+</ul>
+
+</div>
+
+</body>
+</html>
