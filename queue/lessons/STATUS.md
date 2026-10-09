@@ -3,12 +3,11 @@
 毎項目の終わりに上書きする。
 
 ```
-state: done        # running / waiting / stopped / done
-current_item: L28
+state: running        # running / waiting / stopped / done
+current_item: L26g
 done_items: 41 / 41
-gemini_weekly_remaining: 79.2%
-last_update: 2026-10-10 00:02 JST
-runner_note: QUEUE の項目が尽きた
+gemini_weekly_remaining: 78.8%
+last_update: 2026-10-10 00:04 JST
 ```
 
 ## 判断待ち
@@ -17,6 +16,7 @@ runner_note: QUEUE の項目が尽きた
 
 ## 直近
 
+- L26g 題を原文の H1 から（broad-listening-book-extractions）を処理完了
 - L28 日本語の一覧 (ja.html) を、commit `ab10e50` の H1 の日本語のままに更新完了
 - L27 英語の一覧 index.html の題を L26 の題に揃える処理完了
 - L26f 題を原文の H1 から（public-tool-catalog-draft-2026-06-30、broad-listening-book-extractions）を処理完了
