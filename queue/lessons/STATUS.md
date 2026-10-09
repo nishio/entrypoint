@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L26e
-done_items: 38 / 39
-gemini_weekly_remaining: 82.4%
-last_update: 2026-10-09 23:41 JST
+current_item: L26f
+done_items: 39 / 40
+gemini_weekly_remaining: 81.8%
+last_update: 2026-10-09 23:46 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 23:41 JST
 
 ## 直近
 
+- L26f 題を原文の H1 から（public-tool-catalog-draft-2026-06-30、broad-listening-book-extractions）を処理完了
 - L26e 題を原文の H1 から（auto-cluster-defaults、pipeline-step-addition-framing-2026-05-27、kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03）を処理完了
 - L26d 題を原文の H1 から（graph-visualization-proposal-2026-05-25、public-ui-requirements-for-broadlistening、kj-method-broadlistening-framing-2026-05-25）を処理完了
 - L26c 題を原文の H1 から（labelling-prompt-few-shot-template-confound-2026-06-03、llm-grouping-experiment、umap-seed-history）を処理完了
