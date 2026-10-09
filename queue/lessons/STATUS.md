@@ -4,10 +4,10 @@
 
 ```
 state: running        # running / waiting / stopped / done
-current_item: L27
-done_items: 40 / 40
-gemini_weekly_remaining: 80.3%
-last_update: 2026-10-09 23:54 JST
+current_item: L28
+done_items: 41 / 41
+gemini_weekly_remaining: 79.2%
+last_update: 2026-10-09 23:59 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-10-09 23:54 JST
 
 ## 直近
 
+- L28 日本語の一覧 (ja.html) を、commit `ab10e50` の H1 の日本語のままに更新完了
 - L27 英語の一覧 index.html の題を L26 の題に揃える処理完了
 - L26f 題を原文の H1 から（public-tool-catalog-draft-2026-06-30、broad-listening-book-extractions）を処理完了
 - L26e 題を原文の H1 から（auto-cluster-defaults、pipeline-step-addition-framing-2026-05-27、kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03）を処理完了
