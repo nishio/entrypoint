@@ -4,10 +4,10 @@
 
 ```
 state: running
-current_item: L30
-done_items: 48 / 49
+current_item: L31
+done_items: 49 / 49
 gemini_weekly_remaining: 100%
-last_update: 2026-11-07 20:03 JST
+last_update: 2026-11-07 20:05 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-11-07 20:03 JST
 
 ## 直近
 
+- L31 本文の書名（英訳 19 ページの本文すべてを確認し、"Broad Listening That Changed Elections" など日本語の書名の直訳が本文に出ないことを確認。broad-listening-book-extractions.html の `<title>`・`<h2>` は L29e で既に英語版題の形に更新済みのため、全 19 ファイル変更不要）を処理完了
 - L30 英語の一覧（index.html の 4 行の題を L29 の題に更新し、書名を英語版題の形に統一。要約には書名の直訳が無いことを確認）を処理完了
 - L29e 題の表記を揃える（kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03 の `<title>` と `<h2>` の `is` を `Is` に修正、broad-listening-book-extractions の書名を英語版題 `*Broad Listening: Across Politics, Local Government, and Business* (Japanese edition: 『選挙を変えたブロードリスニング』)` に修正、public-tool-catalog-draft-2026-06-30 は変更不要を確認）を処理完了
 - L29d 題の表記を揃える（public-ui-requirements-for-broadlistening・kj-method-broadlistening-framing-2026-05-25・auto-cluster-defaults・pipeline-step-addition-framing-2026-05-27 の 4 ファイルすべてが既に規則どおりの Title Case であることを確認、変更不要）を処理完了
