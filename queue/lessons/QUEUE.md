@@ -165,7 +165,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 3. `<title>` は従来どおり `<h2>` + " — Lessons from Practice — NISHIO Hirokazu"。題と書名以外は 1 文字も変えない
 
 - [x] **L29a 題の表記を揃える**（`analysis-stance`、`broadlistening`、`pipeline`、`extraction-faithfulness-public-models-2026-10-08`）
-- [ ] **L29b 題の表記を揃える**（`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
+- [x] **L29b 題の表記を揃える**（`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
 - [ ] **L29c 題の表記を揃える**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`）
 - [ ] **L29d 題の表記を揃える**（`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`）
 - [ ] **L29e 題の表記を揃える**（`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
