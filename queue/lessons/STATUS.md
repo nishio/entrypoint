@@ -4,10 +4,10 @@
 
 ```
 state: running
-current_item: L29b
-done_items: 44 / 49
+current_item: L29c
+done_items: 45 / 49
 gemini_weekly_remaining: 100%
-last_update: 2026-11-07 19:52 JST
+last_update: 2026-11-07 19:55 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-11-07 19:52 JST
 
 ## 直近
 
+- L29c 題の表記を揃える（labelling-prompt-few-shot-template-confound-2026-06-03・llm-grouping-experiment・umap-seed-history・graph-visualization-proposal-2026-05-25 の 4 ファイルすべてが既に規則どおりの Title Case であることを確認、変更不要）を処理完了
 - L29b 題の表記を揃える（label-coverage-policy-2026-05-29 の `<title>` と `<h2>` の `are` / `not` を `Are` / `Not` に修正、local-llm-extraction-faithfulness-2026-10-05・label-quality-rubric-evaluation-2026-05-29・human-pairwise-label-preference-experiment-2026-06-02 は変更不要を確認）を処理完了
 - L29a 題の表記を揃える（analysis-stance の `<title>` と `<h2>` の `is` を `Is` に修正、broadlistening・pipeline・extraction-faithfulness-public-models-2026-10-08 は変更不要を確認）を処理完了
 - L27b 英語の一覧の 1 行（broad-listening-book-extractions のリンクテキスト更新）を処理完了
