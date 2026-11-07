@@ -4,10 +4,10 @@
 
 ```
 state: running
-current_item: L29d
-done_items: 46 / 49
+current_item: L29e
+done_items: 47 / 49
 gemini_weekly_remaining: 100%
-last_update: 2026-11-07 19:57 JST
+last_update: 2026-11-07 19:59 JST
 ```
 
 ## 判断待ち
@@ -16,6 +16,7 @@ last_update: 2026-11-07 19:57 JST
 
 ## 直近
 
+- L29e 題の表記を揃える（kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03 の `<title>` と `<h2>` の `is` を `Is` に修正、broad-listening-book-extractions の書名を英語版題 `*Broad Listening: Across Politics, Local Government, and Business* (Japanese edition: 『選挙を変えたブロードリスニング』)` に修正、public-tool-catalog-draft-2026-06-30 は変更不要を確認）を処理完了
 - L29d 題の表記を揃える（public-ui-requirements-for-broadlistening・kj-method-broadlistening-framing-2026-05-25・auto-cluster-defaults・pipeline-step-addition-framing-2026-05-27 の 4 ファイルすべてが既に規則どおりの Title Case であることを確認、変更不要）を処理完了
 - L29c 題の表記を揃える（labelling-prompt-few-shot-template-confound-2026-06-03・llm-grouping-experiment・umap-seed-history・graph-visualization-proposal-2026-05-25 の 4 ファイルすべてが既に規則どおりの Title Case であることを確認、変更不要）を処理完了
 - L29b 題の表記を揃える（label-coverage-policy-2026-05-29 の `<title>` と `<h2>` の `are` / `not` を `Are` / `Not` に修正、local-llm-extraction-faithfulness-2026-10-05・label-quality-rubric-evaluation-2026-05-29・human-pairwise-label-preference-experiment-2026-06-02 は変更不要を確認）を処理完了
