@@ -3,11 +3,12 @@
 毎項目の終わりに上書きする。
 
 ```
-state: running
+state: done
 current_item: L31
 done_items: 49 / 49
 gemini_weekly_remaining: 100%
-last_update: 2026-11-07 20:05 JST
+last_update: 2026-11-07 20:08 JST
+runner_note: QUEUE の項目が尽きた
 ```
 
 ## 判断待ち
