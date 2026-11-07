@@ -3,12 +3,11 @@
 毎項目の終わりに上書きする。
 
 ```
-state: stopped
-current_item: L27b
-done_items: 42 / 49
-gemini_weekly_remaining: 78.5%
-last_update: 2026-11-07 19:34 JST
-runner_note: 連続 3 回の失敗（runs/lessons/ を見る）
+state: running
+current_item: L29a
+done_items: 43 / 49
+gemini_weekly_remaining: 100%
+last_update: 2026-11-07 19:49 JST
 ```
 
 ## 判断待ち
@@ -17,6 +16,7 @@ runner_note: 連続 3 回の失敗（runs/lessons/ を見る）
 
 ## 直近
 
+- L29a 題の表記を揃える（analysis-stance の `<title>` と `<h2>` の `is` を `Is` に修正、broadlistening・pipeline・extraction-faithfulness-public-models-2026-10-08 は変更不要を確認）を処理完了
 - L27b 英語の一覧の 1 行（broad-listening-book-extractions のリンクテキスト更新）を処理完了
 - L26g 題を原文の H1 から（broad-listening-book-extractions）を処理完了
 - L28 日本語の一覧 (ja.html) を、commit `ab10e50` の H1 の日本語のままに更新完了

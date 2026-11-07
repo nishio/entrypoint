@@ -164,7 +164,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
    be 動詞 is/are/was・not は大文字。固有名・識別子（Kouchou-AI、UMAP、k-means、LLM、A/B、MST）は原表記のまま）
 3. `<title>` は従来どおり `<h2>` + " — Lessons from Practice — NISHIO Hirokazu"。題と書名以外は 1 文字も変えない
 
-- [ ] **L29a 題の表記を揃える**（`analysis-stance`、`broadlistening`、`pipeline`、`extraction-faithfulness-public-models-2026-10-08`）
+- [x] **L29a 題の表記を揃える**（`analysis-stance`、`broadlistening`、`pipeline`、`extraction-faithfulness-public-models-2026-10-08`）
 - [ ] **L29b 題の表記を揃える**（`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
 - [ ] **L29c 題の表記を揃える**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`）
 - [ ] **L29d 題の表記を揃える**（`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`）
