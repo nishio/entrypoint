@@ -169,7 +169,7 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L29c 題の表記を揃える**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`）
 - [x] **L29d 題の表記を揃える**（`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`）
 - [x] **L29e 題の表記を揃える**（`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
-- [ ] **L30 英語の一覧**: `index.html` の各 `<li>` の題を L29 の題に揃え、要約の中の書名を 1 の形にする（それ以外は変えない）
+- [x] **L30 英語の一覧**: `index.html` の各 `<li>` の題を L29 の題に揃え、要約の中の書名を 1 の形にする（それ以外は変えない）
 - [ ] **L31 本文の書名**: 19 ページの本文で "Broad Listening That Changed Elections" など日本語の書名の直訳が出るところを 1 の形にする（書名以外は変えない）
 
 ## 回答（人間から）
