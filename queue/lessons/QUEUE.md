@@ -153,6 +153,25 @@ nhiro.org/broadlistening/ の下に置く。知見の一覧は英語と日本語
 - [x] **L26g 題を原文の H1 から（L26f の取りこぼし）**（`broad-listening-book-extractions`）— L26f で返ってこず、`<h2>` が古い "Insights from the Book for Future Development Decisions" のまま。H1 は書名『選挙を変えたブロードリスニング』を含む。書名は意味を足さずに英訳し、題に残す
 - [x] **L27b 英語の一覧の 1 行**: `index.html` の broad-listening-book-extractions.html への `<li>` の題を、L26g の後のそのページの `<h2>` にする（ほかの行と要約は変えない）
 
+### 直し 3（2026-11-07 西尾 go — 書名と大文字の統一）
+
+1. **書名**: 書籍の英語版は *Broad Listening: Across Politics, Local Government, and Business*（broadlisteningbook.com、先行公開ドラフト。
+   nhiro.org/broadlistening/ の英語ページも同じ題）。"Broad Listening That Changed Elections" は日本語の書名の直訳で、原稿の仮題だった。
+   英語の題・本文・一覧で書名を出すところは、英語版の題を *イタリック* で書き、初出だけ日本語の書名を括弧で添える:
+   *Broad Listening: Across Politics, Local Government, and Business* (Japanese edition: 『選挙を変えたブロードリスニング』)
+2. **大文字**: 英訳ページの `<title>`・`<h2>`、英語の一覧の題を Title Case に統一する（Chicago 式: 冠詞 a/an/the、等位接続詞 and/but/or/nor/for/so/yet、
+   4 文字以下の前置詞 to/of/in/on/for/by/at/as/via 等は小文字。ただし題の最初と最後の語、コロン・ダッシュの直後の語は大文字。
+   be 動詞 is/are/was・not は大文字。固有名・識別子（Kouchou-AI、UMAP、k-means、LLM、A/B、MST）は原表記のまま）
+3. `<title>` は従来どおり `<h2>` + " — Lessons from Practice — NISHIO Hirokazu"。題と書名以外は 1 文字も変えない
+
+- [ ] **L29a 題の表記を揃える**（`analysis-stance`、`broadlistening`、`pipeline`、`extraction-faithfulness-public-models-2026-10-08`）
+- [ ] **L29b 題の表記を揃える**（`local-llm-extraction-faithfulness-2026-10-05`、`label-coverage-policy-2026-05-29`、`label-quality-rubric-evaluation-2026-05-29`、`human-pairwise-label-preference-experiment-2026-06-02`）
+- [ ] **L29c 題の表記を揃える**（`labelling-prompt-few-shot-template-confound-2026-06-03`、`llm-grouping-experiment`、`umap-seed-history`、`graph-visualization-proposal-2026-05-25`）
+- [ ] **L29d 題の表記を揃える**（`public-ui-requirements-for-broadlistening`、`kj-method-broadlistening-framing-2026-05-25`、`auto-cluster-defaults`、`pipeline-step-addition-framing-2026-05-27`）
+- [ ] **L29e 題の表記を揃える**（`kouchou-ai-scope-line-from-marketing-to-plugin-2026-06-03`、`public-tool-catalog-draft-2026-06-30`、`broad-listening-book-extractions`）
+- [ ] **L30 英語の一覧**: `index.html` の各 `<li>` の題を L29 の題に揃え、要約の中の書名を 1 の形にする（それ以外は変えない）
+- [ ] **L31 本文の書名**: 19 ページの本文で "Broad Listening That Changed Elections" など日本語の書名の直訳が出るところを 1 の形にする（書名以外は変えない）
+
 ## 回答（人間から）
 
 - （なし）
